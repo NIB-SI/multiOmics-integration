@@ -40,7 +40,12 @@
     * [{mgcv}](https://cran.r-project.org/web/packages/mgcv/index.html)
   * interpolation
     * point-to-point
+      * approxfun {stats}
     * polynomial
+      * predict {stats}
+      * boxplot.stats {grDevices}
+      * mad [{BiocGenerics}](https://bioconductor.org/packages/release/bioc/html/BiocGenerics.html)
+      * aq.plot [{mvoutlier}](https://cran.r-project.org/web/packages/mvoutlier/index.html)
   * extrapolation
   
     <img src="https://www.statology.org/wp-content/uploads/2021/09/interp3-768x545.png" width=25% height=25%>
@@ -48,16 +53,16 @@
     * for qPCR see Baebler, Š., Svalina, M., Petek, M. et al. quantGenius: implementation of a decision support system for qPCR-based gene quantification. BMC Bioinformatics 18, 276 (2017). https://doi.org/10.1186/s12859-017-1688-7
   
 3. Statistical analysis of individual omics data layers
-   * ggplot {ggplot2}
-   * corr.test {psych} - _Find the correlations, sample sizes, and probability values between elements of a matrix or data.frame_
-   * cor.plot {psych} - _Create an image plot for a correlation or factor matrix_
-   * pairs.panels {psych} - _SPLOM, histograms and correlations for a data matrix_
-   * rcorr {Hmisc} - _Matrix of Correlations and P-values_
-   * heatmaply_cor {heatmaply} - _Cluster heatmap based on plotly_
-   * corrplot {corrplot} - _A visualization of a correlation matrix_
-   * pheatmap {pheatmap} - _A function to draw clustered heatmaps_
-   * t_test {rstatix}
-   * ggdotplot {ggpubr}
+   * ggplot [{ggplot2}](https://cran.r-project.org/web/packages/ggplot2/index.html)
+   * corr.test [{psych}](https://cran.r-project.org/web/packages/psych/index.html) - _Find the correlations, sample sizes, and probability values between elements of a matrix or data.frame_
+   * cor.plot [{psych}](https://cran.r-project.org/web/packages/psych/index.html) - _Create an image plot for a correlation or factor matrix_
+   * pairs.panels [{psych}](https://cran.r-project.org/web/packages/psych/index.html) - _SPLOM, histograms and correlations for a data matrix_
+   * rcorr [{Hmisc}](https://cran.r-project.org/web/packages/Hmisc/index.html) - _Matrix of Correlations and P-values_
+   * heatmaply_cor [{heatmaply}](https://cran.r-project.org/web/packages/heatmaply/index.html) - _Cluster heatmap based on plotly_
+   * corrplot [{corrplot}](https://cran.r-project.org/web/packages/corrplot/index.html) - _A visualization of a correlation matrix_
+   * pheatmap [{pheatmap}](https://cran.r-project.org/web/packages/pheatmap/index.html) - _A function to draw clustered heatmaps_
+   * t_test [{rstatix}](https://cran.r-project.org/web/packages/rstatix/index.html)
+   * ggdotplot, ggviolin [{ggpubr}](https://cran.r-project.org/web/packages/ggpubr/index.html)
    * metaMDS {vegan} - _Nonmetric Multidimensional Scaling with Stable Solution from Random Starts, Axis Scaling and Species Scores_
    * [{limma}](https://bioconductor.org/packages/release/bioc/html/limma.html)
      * limma::lmFit
@@ -68,13 +73,13 @@
      * limma::topTable
 4. Correlation based network inference within/between each omics level
    * Leave-One-Out graphs
-     * qgraph {qgraph}
+     * qgraph [{qgraph}](https://cran.r-project.org/web/packages/qgraph/)
      * [igraph](https://igraph.org/r/)
 5. Integration across different omics datasets
  * [Canonical Correlation Analysis](https://mixomics.org/methods/)
  * [N-Integration Discriminant Analysis with DIABLO](https://mixomics.org/mixDIABLO/)
  * Leave-One-Out graphs
-   * qgraph {qgraph}
+   * qgraph [{qgraph}](https://cran.r-project.org/web/packages/qgraph/)
    * [igraph](https://igraph.org/r/)
 6. Integration of data with prior knowledge
    * [igraph](https://igraph.org/r/)
