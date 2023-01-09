@@ -1,8 +1,8 @@
 Investigation:	_I_Omics
 Title:	Omics
 Description:	Minimal, reproducible example for multi-Omics integration pipeline Investigation
-Phenodata:	./phenodata_20230109.txt
-pISA Investigation creation date:	2023-01-09
+Phenodata:	./phenodata_20221001.txt
+pISA Investigation creation date:	2022-10-01
 pISA Investigation creator:	MZ
 Principal investigator:	Kristina Gruden
 License:	CC BY 4.0

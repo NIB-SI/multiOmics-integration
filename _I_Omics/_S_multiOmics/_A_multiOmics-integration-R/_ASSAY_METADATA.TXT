@@ -3,10 +3,10 @@ Assay Class:	DRY
 Assay Type:	R
 Title:	multiOmics-integration
 Description:	Minimal, reproducible example for multi-Omics integration pipeline Assay
-pISA Assay creation date:	2023-01-09
+pISA Assay creation date:	2022-10-01
 pISA Assay creator:	MZ
 Analyst:	Ab, MZ
-Phenodata:	../../phenodata_20230109.txt
+Phenodata:	../../phenodata_20221001.txt
 Featuredata:	
 Data:	./input
 Principal investigator:	Kristina Gruden
