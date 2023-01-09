@@ -83,6 +83,13 @@
    * [igraph](https://igraph.org/r/)
 6. Integration of data with prior knowledge
    * [igraph](https://igraph.org/r/)
-   * [Cytoscape]https://cytoscape.org/)
-
-Data is expected to be arranged within data management framework, with complete and descriptive metadata files, including _Phenodata_ file. Omics files are expected to be preprocessed (see suggestions in Step 2). Minimal input files can be found within './input' directory. For Step 3: Statistical analysis of individual omics data layers run XX script. For Step 4: Correlation based network inference within/between each omics level run script YY. For Step 5: Integration across different omics datasets run ZZ script.
+   * [DiNAR subApps](https://github.com/NIB-SI/DiNAR/tree/master/subApps)
+   * [Cytoscape](https://cytoscape.org/)
+   
+## The beginning of the analysis:
+- Data is expected to be arranged within data management framework, with complete and descriptive metadata files, including _Phenodata_ file. 
+- +Omics files are expected to be preprocessed (see suggestions in Step 2). 
+- Minimal input files can be found within './input' directory. 
+- For Step 3: Statistical analysis of individual omics data layers run XX script. 
+- For Step 4: Correlation based network inference within/between each omics level run script YY. 
+- For Step 5: Integration across different omics datasets run ZZ script.
