@@ -71,7 +71,7 @@
      * limma::eBayes
      * limma::decideTests
      * limma::topTable
-4. Correlation based network inference within/between each omics level
+4. Correlation based network inference within each omics level
    * Leave-One-Out graphs
      * qgraph [{qgraph}](https://cran.r-project.org/web/packages/qgraph/)
      * [igraph](https://igraph.org/r/)
