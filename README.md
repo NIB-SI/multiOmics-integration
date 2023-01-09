@@ -77,7 +77,16 @@
      * [igraph](https://igraph.org/r/)
 5. Integration across different omics datasets
  * [Canonical Correlation Analysis](https://mixomics.org/methods/)
- * [N-Integration Discriminant Analysis with DIABLO](https://mixomics.org/mixDIABLO/)
+ * [N-Integration Discriminant Analysis with DIABLO](https://mixomics.org/mixDIABLO/)  
+   * [{mixOmics}](http://www.bioconductor.org/packages/release/bioc/html/mixOmics.html)
+     * block.splsda {mixOmics} _N-integration and feature selection with Projection to Latent Structures models (PLS) with sparse Discriminant Analysis_
+     * plotDiablo {mixOmics} _Graphical output for the DIABLO framework_
+     * plotVar {mixOmics} _Plot of Variables_
+     * plotIndiv {mixOmics} _Plot of Individuals (Experimental Units)_
+     * plotArrow {mixOmics} _Arrow sample plot_
+     * circosPlot {mixOmics} _circosPlot for DIABLO_
+     * cimDiablo {mixOmics} _Clustered Image Maps (CIMs) ("heat maps") for DIABLO_
+     * network {mixOmics} _Relevance Network for (r)CCA and (s)PLS regression_
  * Leave-One-Out graphs
    * qgraph [{qgraph}](https://cran.r-project.org/web/packages/qgraph/)
    * [igraph](https://igraph.org/r/)
