@@ -1,4 +1,4 @@
-# ** ‘Omics data analysis pipeline**
+# **‘Omics data analysis pipeline**
 - Data integration and modelling
 - Systems biology analysis and visualization pipeline
 
