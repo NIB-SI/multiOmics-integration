@@ -1,6 +1,6 @@
 # **‘Omics data analysis pipeline**
-- Data integration and modelling
-- Systems biology analysis and visualization pipeline
+- Data integration and modelling with R
+- Systems biology analysis and visualization pipeline in R
 
 ## Data management framework
 - [pISA-tree](https://github.com/NIB-SI/pISA-tree)
@@ -24,6 +24,9 @@
   * detection of outliers and faulty measurements
     * [{gplot2}](https://cran.r-project.org/web/packages/ggplot2/index.html)
     * [{rgl}](https://cran.r-project.org/web/packages/rgl/index.html)
+    * [{raster}](https://cran.r-project.org/web/packages/raster/index.html)
+    * [{multcompView}](https://cran.r-project.org/web/packages/multcompView/index.html)
+    * [{gridExtra}](https://cran.r-project.org/web/packages/gridExtra/index.html)
   * data transformation (if needed)
     * [{multimode}](https://cran.r-project.org/web/packages/multimode/index.html)
     * [{fitdistrplus}](https://cran.r-project.org/web/packages/fitdistrplus/index.html)
@@ -31,6 +34,10 @@
     * [{glmnet}](https://cran.r-project.org/web/packages/glmnet/index.html)
     * [{MASS}](https://cran.r-project.org/web/packages/MASS/index.html)
     * [{BIGL}](https://cran.r-project.org/web/packages/BIGL/index.html)
+    * [{robustbas}](https://cran.r-project.org/web/packages/robustbase/index.html)
+    * [{preprocessCore}](https://www.bioconductor.org/packages/release/bioc/html/preprocessCore.html)
+    * [{compositions}](https://cran.r-project.org/web/packages/compositions/index.html)
+    * [{mgcv}](https://cran.r-project.org/web/packages/mgcv/index.html)
   * interpolation
     * point-to-point
     * polynomial
@@ -50,14 +57,14 @@
    * t_test {rstatix}
    * ggdotplot {ggpubr}
    * metaMDS {vegan} - _Nonmetric Multidimensional Scaling with Stable Solution from Random Starts, Axis Scaling and Species Scores_
-   * {limma}
+   * [{limma}](https://bioconductor.org/packages/release/bioc/html/limma.html)
      * limma::lmFit
      * limma::makeContrasts
      * limma::contrasts.fit
      * limma::eBayes
      * limma::decideTests
      * limma::topTable
-4. Correlation based network inference within each omics level
+4. Correlation based network inference within/between each omics level
    * Leave-One-Out graphs
      * qgraph {qgraph}
      * [igraph](https://igraph.org/r/)
@@ -71,3 +78,4 @@
    * [igraph](https://igraph.org/r/)
    * [Cytoscape]https://cytoscape.org/)
 
+Data is expected to be arranged within data management framework, with complete and descriptive metadata files, including _Phenodata_ file. Omics files are expected to be preprocessed (see suggestions in Step 2). Minimal input files can be found within './input' directory. For Step 3: Statistical analysis of individual omics data layers run XX script. For Step 4: Correlation based network inference within/between each omics level run script YY. For Step 5: Integration across different omics datasets run ZZ script.
