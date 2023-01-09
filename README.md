@@ -32,7 +32,36 @@
   * imputation
   
 3. Statistical analysis of individual omics data layers
+   * ggplot {ggplot2}
+   * corr.test {psych} - _Find the correlations, sample sizes, and probability values between elements of a matrix or data.frame_
+   * cor.plot {psych} - _Create an image plot for a correlation or factor matrix_
+   * pairs.panels {psych} - _SPLOM, histograms and correlations for a data matrix_
+   * rcorr {Hmisc} - _Matrix of Correlations and P-values_
+   * heatmaply_cor {heatmaply} - _Cluster heatmap based on plotly_
+   * corrplot {corrplot} - _A visualization of a correlation matrix_
+   * pheatmap {pheatmap} - _A function to draw clustered heatmaps_
+   * t_test {rstatix}
+   * ggdotplot {ggpubr}
+   * metaMDS {vegan} - _Nonmetric Multidimensional Scaling with Stable Solution from Random Starts, Axis Scaling and Species Scores_
+   * {limma}
+     * limma::lmFit
+     * limma::makeContrasts
+     * limma::contrasts.fit
+     * limma::eBayes
+     * limma::decideTests
+     * limma::topTable
 4. Correlation based network inference within each omics level
+   * Leave-One-Out graphs
+     * qgraph {qgraph}
+     * [igraph](https://igraph.org/r/)
 5. Integration across different omics datasets
+ * [Canonical Correlation Analysis](https://mixomics.org/methods/)
+ * [N-Integration Discriminant Analysis with DIABLO](https://mixomics.org/mixDIABLO/)
+ * Leave-One-Out graphs
+   * qgraph {qgraph}
+   * [igraph](https://igraph.org/r/)
 6. Integration of data with prior knowledge
+   * [igraph](https://igraph.org/r/)
+   * 
+   * [Cytoscape]https://cytoscape.org/)
 
