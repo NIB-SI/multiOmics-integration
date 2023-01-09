@@ -43,7 +43,7 @@
     * polynomial
   * extrapolation
   
-    <img src="[https://i.imgur.com/ZWnhY9T.png](https://www.statology.org/wp-content/uploads/2021/09/interp3-768x545.png)" width=50% height=50%>
+    <img src="https://www.statology.org/wp-content/uploads/2021/09/interp3-768x545.png" width=50% height=50%>
   * imputation
     * for qPCR see Baebler, Š., Svalina, M., Petek, M. et al. quantGenius: implementation of a decision support system for qPCR-based gene quantification. BMC Bioinformatics 18, 276 (2017). https://doi.org/10.1186/s12859-017-1688-7
   
