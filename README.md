@@ -1,26 +1,20 @@
-# ADAPT_D5.3
-**Potato ‘omics data analysis pipelines**
-
-[ADAPT: Accelerated Development of multiple-stress tolerant potato [Horizon 2020]](https://adapt.univie.ac.at/)
-
-- Deliverable No:	D5.3 
-- WP5 Data integration and modelling
-- Task 5.2.: Potato systems biology analysis and visualization pipelines
+# ** ‘Omics data analysis pipeline**
+- Data integration and modelling
+- Systems biology analysis and visualization pipeline
 
 ## Data management framework
 - [pISA-tree](https://github.com/NIB-SI/pISA-tree)
   * Petek, M., Zagorščak, M., Blejec, A. et al. pISA-tree - a data management framework for life science research projects using a standardised directory tree. Sci Data 9, 685 (2022). https://doi.org/10.1038/s41597-022-01805-5
 
-## Measurements
-- cv. Desiree
-- under single and multiple abiotic stressors
-- experiment duration: 28 days
-- tissue: leaves, tubers
+## Expected measurements
+- one or multiple genotypes
+- under single and multiple abiotic/biotic stressors
+- experiment duration: XY hours, days, ... : time-series experimental design
+- tissue: single or multiple
 - Omics' strategies: 
   * Hormonomics
   * Transcriptomics 
   * Proteomics (non-targeted)
-    * representative pan-proteome from Petek, M., Zagorščak, M., Ramšak, Ž. et al. Cultivar-specific transcriptome and pan-transcriptome reconstruction of tetraploid potato. Sci Data 7, 249 (2020). https://doi.org/10.1038/s41597-020-00581-4
   * Metabolomics 
   * Phenomics
 
