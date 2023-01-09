@@ -1,6 +1,6 @@
 # **‘Omics data analysis pipeline**
-- Data integration and modelling with R
-- Systems biology analysis and visualization pipeline in R
+- Data integration and modelling with [R](https://cran.r-project.org/)
+- Systems biology analysis and visualization pipeline in [R](https://cran.r-project.org/)
 
 ## Data management framework
 - [pISA-tree](https://github.com/NIB-SI/pISA-tree)
