@@ -1,0 +1,5 @@
+SampleID	SampleName	Date_of_change	AdditionalField1	_A_Assay001-RNAisol
+SMPL001	Sample_001	2023-01-09	B1	x
+SMPL002	Sample_002	2023-01-09	B2	
+SMPL003	Sample_003	2023-01-09	B3	x
+SMPL004	Sample_004	2023-01-09	B4	
