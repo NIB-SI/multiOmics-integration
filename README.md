@@ -28,8 +28,11 @@
 1. Design _Phenodata_, a master experimental design table describing samples for analysis, prior to sample collection according to good data management practice
 2. Data preprocessing and overall inspection
   * interpolation
+    * point-to-point
+    * polynomial
   * extrapolation 
   * imputation
+    * for qPCR see Baebler, Š., Svalina, M., Petek, M. et al. quantGenius: implementation of a decision support system for qPCR-based gene quantification. BMC Bioinformatics 18, 276 (2017). https://doi.org/10.1186/s12859-017-1688-7
   
 3. Statistical analysis of individual omics data layers
    * ggplot {ggplot2}
@@ -62,6 +65,5 @@
    * [igraph](https://igraph.org/r/)
 6. Integration of data with prior knowledge
    * [igraph](https://igraph.org/r/)
-   * 
    * [Cytoscape]https://cytoscape.org/)
 
