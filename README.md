@@ -30,8 +30,9 @@
   * interpolation
   * extrapolation 
   * imputation
+  
 3. Statistical analysis of individual omics data layers
 4. Correlation based network inference within each omics level
 5. Integration across different omics datasets
 6. Integration of data with prior knowledge
-7. 
+
