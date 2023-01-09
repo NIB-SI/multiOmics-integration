@@ -21,6 +21,16 @@
 ## Analysis steps:
 1. Design _Phenodata_, a master experimental design table describing samples for analysis, prior to sample collection according to good data management practice
 2. Data preprocessing and overall inspection
+  * detection of outliers and faulty measurements
+    * [{gplot2}](https://cran.r-project.org/web/packages/ggplot2/index.html)
+    * [{rgl}](https://cran.r-project.org/web/packages/rgl/index.html)
+  * data transformation (if needed)
+    * [{multimode}](https://cran.r-project.org/web/packages/multimode/index.html)
+    * [{fitdistrplus}](https://cran.r-project.org/web/packages/fitdistrplus/index.html)
+    * [{caret}](https://cran.r-project.org/web/packages/caret/index.html)
+    * [{glmnet}](https://cran.r-project.org/web/packages/glmnet/index.html)
+    * [{MASS}](https://cran.r-project.org/web/packages/MASS/index.html)
+    * [{BIGL}](https://cran.r-project.org/web/packages/BIGL/index.html)
   * interpolation
     * point-to-point
     * polynomial
