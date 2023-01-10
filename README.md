@@ -45,7 +45,7 @@
       * predict {stats} - _A generic function for predictions from the results of various model fitting functions_
       * boxplot.stats {grDevices} - _Box Plot Statistics_
       * mad [{BiocGenerics}](https://bioconductor.org/packages/release/bioc/html/BiocGenerics.html) - _Compute the median absolute deviation for a vector_
-      * aq.plot [{mvoutlier}](https://cran.r-project.org/web/packages/mvoutlier/index.html) - _Adjusted quantile plots for multivariate outlier detection _
+      * aq.plot [{mvoutlier}](https://cran.r-project.org/web/packages/mvoutlier/index.html) - _Adjusted quantile plots for multivariate outlier detection_
   * extrapolation
   
     <img src="https://www.statology.org/wp-content/uploads/2021/09/interp3-768x545.png" width=25% height=25%>
@@ -53,7 +53,7 @@
     * for qPCR see Baebler, Š., Svalina, M., Petek, M. et al. quantGenius: implementation of a decision support system for qPCR-based gene quantification. BMC Bioinformatics 18, 276 (2017). https://doi.org/10.1186/s12859-017-1688-7
   
 3. Statistical analysis of individual omics data layers
-   * ggplot [{ggplot2}](https://cran.r-project.org/web/packages/ggplot2/index.html)
+   * ggplot [{ggplot2}](https://cran.r-project.org/web/packages/ggplot2/index.html) - various plots, <https://r-graphics.org/chapter-ggplot2>
    * corr.test [{psych}](https://cran.r-project.org/web/packages/psych/index.html) - _Find the correlations, sample sizes, and probability values between elements of a matrix or data.frame_
    * cor.plot [{psych}](https://cran.r-project.org/web/packages/psych/index.html) - _Create an image plot for a correlation or factor matrix_
    * pairs.panels [{psych}](https://cran.r-project.org/web/packages/psych/index.html) - _SPLOM, histograms and correlations for a data matrix_
@@ -65,12 +65,12 @@
    * ggdotplot, ggviolin [{ggpubr}](https://cran.r-project.org/web/packages/ggpubr/index.html)
    * metaMDS [{vegan}](https://cran.r-project.org/web/packages/vegan/index.html) - _Nonmetric Multidimensional Scaling with Stable Solution from Random Starts, Axis Scaling and Species Scores_
    * [{limma}](https://bioconductor.org/packages/release/bioc/html/limma.html) for e.g. non-targeted Proteomics, RNA-seq, ..
-     * limma::lmFit
-     * limma::makeContrasts
-     * limma::contrasts.fit
-     * limma::eBayes
-     * limma::decideTests
-     * limma::topTable
+     * limma::lmFit - _Linear Model for Series of Arrays_
+     * limma::makeContrasts - _Construct Matrix of Custom Contrasts_
+     * limma::contrasts.fit - _Compute Contrasts from Linear Model Fit_
+     * limma::eBayes - _Empirical Bayes Statistics for Differential Expression_
+     * limma::decideTests - _Multiple Testing Across Genes and Contrasts_
+     * limma::topTable - _Table of Top Genes from Linear Model Fit_
 4. Correlation based network inference within each omics level
    * Leave-One-Out graphs
      * qgraph [{qgraph}](https://cran.r-project.org/web/packages/qgraph/)
