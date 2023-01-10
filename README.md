@@ -1,4 +1,4 @@
-# **‘Omics data analysis pipeline**
+# **‘multiOmics data analysis, integration and visualisation protocol**
 - Data integration and modelling with [R](https://cran.r-project.org/)
 - Systems biology analysis and visualization pipeline in [R](https://cran.r-project.org/)
 
