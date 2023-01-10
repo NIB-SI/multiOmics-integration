@@ -40,12 +40,12 @@
     * [{mgcv}](https://cran.r-project.org/web/packages/mgcv/index.html)
   * interpolation
     * point-to-point
-      * approxfun {stats}
+      * approxfun {stats} - _Returns a list of points which linearly interpolate given data points, or a function performing the linear (or constant) interpolation._
     * polynomial
-      * predict {stats}
-      * boxplot.stats {grDevices}
-      * mad [{BiocGenerics}](https://bioconductor.org/packages/release/bioc/html/BiocGenerics.html)
-      * aq.plot [{mvoutlier}](https://cran.r-project.org/web/packages/mvoutlier/index.html)
+      * predict {stats} - _A generic function for predictions from the results of various model fitting functions_
+      * boxplot.stats {grDevices} - _Box Plot Statistics_
+      * mad [{BiocGenerics}](https://bioconductor.org/packages/release/bioc/html/BiocGenerics.html) - _Compute the median absolute deviation for a vector_
+      * aq.plot [{mvoutlier}](https://cran.r-project.org/web/packages/mvoutlier/index.html) - _Adjusted quantile plots for multivariate outlier detection _
   * extrapolation
   
     <img src="https://www.statology.org/wp-content/uploads/2021/09/interp3-768x545.png" width=25% height=25%>
