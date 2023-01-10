@@ -1,9 +1,9 @@
-# **‘multiOmics data analysis, integration and visualisation protocol**
+# **‘multiOmics data analysis, integration, and visualisation protocol**
 - Data integration and modelling with [R](https://cran.r-project.org/)
 - Systems biology analysis and visualization pipeline in [R](https://cran.r-project.org/)
 
 ## Data management framework
-- [pISA-tree](https://github.com/NIB-SI/pISA-tree)
+- [pISA-tree on GitHub](https://github.com/NIB-SI/pISA-tree)
   * Petek, M., Zagorščak, M., Blejec, A. et al. pISA-tree - a data management framework for life science research projects using a standardised directory tree. Sci Data 9, 685 (2022). https://doi.org/10.1038/s41597-022-01805-5
 
 ## Expected measurements
@@ -52,7 +52,7 @@
   * imputation
     * for qPCR see Baebler, Š., Svalina, M., Petek, M. et al. quantGenius: implementation of a decision support system for qPCR-based gene quantification. BMC Bioinformatics 18, 276 (2017). https://doi.org/10.1186/s12859-017-1688-7
   
-3. Statistical analysis of individual omics data layers
+3. ***Statistical analysis of individual omics data layers***
    * ggplot [{ggplot2}](https://cran.r-project.org/web/packages/ggplot2/index.html) - various plots, <https://r-graphics.org/chapter-ggplot2>
    * corr.test [{psych}](https://cran.r-project.org/web/packages/psych/index.html) - _Find the correlations, sample sizes, and probability values between elements of a matrix or data.frame_
    * cor.plot [{psych}](https://cran.r-project.org/web/packages/psych/index.html) - _Create an image plot for a correlation or factor matrix_
@@ -71,11 +71,11 @@
      * limma::eBayes - _Empirical Bayes Statistics for Differential Expression_
      * limma::decideTests - _Multiple Testing Across Genes and Contrasts_
      * limma::topTable - _Table of Top Genes from Linear Model Fit_
-4. Correlation based network inference within each omics level
+4. ***Correlation based network inference within each omics level***
    * Leave-One-Out graphs
      * qgraph [{qgraph}](https://cran.r-project.org/web/packages/qgraph/)
      * [igraph](https://igraph.org/r/)
-5. Integration across different omics datasets
+5. ***Integration across different omics datasets***
  * [Canonical Correlation Analysis](https://mixomics.org/methods/)
  * [N-Integration Discriminant Analysis with DIABLO](https://mixomics.org/mixDIABLO/)  
    * [{mixOmics}](http://www.bioconductor.org/packages/release/bioc/html/mixOmics.html)
@@ -90,15 +90,18 @@
  * Leave-One-Out graphs
    * qgraph [{qgraph}](https://cran.r-project.org/web/packages/qgraph/)
    * [igraph](https://igraph.org/r/)
-6. Integration of data with prior knowledge
+6. ***Integration of data with prior knowledge***
    * [igraph](https://igraph.org/r/)
    * [DiNAR subApps](https://github.com/NIB-SI/DiNAR/tree/master/subApps)
    * [Cytoscape](https://cytoscape.org/)
+   * <https://skm.nib.si/>
    
-## The beginning of the analysis:
+## Start of the analysis:
 - Data is expected to be arranged within data management framework, with complete and descriptive metadata files, including _Phenodata_ file. 
 - 'Omics files are expected to be preprocessed (see suggestions in Step 2). 
 - Minimal input files can be found within './input' directory. 
 - For Step 3: Statistical analysis of individual omics data layers run script [01_Step3.Rmd](https://github.com/NIB-SI/multiOmics-integration/blob/main/_I_Omics/_S_multiOmics/_A_multiOmics-integration-R/scripts/01_Step3.Rmd)
 - For Step 4: Correlation based network inference within/between each omics level run script [02_Step4.Rmd](https://github.com/NIB-SI/multiOmics-integration/blob/main/_I_Omics/_S_multiOmics/_A_multiOmics-integration-R/scripts/02_Step4.Rmd)
 - For Step 5: Integration across different omics datasets run script 03_Step5.Rnw
+
+For more info see [multiOmics_data_analysis_Protocol](https://github.com/NIB-SI/multiOmics-integration/blob/main/multiOmics_data_analysis_Protocol.docx)
