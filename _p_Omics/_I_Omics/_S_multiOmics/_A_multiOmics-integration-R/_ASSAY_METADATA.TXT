@@ -5,11 +5,11 @@ Title:	multiOmics-integration
 Description:	Minimal, reproducible example for multi-Omics integration pipeline Assay
 pISA Assay creation date:	2022-10-01
 pISA Assay creator:	MZ
-Analyst:	Ab, MZ
+Analyst:	AB, MZ
 Phenodata:	../../phenodata_20221001.txt
 Featuredata:	
 Data:	./input
 Principal investigator:	Kristina Gruden
-License:	CC BY 4.0
+License:	MIT
 Sharing permission:	Public
 Upload to FAIRDOMHub:	Yes

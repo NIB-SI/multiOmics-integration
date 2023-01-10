@@ -1,0 +1,16 @@
+project:	_p_Omics
+Title:	Omics data analysis
+Description:	Omics data analysis protocol
+pISA projects path:	C:/Users/majaz/Desktop/pISA-Projects
+Local pISA-tree organisation:	National Institute of Biology (NIB)
+pISA project creation date:	2020-06-01
+pISA project creator:	Kristina Gruden
+Project funding code:	H2020-SFS-2019-2
+Project coordinator:	Markus Teige
+Project partners:	UNIVIE, UBO, UU, FAU, HUTTON, UDUR, WUR, UP, CRAG, NIB, HZPC, Meijer, SOL, NOES, PSI, EUROPATAT, AGES
+Project start date:	2020-06-01
+Project end date:	2024-06-01
+Principal investigator:	Kristina Gruden
+License:	CC BY 4.0
+Sharing permission:	Public
+Upload to FAIRDOMHub:	Yes
