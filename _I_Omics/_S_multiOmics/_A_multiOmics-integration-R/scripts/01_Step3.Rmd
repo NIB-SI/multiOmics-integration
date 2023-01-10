@@ -35,7 +35,7 @@ knitr::opts_chunk$set(#dev = c('pdf', 'png'),  # this embeds pdf and crates scro
 
 ```
 
-
+Customise palettes and shapes according to the data structure.
 
 ```{r, libraries.sources1}
 
@@ -45,295 +45,259 @@ source('01_f-ctions.R')
 ```
 
 
-# leaves
+Data files structure: 1st column is SampleName (link to phenodata), followed by measured variables
 
-## hormonomics
+Path to data: ../input/
 
-```{r, 030_hormonomics, echo=FALSE}
+```{r}
 
-fpi = file.path('..', 'input')
-fn = 'data_hormonomics.txt'
-horm <- data.table::fread(file.path(fpi, fn), header = TRUE)
-data.table::setDF(horm)
+fp = file.path('..', 'input')
+list.files(fp, pattern = '.txt$')
+
+```
+
+Path to Phenodata: ../../../
+
+```{r}
+
+fp = file.path('..', '..', '..')
+list.files(fp, pattern = '.txt$')
+
+```
+
+There may be multiple phenodata versions (see [pISA-tree INSTRUCTIONS.pdf](https://github.com/NIB-SI/pISA-tree/blob/projects/INSTRUCTIONS.pdf)
+
+In this caste, SampleName is created as: Treatment_Day_PlantNoNo
 
 
-(m = max(stringr::str_count(horm$SampleName, pattern = '_'))+1)
-tmp = stringr::str_split_fixed(horm$SampleName, pattern = '_', m)
-tmp[, 2] = as.numeric(gsub('[SP]', '', tmp[, 2]))
-colnames(tmp) = c('Stress', 'Time', 'Plant')
-horm = cbind(tmp, horm)
-horm = horm[, -c(grep('SampleName', colnames(horm)))]
-horm = horm[horm$Stress != 'HDW', ]
-horm$Time = as.numeric(horm$Time)
 
-tmp = reshape2::melt(horm[, -c(grep('Plant', colnames(horm)))], id.vars=c("Stress",   "Time"))
-tmp$Time = as.numeric(tmp$Time)
-keep2 = grep('Plant|Stress|Time', colnames(horm), invert = TRUE)
+```{r}
 
-horm = horm[order(horm$Stress, horm$Time, horm$Plant), ]
+fn = 'phenodata_20221001.txt'
+pheno = data.table::fread(file.path(fp, fn), header = TRUE)
+data.table::setDF(pheno)
+
+pheno = pheno[, grep('^SampleName$|^Treatment$|^SamplingDay$|^PlantNo$', colnames(pheno))]
+head(pheno)
+tail(pheno)
+
+table(pheno$Treatment, pheno$SamplingDay)
+
+```
+
+Each condition has 4 replicates
+
+
+
+# tissue: leaves
+
+## Omics level: hormonomics
+
+```{r}
+
+tissue = 'Leaves'
+o.l. = 'Hormonomics'
 
 ```
 
 
-### ggplot
+### Read data
+
+```{r, 030_hormonomics, echo=TRUE}
+
+fpi = file.path('..', 'input')
+fn = 'data_hormonomics.txt'
+horm = data.table::fread(file.path(fpi, fn), header = TRUE)
+data.table::setDF(horm)
+
+horm = merge(pheno, 
+             horm, 
+             by = 'SampleName', 
+             all.x = FALSE, 
+             all.y = TRUE)
+horm = horm[, -grep('SampleName', colnames(horm))]
+
+horm$SamplingDay = as.numeric(horm$SamplingDay)
+horm$Treatment = factor(horm$Treatment)
+horm = horm[order(horm$Treatment, horm$SamplingDay, horm$PlantNo), ]
+
+horm.long = reshape2::melt(horm[, -c(grep('PlantNo', colnames(horm)))], id.vars=c("Treatment",   "SamplingDay"))
+horm.long$SamplingDay = as.numeric(horm.long$SamplingDay)
+keep2 = grep('PlantNo|Treatment|SamplingDay', colnames(horm), invert = TRUE)
+
+```
 
 
-```{r, 031_hormonomics.ggplot, echo=FALSE}
+### Plot data with ggplot
 
 
-myplot.ggplot(df = tmp, x = tmp$Stress, y = tmp$value, 
-              ncol = ceiling(length(levels(tmp$variable))/2), 
+```{r, 031_hormonomics.ggplot, echo=TRUE}
+
+
+myplot.ggplot(df = horm.long, x = horm.long$Treatment, y = horm.long$value, 
+              ncol = ceiling(length(levels(horm.long$variable))/2), 
               scales.y = "free_y", 
-              title = stringr::str_c('Hormonomics\n', 
-                                     stringr::str_c(unique(tmp$Stress), collapse=', '),
+              title = stringr::str_c(o.l., 
+                                     '\n', 
+                                     stringr::str_c(unique(horm.long$Treatment), collapse=', '),
                                      collapse='' ), 
-              xlab = 'Stress', 
+              xlab = 'Treatment', 
               ylab = 'value', 
               palette = my.ggplot.palette)
-myplot.ggplot(df = tmp[tmp$Stress != 'W', ], x = tmp[tmp$Stress != 'W', ]$Stress, y = tmp[tmp$Stress != 'W', ]$value, 
-              ncol = ceiling(length(levels(tmp$variable))/2), 
-              scales.y = "free_y", 
-              title = stringr::str_c('Metabolomics\n', 
-                                     stringr::str_c(unique(tmp[tmp$Stress != 'W', ]$Stress), collapse=', '),
-                                     collapse='' ), 
-              xlab = 'Stress', 
-              ylab = 'value', 
-              palette = my.ggplot.palette)
 
-
-graphs <- tmp %>%
+graphs = horm.long %>%
   dplyr::group_by(variable) %>%
   rstatix::doo(
     ~ggpubr::ggdotplot(
       data =., 
-      x = "Time", 
+      x = "SamplingDay", 
       y = "value",
-      fill = "Stress", 
-      palette = my.ggplot.palette[c(1,3,2,4,5)], 
+      fill = "Treatment", 
+      palette = my.ggplot.palette, 
       legend = "none",
       add = c("jitter", "mean_sd"),
       position = position_jitter(0.05),
       ggtheme = ggpubr::theme_pubr(),
-      facet.by = c("Stress")
+      facet.by = c("Treatment")
       )
       , result = "plots"
     )
 
-variable <- levels(graphs$variable)
-plots <- graphs$plots %>% set_names(variable)
+variable = levels(graphs$variable)
+plots = graphs$plots %>% set_names(variable)
 for(var in variable){
-  graph.i <- plots[[var]] +
+  graph.i = plots[[var]] +
     labs(title = var)
   print(graph.i)
 } 
-
-# gridExtra::grid.arrange(plots[[1]], plots[[2]], plots[[3]], plots[[4]],
-#                         ncol=2,
-#                         nrow = 2)
 
 
 ```
 
 ### NMDS
 
-```{r, 032_hormonomics.nmds, echo=FALSE}
+#### On all
 
+```{r, 032_hormonomics.nmds, echo=TRUE}
 
-mymat = horm[, keep2]
-ind = grep('neoPA|JA', colnames(mymat))
-mymat = mymat[, -ind]
-
-time.levels = sort(as.numeric(unique(horm$Time)))
-# plot(time.levels, rep(0, length(time.levels)), pch = c(1, 16, 0, 15, 2, 17, 8), 
-#      col = 'black', cex = 2,
-#      yaxt='n', xaxt='n', ann=FALSE, bty='n')
-# axis(side = 1, at = time.levels, labels = time.levels)
-    
+subset = horm
+mymat = subset[, keep2]
+time.levels = sort(as.numeric(unique(subset$SamplingDay)))
+stress.levels = levels(subset$Treatment)
+k = 3
 
 NMDS.plots = my.NMDS(mymat = mymat, 
-                     subset = horm[, -grep('^neoPA$|^JA$', colnames(horm))], 
-                     stress.levels = c('C', 'H', 'D', 'HD', 'W'),
+                     subset = subset, 
+                     stress.levels = stress.levels,
                      time.levels = time.levels,
-                     title = 'Hormonomics\nwithout neoPA and JA',
-                     k = 3)
+                     title = o.l.,
+                     k = k) # dimensions
 
-cowplot::plot_grid(NMDS.plots[[1]], NMDS.plots[[2]], NMDS.plots[[3]],  
-                   NMDS.plots[[4]], NMDS.plots[[5]], NMDS.plots[[6]],
-                   ncol=3, nrow = 2)
-
-
-mymat = horm[horm$Stress != 'W' , keep2]
-ind = grep('neoPA|JA', colnames(mymat))
-mymat = mymat[, -ind]
-NMDS.plots = my.NMDS(mymat = mymat, 
-                     subset = horm[horm$Stress != 'W' , -grep('^neoPA$|^JA$', colnames(horm))],
-                     stress.levels = c('C', 'H', 'D', 'HD'),
-                     time.levels = time.levels,
-                     title = 'Hormonomics without W\nwithout neoPA and JA',
-                     k = 3)
-cowplot::plot_grid(NMDS.plots[[1]], NMDS.plots[[2]], NMDS.plots[[3]],  
-                   NMDS.plots[[4]], NMDS.plots[[5]], NMDS.plots[[6]],
-                   ncol=3, nrow = 2)
-
-
-
-# when manually remove colinear vars, then following
-# 
-# ## Two convergent solutions found after 20 tries
-# 
-# 
-# nmds = as.data.frame(nmds)
-# 
-# mymat = scale(mymat)
-# sample <- sample(c(TRUE, FALSE), nrow(mymat), replace=TRUE, prob=c(0.7,0.3))
-# train = as.data.frame(cbind(subset$Stress[sample], mymat[sample, ]))
-# test <- as.data.frame(cbind(subset$Stress[!sample], mymat[!sample, ]))
-# colnames(train)[1] = colnames(test)[1] = 'Stress'
-# 
-# model <- MASS::lda(Stress~., data=train)
-
-horm.subset = horm
-
-
-mymat = horm[, keep2]
-ind = grep('neoPA', colnames(mymat))
-mymat = mymat[, -ind]
-ind = horm$Time != 28
-mymat = mymat[ind, ]
-time.levels = setdiff(sort(as.numeric(unique(horm$Time))), 28)
-NMDS.plots = my.NMDS(mymat = mymat, 
-                     subset = horm[horm$Time != 28, -grep('^neoPA$', colnames(horm))], 
-                     stress.levels = c('C', 'H', 'D', 'HD', 'W'),
-                     time.levels = time.levels,
-                     title = 'Hormonomics\nwithout neoPA and day28',
-                     k = 3)
-
-cowplot::plot_grid(NMDS.plots[[1]], NMDS.plots[[2]], NMDS.plots[[3]],  
-                   NMDS.plots[[4]], NMDS.plots[[5]], NMDS.plots[[6]],
-                   ncol=3, nrow = 2)
-
-
-mymat = horm[horm$Stress != 'W' & horm$Time != 28 , keep2]
-ind = grep('neoPA', colnames(mymat))
-mymat = mymat[, -ind]
-NMDS.plots = my.NMDS(mymat = mymat, 
-                     subset = horm[horm$Stress != 'W' & horm$Time != 28, -grep('^neoPA$', colnames(horm))],
-                     stress.levels = c('C', 'H', 'D', 'HD'),
-                     time.levels = time.levels,
-                     title = 'Hormonomics without W\nwithout neoPA and day28',
-                     k = 3)
-cowplot::plot_grid(NMDS.plots[[1]], NMDS.plots[[2]], NMDS.plots[[3]],  
-                   NMDS.plots[[4]], NMDS.plots[[5]], NMDS.plots[[6]],
-                   ncol=3, nrow = 2)
-
-
-```
-
-
-#### NMDS pairs, across all samples
-
-```{r, 032_hormonomics_NMDS.pairs, echo=FALSE}
-
-for (i in c('H', 'D', 'HD', 'W')){
-  print(i)
-  subset = horm[(horm$Stress  %in% c('C', i)) & (horm$Time %in% time.levels) , -grep('neoPA', colnames(horm))]
-  mymat = subset[, grep('Plant|Stress|Time', colnames(subset), invert = TRUE)]
-  time.levels = sort(as.numeric(unique(subset$Time)))
-  NMDS.plots = my.NMDS(mymat = mymat, 
-                     subset = subset,
-                     stress.levels = c('C', i),
-                     time.levels = time.levels,
-                     title = paste0('Leaf Hormonomics\nC ', i, '\nwithout neoPA and day28'),
-                     k = 3)
-  myplot = cowplot::plot_grid(NMDS.plots[[1]], NMDS.plots[[2]], NMDS.plots[[3]],  
-                   NMDS.plots[[4]], NMDS.plots[[5]], NMDS.plots[[6]],
-                   ncol=3, nrow = 2)
-  print(myplot)
-  
+if (k == 3){
+  cowplot::plot_grid(NMDS.plots[[1]], NMDS.plots[[2]], NMDS.plots[[3]],  
+                     NMDS.plots[[4]], NMDS.plots[[5]], NMDS.plots[[6]],
+                     ncol=3, nrow = 2)
+} else {
+  cowplot::plot_grid(NMDS.plots[[1]])
 }
 
 
+
 ```
 
 
+#### Specific Condition
 
-### cor
 
-```{r, 033_hormonomics.cor, echo=FALSE}
+```{r}
 
-d = horm[, -c(grep('Stress|Plant|Time', colnames(horm)))]
+subset = horm[horm$SamplingDay %in% time.levels[c(1, 4)], ]
+mymat = subset[, keep2]
+time.levels = sort(as.numeric(unique(subset$SamplingDay)))
+stress.levels = levels(subset$Treatment)
+k = 3
+
+NMDS.plots = my.NMDS(mymat = mymat, 
+                     subset = subset, 
+                     stress.levels = stress.levels,
+                     time.levels = time.levels,
+                     title = o.l.,
+                     k = k) # dimensions
+
+if (k == 3){
+  cowplot::plot_grid(NMDS.plots[[1]], NMDS.plots[[2]], NMDS.plots[[3]],  
+                     NMDS.plots[[4]], NMDS.plots[[5]], NMDS.plots[[6]],
+                     ncol=3, nrow = 2)
+} else {
+  cowplot::plot_grid(NMDS.plots[[1]])
+}
+
+
+
+subset = horm[horm$Treatment %in% stress.levels[2], ]
+mymat = subset[, keep2]
+time.levels = sort(as.numeric(unique(subset$SamplingDay)))
+stress.levels = levels(subset$Treatment)
+k = 2
+
+NMDS.plots = my.NMDS(mymat = mymat, 
+                     subset = subset, 
+                     stress.levels = stress.levels,
+                     time.levels = time.levels,
+                     title = o.l.,
+                     k = k) # dimensions
+
+if (k == 3){
+  cowplot::plot_grid(NMDS.plots[[1]], NMDS.plots[[2]], NMDS.plots[[3]],  
+                     NMDS.plots[[4]], NMDS.plots[[5]], NMDS.plots[[6]],
+                     ncol=3, nrow = 2)
+} else {
+  cowplot::plot_grid(NMDS.plots[[1]])
+}
+
+
+
+```
+
+
+### correlation
+
+```{r, 033_hormonomics.cor, echo=TRUE}
+
 par(mfrow = c(2,2))
-my.cor.plot(mymat = d, 
-            main = 'Hormonomics (all tp)', 
+my.cor.plot(mymat = as.matrix(horm[, keep2]), 
+            main = paste(o.l., '(all tp)'), 
             col = rev(my.heatmap.col1), 
             order = 'original', 
             type = 'pearson', 
             choose = 1)
-my.cor.plot(mymat = d, 
-            main = 'Hormonomics (all tp)', 
+my.cor.plot(mymat = as.matrix(horm[, keep2]), 
+            main = paste(o.l., '(all tp)'), 
             col = rev(my.heatmap.col2), 
             order = 'original', 
             type = 'pearson', 
             choose = 1)
-my.cor.plot(mymat = d[, -c(grep('^neoPA$|^JA$', colnames(d)))], 
-            main = 'Hormonomics (all tp)\nwithout neoPA & JA', 
+my.cor.plot(mymat = as.matrix(horm[, keep2]), 
+            main = paste(o.l., '(all tp)'), 
             col = rev(my.heatmap.col1), 
-            order = 'original', 
+            order = 'hclust', 
             type = 'pearson', 
-            choose = 1)
-my.cor.plot(mymat = d[, -c(grep('^neoPA$|^JA', colnames(d)))], 
-            main = 'Hormonomics (all tp)\nwithout neoPA & JA', 
+            choose = 2)
+my.cor.plot(mymat = as.matrix(horm[, keep2]), 
+            main = paste(o.l., '(all tp)'), 
             col = rev(my.heatmap.col2), 
-            order = 'original', 
+            order = 'hclust', 
             type = 'pearson', 
-            choose = 1)
+            choose = 2)
 par(mfrow = c(1,1))
 
 
-par(mfrow = c(2,2))
-my.cor.plot(mymat = d, 
-            main = 'Hormonomics (all tp)', 
-            col = rev(my.heatmap.col1), 
-            order = 'original', 
-            type = 'pearson', 
-            choose = 1)
-my.cor.plot(mymat = d, 
-            main = 'Hormonomics (all tp)', 
-            col = rev(my.heatmap.col2), 
-            order = 'original', 
-            type = 'pearson', 
-            choose = 1)
-my.cor.plot(mymat = d[, -c(grep('^neoPA$', colnames(d)))], 
-            main = 'Hormonomics (all tp)\nwithout neoPA', 
-            col = rev(my.heatmap.col1), 
-            order = 'original', 
-            type = 'pearson', 
-            choose = 1)
-my.cor.plot(mymat = d[, -c(grep('^neoPA$', colnames(d)))], 
-            main = 'Hormonomics (all tp)\nwithout neoPA', 
-            col = rev(my.heatmap.col2), 
-            order = 'original', 
-            type = 'pearson', 
-            choose = 1)
-par(mfrow = c(1,1))
 
-
-
-table(horm[, 1], horm[,2])
-cat(red('missing values for JA\n'))
-table(horm[which(is.na(horm$JA)), 1:2])
-cat(red('missing values for neoPA\n'))
-table(horm[which(is.na(horm$neoPA)), 1:2])
-
-horm = horm[, -c(grep('^neoPA$', colnames(horm)))]
-
-
-d = horm[, -c(grep('Stress|Plant|Time', colnames(horm)))]
-my.pairs.panels(df = d, 
+my.pairs.panels(df = as.matrix(horm[, keep2]), 
                 method = "pearson", 
-                palette = my.ggplot.palette[1:n], 
+                palette = my.ggplot.palette, 
                 scale = FALSE,
-                main = 'Hormonomics (all tp)\nwithout neoPA',
+                main = paste(o.l., '(all tp)'),
                 cex.labels = 1, 
                 cex = 1)
 
@@ -341,118 +305,38 @@ my.pairs.panels(df = d,
 ```
 
 
-```{r, hormonomics.lda, echo=FALSE}
-
-
-# cat(red('colinear ABA related stuff\n'))
-# 
-# mymat = scale(d)
-# 
-# table(cor(mymat,  use = 'na.or.complete') > 0.5)
-# 
-# indexesToDrop <- findCorrelation(cor(mymat,  use = 'na.or.complete'),
-#                                  cutoff = 0.5)
-# colnames(mymat)[indexesToDrop]
-# 
-# 
-# corrplot.mixed(cor(mymat[,-indexesToDrop], use = 'na.or.complete'),
-#                upper.col = rev(my.heatmap.col1))
-# corrplot.mixed(cor(mymat[,-indexesToDrop], use = 'na.or.complete'),
-#                upper.col = rev(my.heatmap.col2))
-# 
-# sample <- sample(c(TRUE, FALSE), nrow(mymat), replace=TRUE, prob=c(0.7,0.3))
-# train = as.data.frame(cbind(subset$Stress[sample], mymat[sample, ]))
-# test <- as.data.frame(cbind(subset$Stress[!sample], mymat[!sample, ]))
-# colnames(train)[1] = colnames(test)[1] = 'Stress'
-# 
-# model <- MASS::lda(Stress~., data=train)
-# 
-# 
-# predicted <- predict(model, test)
-# 
-# names(predicted)
-# 
-# #define data to plot
-# lda_plot <- cbind(train, predict(model)$x)
-# 
-# #create plot
-# ggplot(lda_plot, aes(LD1, LD2)) +
-#   geom_point(aes(color = Stress))
-
-```
-
 ### cor groups
 
-```{r, 034_hormonomics.cor.groups, echo=FALSE}
+Here we have one Control and one Stress level - adapt as needed
 
-keep2 = grep('Plant|Stress|Time', colnames(horm), invert = TRUE)
+```{r, 034_hormonomics.cor.groups, echo=TRUE}
 
-Ctrl = as.matrix(horm[horm$Stress == 'C', keep2])
-H = as.matrix(horm[horm$Stress == 'H', keep2])
-D = as.matrix(horm[horm$Stress == 'D', keep2])
-HD = as.matrix(horm[horm$Stress == 'HD', keep2])
-W = as.matrix(horm[horm$Stress == 'W', keep2])
+print(stress.levels)
+Ctrl = as.matrix(horm[horm$Treatment == stress.levels[1], keep2])
+Stress = as.matrix(horm[horm$Treatment == stress.levels[2], keep2])
 
-par(mfrow=c(2,3))
+par(mfrow=c(2,2))
 my.cor.plot(mymat = Ctrl,
             main = 'pearson cor (all tp)\nCtrl',
             col = rev(my.heatmap.col1),
             order = 'original',
             type = 'pearson',
             choose = 1)
-my.cor.plot(mymat = H,
-            main = 'pearson cor (all tp)\nH',
+my.cor.plot(mymat = Stress,
+            main = 'pearson cor (all tp)\nStress',
             col = rev(my.heatmap.col1),
             order = 'original',
             type = 'pearson',
             choose = 1)
-my.cor.plot(mymat = D,
-            main = 'pearson cor (all tp)\nD',
-            col = rev(my.heatmap.col1),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = W,
-            main = 'pearson cor (all tp)\nW',
-            col = rev(my.heatmap.col1),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = HD,
-            main = 'pearson cor (all tp)\nHD',
-            col = rev(my.heatmap.col1),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-par(mfrow=c(1,1))
 
-par(mfrow=c(2,3))
 my.cor.plot(mymat = Ctrl,
             main = 'pearson cor (all tp)\nCtrl',
             col = rev(my.heatmap.col2),
             order = 'original',
             type = 'pearson',
             choose = 1)
-my.cor.plot(mymat = H,
-            main = 'pearson cor (all tp)\nH',
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = D,
-            main = 'pearson cor (all tp)\nD',
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = W,
-            main = 'pearson cor (all tp)\nW',
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = HD,
-            main = 'pearson cor (all tp)\nHD',
+my.cor.plot(mymat = Stress,
+            main = 'pearson cor (all tp)\nStress',
             col = rev(my.heatmap.col2),
             order = 'original',
             type = 'pearson',
@@ -460,121 +344,27 @@ my.cor.plot(mymat = HD,
 par(mfrow=c(1,1))
 
 
-par(mfrow=c(1,2))
-palCWH = rainbow(7)[as.numeric(as.factor(horm[horm$Stress == 'C', 2]))]
-pie(rep(1,7), col = unique(palCWH), labels = unique(horm[horm$Stress == 'C', 2]), 
-    main = 'C H W')
-palDHD = unique(palCWH)[-c(1,2)]
-pie(rep(1,5), col = unique(palDHD), labels = unique(horm[horm$Stress == 'HD', 2]),
-    main = 'H HD')
-par(mfrow=c(1,1))
+palCS = rainbow(length(time.levels))[as.numeric(as.factor(horm[horm$Treatment == stress.levels[1], 2]))]
+pie(rep(1, length(time.levels)), 
+    col = unique(palCS), 
+    labels = unique(horm[horm$Treatment == stress.levels[1], 2]), 
+    main = paste(stress.levels, collapse = ' '))
+
 
 my.pairs.panels(df = Ctrl, 
                 method = "pearson", 
-                palette = palCWH, 
+                palette = palCS, 
                 scale = FALSE,
                 main = 'horm Ctrl (all tp)',
                 cex.labels = 1.0, 
                 cex = 1)
-my.pairs.panels(df = H, 
+my.pairs.panels(df = Stress, 
                 method = "pearson", 
-                palette = palCWH, 
+                palette = palCS, 
                 scale = FALSE,
-                main = 'horm H (all tp)',
+                main = 'horm Stress (all tp)',
                 cex.labels = 1.0, 
                 cex = 1)
-my.pairs.panels(df = D, 
-                method = "pearson", 
-                palette = palDHD, 
-                scale = FALSE,
-                main = 'horm D (all tp)',
-                cex.labels = 1.0, 
-                cex = 1)
-my.pairs.panels(df = HD, 
-                method = "pearson", 
-                palette = palDHD, 
-                scale = FALSE,
-                main = 'horm HD (all tp)',
-                cex.labels = 1.0, 
-                cex = 1)
-my.pairs.panels(df = W, 
-                method = "pearson", 
-                palette = palCWH, 
-                scale = FALSE,
-                main = 'horm W (all tp)',
-                cex.labels = 1.0, 
-                cex = 1)
-
-
-
-####
-par(mfrow=c(2,3))
-my.cor.plot(mymat = as.matrix(horm[horm$Stress == 'C' & horm$Time %in% 1:14, keep2]),
-            main = 'horm pearson cor 1:14\nCtrl',
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = as.matrix(horm[horm$Stress == 'H' & horm$Time %in% 1:14, keep2]),
-            main = 'horm pearson cor 1:14\nH',
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = as.matrix(horm[horm$Stress == 'D' & horm$Time %in% 1:14, keep2]), # 1:7 so and so does not exist
-            main = 'horm pearson cor 8:14\nD',
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = as.matrix(horm[horm$Stress == 'W' & horm$Time %in% 1:14, keep2]),
-            main = 'horm pearson cor 1:14\nW',
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = as.matrix(horm[horm$Stress == 'HD' & horm$Time %in% 1:14, keep2]), # 1:7 so and so does not exist
-            main = 'horm pearson cor 8:14\nHD',
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-par(mfrow=c(1,1))
-
-
-par(mfrow=c(2,3))
-my.cor.plot(mymat = as.matrix(horm[horm$Stress == 'C' & horm$Time %in% 1:7, keep2]),
-            main = 'horm pearson cor 1:7\nCtrl',
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = as.matrix(horm[horm$Stress == 'H' & horm$Time %in% 1:7, keep2]),
-            main = 'horm pearson cor 1:7\nH',
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = as.matrix(horm[horm$Stress == 'D' & horm$Time %in% 8:14, keep2]),
-            main = 'horm pearson cor 8:14\nD',
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = as.matrix(horm[horm$Stress == 'W' & horm$Time %in% 1:7, keep2]),
-            main = 'horm pearson cor 1:7\nW',
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = as.matrix(horm[horm$Stress == 'HD' & horm$Time %in% 8:14, keep2]),
-            main = 'horm pearson cor 8:14\nHD',
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-par(mfrow=c(1,1))
-
 
 
 
@@ -583,27 +373,18 @@ par(mfrow=c(1,1))
 
 ### cor dist
 
-```{r, echo=FALSE}
+#### At specific time points
 
-dtX = horm
-is.numeric(dtX$Time)
+```{r, echo=TRUE}
 
-Ctrl.H = (dtX[(dtX$Stress == 'C') & (dtX$Time %in% c(1,7)), 1:ncol(dtX)])
-Ctrl.D = (dtX[(dtX$Stress == 'C') & (dtX$Time %in% c(8,14)), 1:ncol(dtX)])
-H =  (dtX[(dtX$Stress == 'H') & (dtX$Time %in% c(1,7)), 1:ncol(dtX)])
-D =  (dtX[(dtX$Stress == 'D') & (dtX$Time %in% c(8,14)), 1:ncol(dtX)])
-HD =  (dtX[(dtX$Stress == 'HD') & (dtX$Time %in% c(8,14)), 1:ncol(dtX)])
-W =  (dtX[(dtX$Stress == 'W') & (dtX$Time %in% c(1,7)), 1:ncol(dtX)])
 
-Ctrl.H[Ctrl.H$Time == 7,]$Time = 2
-Ctrl.D[Ctrl.D$Time == 8,]$Time = 1
-Ctrl.D[Ctrl.D$Time == 14,]$Time = 2
-HD[HD$Time == 8,]$Time = 1
-HD[HD$Time == 14,]$Time = 2
-D[D$Time == 8,]$Time = 1
-D[D$Time == 14,]$Time = 2
-H[H$Time == 7,]$Time = 2
-W[W$Time == 7,]$Time = 2
+Ctrl = (horm[(horm$Treatment == stress.levels[1]) & 
+               (horm$SamplingDay %in% time.levels[c(1, 4)]), 1:ncol(horm)])
+Stress =  (horm[(horm$Treatment == stress.levels[2]) & 
+                  (horm$SamplingDay %in% time.levels[c(1, 4)]), 1:ncol(horm)])
+
+Ctrl[Ctrl$SamplingDay != 1,]$SamplingDay = 2
+Stress[Stress$SamplingDay != 1,]$SamplingDay = 2
 
 
 ```
@@ -611,18 +392,11 @@ W[W$Time == 7,]$Time = 2
 
 
 
-```{r, 035_hormonomics.cor.dist, echo=FALSE}
+```{r, 035_hormonomics.cor.dist, echo=TRUE}
 
-
-keep1 = grep('Plant|Time|Stress', colnames(dtX), invert = TRUE)
-
-my.c.list = list (cor(Ctrl.H[, keep1], use = 'na.or.complete'), 
-                  cor(Ctrl.D[, keep1], use = 'na.or.complete'),
-                  cor(H[, keep1], use = 'na.or.complete'), 
-                  cor(D[, keep1], use = 'na.or.complete'), 
-                  cor(HD[, keep1], use = 'na.or.complete'), 
-                  cor(W[, keep1], use = 'na.or.complete'))
-names(my.c.list) = c('Ctrl.H', 'Ctrl.D', 'H', 'D', 'HD', 'W')
+my.c.list = list (cor(Ctrl[, keep2], use = 'na.or.complete'), 
+                  cor(Stress[, keep2], use = 'na.or.complete'))
+names(my.c.list) = c('Ctrl', 'Stress')
 
 
 comb = RcppAlgos::comboGrid(1:length(my.c.list), 1:length(my.c.list),  repetition = FALSE)
@@ -691,189 +465,60 @@ for (i in 1:nrow(comb)){
 
 ```
 
-#### NMDS subset
-
-```{r, 032_hormonomics.nmds.subset, echo=FALSE}
-
-
-subset = horm[horm$Time %in% 1:14, ]
-keep = grep('Plant|Stress|Time', colnames(subset), invert = TRUE)
-mymat = subset[, keep]
-
-time.levels = sort(as.numeric(unique(subset$Time)))
-
-NMDS.plots = my.NMDS(mymat = mymat, 
-                     subset = subset, 
-                     stress.levels = c('C', 'H', 'D', 'HD', 'W'),
-                     time.levels = time.levels,
-                     title = 'Hormonomics 1:14',
-                     k = 3)
-
-cowplot::plot_grid(NMDS.plots[[1]], NMDS.plots[[2]], NMDS.plots[[3]],  
-                   NMDS.plots[[4]], NMDS.plots[[5]], NMDS.plots[[6]],
-                   ncol=3, nrow = 2)
-
-
-subset = horm[horm$Time %in% 1:7, ]
-keep = grep('Plant|Stress|Time', colnames(subset), invert = TRUE)
-mymat = subset[, keep]
-
-time.levels = sort(as.numeric(unique(subset$Time)))
-
-NMDS.plots = my.NMDS(mymat = mymat, 
-                     subset = subset, 
-                     stress.levels = c('C', 'H', 'D', 'HD', 'W'),
-                     time.levels = time.levels,
-                     title = 'Hormonomics 1:7',
-                     k = 3)
-
-cowplot::plot_grid(NMDS.plots[[1]], NMDS.plots[[2]], NMDS.plots[[3]],  
-                   NMDS.plots[[4]], NMDS.plots[[5]], NMDS.plots[[6]],
-                   ncol=3, nrow = 2)
-
-subset = horm[horm$Time %in% 8:14, ]
-keep = grep('Plant|Stress|Time', colnames(subset), invert = TRUE)
-mymat = subset[, keep]
-
-time.levels = sort(as.numeric(unique(subset$Time)))
-
-NMDS.plots = my.NMDS(mymat = mymat, 
-                     subset = subset, 
-                     stress.levels = c('C', 'H', 'D', 'HD', 'W'),
-                     time.levels = time.levels,
-                     title = 'Hormonomics 8:14',
-                     k = 3)
-
-cowplot::plot_grid(NMDS.plots[[1]], NMDS.plots[[2]], NMDS.plots[[3]],  
-                   NMDS.plots[[4]], NMDS.plots[[5]], NMDS.plots[[6]],
-                   ncol=3, nrow = 2)
-
-subset = horm[horm$Time %in% 8:21, ]
-keep = grep('Plant|Stress|Time', colnames(subset), invert = TRUE)
-mymat = subset[, keep]
-
-time.levels = sort(as.numeric(unique(subset$Time)))
-
-NMDS.plots = my.NMDS(mymat = mymat, 
-                     subset = subset, 
-                     stress.levels = c('C', 'H', 'D', 'HD', 'W'),
-                     time.levels = time.levels,
-                     title = 'Hormonomics 8:28',
-                     k = 3)
-
-cowplot::plot_grid(NMDS.plots[[1]], NMDS.plots[[2]], NMDS.plots[[3]],  
-                   NMDS.plots[[4]], NMDS.plots[[5]], NMDS.plots[[6]],
-                   ncol=3, nrow = 2)
-
-
-subset = horm[(horm$Time %in% 1:7 & horm$Stress %in% c('C', 'H', 'W')) |
-               (horm$Time %in% 8:14 & horm$Stress %in% c('D', 'HD')) , ]
-keep = grep('Plant|Stress|Time', colnames(subset), invert = TRUE)
-mymat = subset[, keep]
-
-time.levels = sort(as.numeric(unique(subset$Time)))
-
-NMDS.plots = my.NMDS(mymat = mymat, 
-                     subset = subset, 
-                     stress.levels = c('C', 'H', 'D', 'HD', 'W'),
-                     time.levels = time.levels,
-                     title = 'Hormonomics one week',
-                     k = 3)
-
-cowplot::plot_grid(NMDS.plots[[1]], NMDS.plots[[2]], NMDS.plots[[3]],  
-                   NMDS.plots[[4]], NMDS.plots[[5]], NMDS.plots[[6]],
-                   ncol=3, nrow = 2)
-
-```
-
-
-
 
 ### t-tests
 
-```{r, 036_hormonomics.t.tests, echo=FALSE}
+```{r, 036_hormonomics.t.tests, echo=TRUE}
 
-data = rbind(Ctrl.H, Ctrl.D, H, D, HD, W)
-tmp = c(rep('Ctrl.H', nrow(Ctrl.H)),
-        rep('Ctrl.D', nrow(Ctrl.D)),
-        rep('H', nrow(H)),
-        rep('D', nrow(D)),
-        rep('HD', nrow(HD)),
-        rep('W', nrow(W)))
-data$Stress = tmp
-data$Stress = paste(data$Stress, data$Time, sep = '_')
+data = rbind(Ctrl, Stress)
+tmp = c(rep('Ctrl', nrow(Ctrl)),
+        rep('Stress', nrow(Stress)))
+data$Treatment = tmp
+data$Treatment = paste(data$Treatment, data$SamplingDay, sep = '_')
 
-cat(blue('day 1\n'))
-data.1 = data[data$Time == 1, ]
-data.1.1 = data.1[data.1$Stress %in% c('Ctrl.H_1', 'H_1', 'W_1'), ]
-stat.test.1.1 = my.customised.t.test(data = data.1.1[, -grep('Plant|Time', colnames(data.1.1))], 
-                                 var.levels = colnames(data.1.1)[-grep('Plant|Time|Stress', colnames(data.1.1))], 
-                                 stress.levels = unique(data.1.1$Stress),
+cat(blue('Time defined: 1\n'))
+data.1 = data[data$SamplingDay == 1, ]
+data.1.1 = data.1[data.1$Treatment %in% c('Ctrl_1', 'Stress_1'), ]
+stat.test.1.1 = my.customised.t.test(data = data.1.1[, -grep('PlantNo|SamplingDay', colnames(data.1.1))], 
+                                     var.levels = colnames(data.1.1[, keep2]), 
+                                     stress.levels = unique(data.1.1$Treatment),
+                                     plot.violin = FALSE, 
+                                     plot.box = FALSE, 
+                                     plot.dot = TRUE,
+                                     single = TRUE,
+                                     y.lab = o.l.,
+                                     p.cex.labels = 1, 
+                                     p.cex = 0.5,
+                                     p.palette = my.ggplot.palette)
+
+
+cat(blue('Time defined: 2\n'))
+data.2 = data[data$SamplingDay == 2, ]
+data.2.1 = data.2[data.2$Treatment %in% c('Ctrl_2', 'Stress_2'), ]
+stat.test.2.1 = my.customised.t.test(data = data.2.1[, -grep('PlantNo|SamplingDay', colnames(data.2.1))], 
+                                 var.levels = colnames(data.2.1[, keep2]), 
+                                 stress.levels = unique(data.2.1$Treatment),
                                  plot.violin = FALSE, 
                                  plot.box = FALSE, 
                                  plot.dot = TRUE,
                                  single = TRUE,
-                                 y.lab = "Hormonomics",
+                                 y.lab = o.l.,
                                  p.cex.labels = 1, 
                                  p.cex = 0.5,
-                                 p.palette = my.ggplot.palette[c(1, 2, 5)])
-cat(blue('day 8\n'))
-data.1 = data[data$Time == 1, ]
-data.1.2 = data.1[data.1$Stress %in% c('Ctrl.D_1', 'D_1', 'HD_1'), ]
-stat.test.1.2 = my.customised.t.test(data = data.1.2[, -grep('Plant|Time', colnames(data.1.2))], 
-                                 var.levels = colnames(data.1.2)[-grep('Plant|Time|Stress', colnames(data.1.2))], 
-                                 stress.levels = unique(data.1.2$Stress),
-                                 plot.violin = FALSE, 
-                                 plot.box = FALSE, 
-                                 plot.dot = TRUE,
-                                 single = TRUE,
-                                 y.lab = "Hormonomics",
-                                 p.cex.labels = 1, 
-                                 p.cex = 0.5,
-                                 p.palette =  my.ggplot.palette[c(1, 3, 4)])
-cat(blue('day 7\n'))
-data.2 = data[data$Time == 2, ]
-data.2.1 = data.2[data.2$Stress %in% c('Ctrl.H_2', 'H_2', 'W_2'), ]
-stat.test.2.1 = my.customised.t.test(data = data.2.1[, -grep('Plant|Time', colnames(data.2.1))], 
-                                 var.levels = colnames(data.2.1)[-grep('Plant|Time|Stress', colnames(data.2.1))], 
-                                 stress.levels = unique(data.2.1$Stress),
-                                 plot.violin = FALSE, 
-                                 plot.box = FALSE, 
-                                 plot.dot = TRUE,
-                                 single = TRUE,
-                                 y.lab = "Hormonomics",
-                                 p.cex.labels = 1, 
-                                 p.cex = 0.5,
-                                 p.palette = my.ggplot.palette[c(1, 2, 5)])
-cat(blue('day 14\n'))
-data.2 = data[data$Time == 2, ]
-data.2.2 = data.2[data.2$Stress %in% c('Ctrl.D_2', 'D_2', 'HD_2'), ]
-stat.test.2.2 = my.customised.t.test(data = data.2.2[, -grep('Plant|Time', colnames(data.2.2))], 
-                                 var.levels = colnames(data.2.2)[-grep('Plant|Time|Stress', colnames(data.2.2))], 
-                                 stress.levels = unique(data.2.2$Stress),
-                                 plot.violin = FALSE, 
-                                 plot.box = FALSE, 
-                                 plot.dot = TRUE,
-                                 single = TRUE,
-                                 y.lab = "Hormonomics",
-                                 p.cex.labels = 1, 
-                                 p.cex = 0.5,
-                                 p.palette =  my.ggplot.palette[c(1, 3, 4)])
+                                 p.palette = my.ggplot.palette)
 
 
 stat.test = rbind(stat.test.1.1,
-                  stat.test.1.2,
-                  stat.test.2.1,
-                  stat.test.2.2)
+                  stat.test.2.1)
 data.table::setDT(stat.test)
 stat.test.leaves.hormonomics = stat.test
 ind = (grep('groups', colnames(stat.test.leaves.hormonomics)))
 stat.test.leaves.hormonomics = stat.test.leaves.hormonomics[, -..ind]
 
-fp = file.path('..', 'reports')
-fn = 't.tests_hormonomics.txt'
+fpo = file.path('..', 'reports')
+fn = paste0(tissue, '-', o.l., '_t.tests.txt')
 write.table(stat.test.leaves.hormonomics,
-            file = file.path(fp, fn), 
+            file = file.path(fpo, fn), 
             append = FALSE, 
             quote = FALSE, 
             sep = "\t",
@@ -890,39 +535,40 @@ write.table(stat.test.leaves.hormonomics,
 
 rcorr Computes a matrix of Pearson's r or Spearman's rho rank correlation coefficients for all possible pairs of columns of a matrix. Missing values are deleted in pairs rather than deleting all rows of x having any missing variables. Ranks are computed using efficient algorithms (see reference 2), using midranks for ties.
 
-### heatmap on stress START/STOP data
+### heatmap on Treatment START/STOP (as defined) data
 
 
-```{r, 037_hormonomics.heatmap.stress.groups, echo=FALSE}
+```{r, 037_hormonomics.heatmap.Treatment.groups, echo=TRUE}
 
 my.heatmaply.cor(df = data[, keep2], 
                  type = 'pearson', 
                  dist_method = 'minkowski', 
                  hclust_method = 'ward.D2',
-                 main = 'Hormonomics stress [start, stop]\nrcorr, p-val, minkowski, Ward.2',
+                 main = paste(o.l., 'Treatment [start, stop]\nrcorr, p-val, minkowski, Ward.2'),
                  colors = rev(my.heatmap.col1))
 my.heatmaply.cor(df = data[, keep2], 
                  type = 'pearson', 
                  dist_method = 'minkowski', 
                  hclust_method = 'ward.D2',
-                 main = 'Hormonomics stress [start, stop]\nrcorr, p-val, minkowski, Ward.2',
+                 main = paste(o.l., 'Treatment [start, stop]\nrcorr, p-val, minkowski, Ward.2'),
                  colors = rev(my.heatmap.col2))
 
 ```
 
 
 
-### logFC START/STOP stress
+### logFC START/STOP Treatment
  
-```{r, 038_plotly.logFC.heatmap, echo=FALSE}
+```{r, 038_plotly.logFC.heatmap, echo=TRUE}
 
 
-leaf.horm.log2FC = my.logFC(Ctrl.H = Ctrl.H, Ctrl.D = Ctrl.D, 
-                            H = H, D = D, HD = HD, W = W, 
-                            tp = 2, title = 'Hormonomics')
+leaf.horm.log2FC = my.logFC(Ctrl = Ctrl,
+                            Stress = Stress,  
+                            tp = 2, 
+                            title = o.l.)
 
 
-mm <- list(
+mm = list(
     l = 0,
     r = 0,
     b = 0,
@@ -943,15 +589,19 @@ p = plot_ly(z = leaf.horm.log2FC,
   layout(title = 'Leaf Hormonomics', 
          margin = mm)
 print(p)
+
+fpo = file.path('..', 'reports')
+fn = 'Leaf-Hormonomics_logFC.html'
+fn = paste0(tissue, '-', o.l., '_log2FC.html')
 saveWidget(p, 
-           file = "../reports/Leaf-Hormonomics_logFC.html",
+           file = file.path(fpo, fn),
            selfcontained = TRUE)
 
 
 
-fn = 'log2FC_leaves-horm.txt'
+fn = paste0(tissue, '-', o.l., '_log2FC.txt')
 write.table(leaf.horm.log2FC,
-            file = file.path(fp, fn), 
+            file = file.path(fpo, fn), 
             append = FALSE, 
             quote = FALSE, 
             sep = "\t",
@@ -967,1690 +617,120 @@ write.table(leaf.horm.log2FC,
 
 
 
-```{r, libraries.sources4}
+```{r, libraries.sources2}
 
-rm(list=setdiff(ls(), c("tubers.met.log2FC", 
-                        'stat.test.tubers.met',
-                        'tubers.met.avg',
-                        'pheno', 
-                        'tubers',
-                        'leaf.phenomics.log2FC',
-                        'stat.test.leaves.phenomics',
-                        'my.ggplot.palette',
-                        'my.heatmap.col1',
-                        'my.heatmap.col2',
-                        'my.dist.col',
-                        'leaf.horm.log2FC',
-                        'stat.test.leaves.hormonomics',
-                        'horm.subset')))
+rm(list=setdiff(ls(), c('pheno',
+                        'horm'
+                        )))
 gc()
-source('02_f-ctions.R')
+source('01_f-ctions.R')
 gc()
 
 ```
 
 
 
-## metabolomics
+## Omics level: metabolomics
 
-```{r, 040_metabolomics, echo=FALSE}
+```{r}
 
-fpi = file.path('..', '..', '_A_011_Data_inspection-R', 'output', 'clean')
+tissue = 'Leaves'
+o.l. = 'Metabolomics'
+
+```
+
+### Read data
+
+```{r, 040_metabolomics, echo=TRUE}
+
+
+fpi = file.path('..', 'input')
 fn = 'data_metabolomics.txt'
-met <- data.table::fread(file.path(fpi, fn), header = TRUE)
+met = data.table::fread(file.path(fpi, fn), header = TRUE)
 data.table::setDF(met)
 
+met = merge(pheno, 
+             met, 
+             by = 'SampleName', 
+             all.x = FALSE, 
+             all.y = TRUE)
+met = met[, -grep('SampleName', colnames(met))]
 
-(m = max(stringr::str_count(met$SampleName, pattern = '_'))+1)
-tmp = stringr::str_split_fixed(met$SampleName, pattern = '_', m)
-tmp[, 2] = as.numeric(gsub('[SP]', '', tmp[, 2]))
-colnames(tmp) = c('Stress', 'Time', 'Plant')
-met = cbind(tmp, met)
-met = met[, -c(grep('SampleName', colnames(met)))]
-met = met[met$Stress != 'HDW', ]
-met$Time = as.numeric(met$Time)
-
-tmp = reshape2::melt(met[, -c(grep('Plant', colnames(met)))], id.vars=c("Stress",   "Time"))
-tmp$Time = as.numeric(tmp$Time)
-keep2 = grep('Plant|Stress|Time', colnames(met), invert = TRUE)
-
-met = met[order(met$Stress, met$Time, met$Plant), ]
-
-```
-
-### ggplot
-
-```{r, 041_metabolomics, echo=FALSE}
-
-
-myplot.ggplot(df = tmp, x = tmp$Stress, y = tmp$value, 
-              ncol = ceiling(length(levels(tmp$variable))/2), 
-              scales.y = "free_y", 
-              title = stringr::str_c('Metabolomics\n', 
-                                     stringr::str_c(unique(tmp$Stress), collapse=', '),
-                                     collapse='' ), 
-              xlab = 'Stress', 
-              ylab = 'value', 
-              palette = my.ggplot.palette)
-myplot.ggplot(df = tmp[tmp$Stress != 'W', ], x = tmp[tmp$Stress != 'W', ]$Stress, y = tmp[tmp$Stress != 'W', ]$value, 
-              ncol = ceiling(length(levels(tmp$variable))/2), 
-              scales.y = "free_y", 
-              title = stringr::str_c('Metabolomics\n', 
-                                     stringr::str_c(unique(tmp[tmp$Stress != 'W', ]$Stress), collapse=', '),
-                                     collapse='' ), 
-              xlab = 'Stress', 
-              ylab = 'value', 
-              palette = my.ggplot.palette)
-
-
-graphs <- tmp %>%
-  dplyr::group_by(variable) %>%
-  rstatix::doo(
-    ~ggpubr::ggdotplot(
-      data =., 
-      x = "Time", 
-      y = "value",
-      fill = "Stress", 
-      palette = my.ggplot.palette[c(1,3,2,4,5)], 
-      legend = "none",
-      add = c("jitter", "mean_sd"),
-      position = position_jitter(0.05),
-      ggtheme = ggpubr::theme_pubr(),
-      facet.by = c("Stress")
-      )
-      , result = "plots"
-    )
-
-variable <- levels(graphs$variable)
-plots <- graphs$plots %>% set_names(variable)
-for(var in variable){
-  graph.i <- plots[[var]] +
-    labs(title = var)
-  print(graph.i)
-} 
+met$SamplingDay = as.numeric(met$SamplingDay)
+met$Treatment = factor(met$Treatment)
+met = met[order(met$Treatment, met$SamplingDay, met$PlantNo), ]
 
 
 ```
 
+Repat procedure as for Hormonomics
 
-### NMDS
 
-```{r, 042_metabolomics.nmds, echo=FALSE}
+```{r, libraries.sources3}
 
-mymat = met[, keep2]
-
-time.levels = sort(as.numeric(unique(met$Time)))
-# plot(time.levels, rep(0, length(time.levels)), pch = c(1, 16, 0, 15, 2, 17, 8), 
-#      col = 'black', cex = 2,
-#      yaxt='n', xaxt='n', ann=FALSE, bty='n')
-# axis(side = 1, at = time.levels, labels = time.levels)
-    
-
-NMDS.plots = my.NMDS(mymat = mymat, 
-                     subset = met, 
-                     stress.levels = c('C', 'H', 'D', 'HD', 'W'),
-                     time.levels = time.levels,
-                     title = 'Metabolomic',
-                     k = 3)
-
-cowplot::plot_grid(NMDS.plots[[1]], NMDS.plots[[2]], NMDS.plots[[3]],  
-                   NMDS.plots[[4]], NMDS.plots[[5]], NMDS.plots[[6]],
-                   ncol=3, nrow = 2)
-
-met.subset = met
-
-
-mymat = met[met$Stress != 'W', keep2]
-NMDS.plots = my.NMDS(mymat = mymat, 
-                     subset = met[met$Stress != 'W', ], 
-                     stress.levels = c('C', 'H', 'D', 'HD'),
-                     time.levels = time.levels,
-                     title = 'Metabolomic without W',
-                     k = 3)
-cowplot::plot_grid(NMDS.plots[[1]], NMDS.plots[[2]], NMDS.plots[[3]],  
-                   NMDS.plots[[4]], NMDS.plots[[5]], NMDS.plots[[6]],
-                   ncol=3, nrow = 2)
-
-
-
-
-```
-
-
-#### NMDS pairs, across all samples
-
-```{r, 042_metabolomics_NMDS.pairs, echo=FALSE}
-
-for (i in c('H', 'D', 'HD', 'W')){
-  print(i)
-  subset = met[met$Stress  %in% c('C', i), ]
-  mymat = subset[, keep2]
-  time.levels = sort(as.numeric(unique(subset$Time)))
-  NMDS.plots = my.NMDS(mymat = mymat, 
-                     subset = subset,
-                     stress.levels = c('C', i),
-                     time.levels = time.levels,
-                     title = paste0('Leaf Metabolomics\nC ', i),
-                     k = 3)
-  myplot = cowplot::plot_grid(NMDS.plots[[1]], NMDS.plots[[2]], NMDS.plots[[3]],  
-                   NMDS.plots[[4]], NMDS.plots[[5]], NMDS.plots[[6]],
-                   ncol=3, nrow = 2)
-  print(myplot)
-}
-
-
-```
-
-
-### cor
-
-```{r, 043_metabolomics.cor, echo=FALSE}
-
-d = met[, -c(grep('Stress|Plant|Time', colnames(met)))]
-par(mfrow = c(1,2))
-my.cor.plot(mymat = d, 
-            main = 'metabolomics (all tp)', 
-            col = rev(my.heatmap.col1), 
-            order = 'original', 
-            type = 'pearson', 
-            choose = 1)
-my.cor.plot(mymat = d, 
-            main = 'metabolomics (all tp)', 
-            col = rev(my.heatmap.col2), 
-            order = 'original', 
-            type = 'pearson', 
-            choose = 1)
-par(mfrow = c(1,1))
-
-
-d = met[, -c(grep('Stress|Plant|Time', colnames(met)))]
-my.pairs.panels(df = d, 
-                method = "pearson", 
-                palette = my.ggplot.palette[1:n], 
-                scale = FALSE,
-                main = 'Metabolomics (all tp)',
-                cex.labels = 1, 
-                cex = 1)
-
-
-
-
-```
-
-
-
-### cor groups
-
-```{r, 044_metabolomics.cor.groups, echo=FALSE}
-
-keep2 = grep('Plant|Stress|Time', colnames(met), invert = TRUE)
-
-Ctrl = as.matrix(met[met$Stress == 'C', keep2])
-H = as.matrix(met[met$Stress == 'H', keep2])
-D = as.matrix(met[met$Stress == 'D', keep2])
-HD = as.matrix(met[met$Stress == 'HD', keep2])
-W = as.matrix(met[met$Stress == 'W', keep2])
-
-par(mfrow=c(2,3))
-my.cor.plot(mymat = Ctrl,
-            main = 'Metabolomics pearson cor (all tp)\nCtrl',
-            col = rev(my.heatmap.col1),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = H,
-            main = 'Metabolomics pearson cor (all tp)\nH',
-            col = rev(my.heatmap.col1),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = D,
-            main = 'Metabolomics pearson cor (all tp)\nD',
-            col = rev(my.heatmap.col1),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = W,
-            main = 'Metabolomics pearson cor (all tp)\nW',
-            col = rev(my.heatmap.col1),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = HD,
-            main = 'Metabolomics pearson cor (all tp)\nHD',
-            col = rev(my.heatmap.col1),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-par(mfrow=c(1,1))
-
-par(mfrow=c(2,3))
-my.cor.plot(mymat = Ctrl,
-            main = 'Metabolomics pearson cor (all tp)\nCtrl',
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = H,
-            main = 'Metabolomics pearson cor (all tp)\nH',
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = D,
-            main = 'Metabolomics pearson cor (all tp)\nD',
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = W,
-            main = 'Metabolomics pearson cor (all tp)\nW',
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = HD,
-            main = 'Metabolomics pearson cor (all tp)\nHD',
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-par(mfrow=c(1,1))
-
-
-par(mfrow=c(1,2))
-palCWH = rainbow(6)[as.numeric(as.factor(met[met$Stress == 'C', 2]))]
-pie(rep(1,6), col = unique(palCWH), labels = unique(met[met$Stress == 'C', 2]), 
-    main = 'C H W')
-palDHD = unique(palCWH)[-c(1,5)]
-pie(rep(1,4), col = unique(palDHD), labels = unique(met[met$Stress == 'HD', 2]),
-    main = 'H HD')
-par(mfrow=c(1,1))
-
-my.pairs.panels(df = Ctrl, 
-                method = "pearson", 
-                palette = palCWH, 
-                scale = FALSE,
-                main = 'met Ctrl (all tp)',
-                cex.labels = 1.0, 
-                cex = 1)
-my.pairs.panels(df = H, 
-                method = "pearson", 
-                palette = palCWH, 
-                scale = FALSE,
-                main = 'met H (all tp)',
-                cex.labels = 1.0, 
-                cex = 1)
-my.pairs.panels(df = D, 
-                method = "pearson", 
-                palette = palDHD, 
-                scale = FALSE,
-                main = 'met D (all tp)',
-                cex.labels = 1.0, 
-                cex = 1)
-my.pairs.panels(df = HD, 
-                method = "pearson", 
-                palette = palDHD, 
-                scale = FALSE,
-                main = 'met HD (all tp)',
-                cex.labels = 1.0, 
-                cex = 1)
-my.pairs.panels(df = W, 
-                method = "pearson", 
-                palette = palCWH, 
-                scale = FALSE,
-                main = 'met W (all tp)',
-                cex.labels = 1.0, 
-                cex = 1)
-
-
-
-####
-par(mfrow=c(2,3))
-my.cor.plot(mymat = as.matrix(met[met$Stress == 'C' & met$Time %in% 1:14, keep2]),
-            main = 'met pearson cor 1:14\nCtrl',
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = as.matrix(met[met$Stress == 'H' & met$Time %in% 1:14, keep2]),
-            main = 'met pearson cor 1:14\nH',
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = as.matrix(met[met$Stress == 'D' & met$Time %in% 1:14, keep2]), # 1:7 so and so does not exist
-            main = 'met pearson cor 8:14\nD',
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = as.matrix(met[met$Stress == 'W' & met$Time %in% 1:14, keep2]),
-            main = 'met pearson cor 1:14\nW',
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = as.matrix(met[met$Stress == 'HD' & met$Time %in% 1:14, keep2]), # 1:7 so and so does not exist
-            main = 'met pearson cor 8:14\nHD',
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-par(mfrow=c(1,1))
-
-
-par(mfrow=c(2,3))
-my.cor.plot(mymat = as.matrix(met[met$Stress == 'C' & met$Time %in% 1:7, keep2]),
-            main = 'met pearson cor 1:7\nCtrl',
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = as.matrix(met[met$Stress == 'H' & met$Time %in% 1:7, keep2]),
-            main = 'met pearson cor 1:7\nH',
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = as.matrix(met[met$Stress == 'D' & met$Time %in% 8:14, keep2]),
-            main = 'met pearson cor 8:14\nD',
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = as.matrix(met[met$Stress == 'W' & met$Time %in% 1:7, keep2]),
-            main = 'met pearson cor 1:7\nW',
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = as.matrix(met[met$Stress == 'HD' & met$Time %in% 8:14, keep2]),
-            main = 'met pearson cor 8:14\nHD',
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-par(mfrow=c(1,1))
-
-
-
-```
-
-### cor dist
-
-```{r, echo=FALSE}
-
-dtX = met
-is.numeric(dtX$Time)
-
-Ctrl.H = (dtX[(dtX$Stress == 'C') & (dtX$Time %in% c(1,7)), 1:ncol(dtX)])
-Ctrl.D = (dtX[(dtX$Stress == 'C') & (dtX$Time %in% c(8,14)), 1:ncol(dtX)])
-H =  (dtX[(dtX$Stress == 'H') & (dtX$Time %in% c(1,7)), 1:ncol(dtX)])
-D =  (dtX[(dtX$Stress == 'D') & (dtX$Time %in% c(8,14)), 1:ncol(dtX)])
-HD =  (dtX[(dtX$Stress == 'HD') & (dtX$Time %in% c(8,14)), 1:ncol(dtX)])
-W =  (dtX[(dtX$Stress == 'W') & (dtX$Time %in% c(1,7)), 1:ncol(dtX)])
-
-Ctrl.H[Ctrl.H$Time == 7,]$Time = 2
-Ctrl.D[Ctrl.D$Time == 8,]$Time = 1
-Ctrl.D[Ctrl.D$Time == 14,]$Time = 2
-HD[HD$Time == 8,]$Time = 1
-HD[HD$Time == 14,]$Time = 2
-D[D$Time == 8,]$Time = 1
-D[D$Time == 14,]$Time = 2
-H[H$Time == 7,]$Time = 2
-W[W$Time == 7,]$Time = 2
-
-
-```
-
-
-
-```{r, 045_metabolomics.cor.dist, echo=FALSE}
-
-keep1 = grep('Plant|Time|Stress', colnames(dtX), invert = TRUE)
-
-my.c.list = list (cor(Ctrl.H[, keep1], use = 'na.or.complete'), 
-                  cor(Ctrl.D[, keep1], use = 'na.or.complete'),
-                  cor(H[, keep1], use = 'na.or.complete'), 
-                  cor(D[, keep1], use = 'na.or.complete'), 
-                  cor(HD[, keep1], use = 'na.or.complete'), 
-                  cor(W[, keep1], use = 'na.or.complete'))
-names(my.c.list) = c('Ctrl.H', 'Ctrl.D', 'H', 'D', 'HD', 'W')
-
-
-comb = RcppAlgos::comboGrid(1:length(my.c.list), 1:length(my.c.list),  repetition = FALSE)
-
-for (i in 1:nrow(comb)){
-  
-
-  cat('blue'(names(my.c.list)[comb[i,1]], names(my.c.list)[comb[i,2]], '\n'))
-  a = my.c.list[[comb[i,1]]]
-  b = my.c.list[[comb[i,2]]]
-
-  plot = my.pheatmap(df = a, 
-                      main = names(my.c.list)[comb[i,1]], 
-                      col = rev(my.heatmap.col1),
-                      breaks = setdiff(seq(-1, 1, 0.1), 0),
-                     silent = TRUE) 
-  myplots = list(plot[[4]])
-  plot = my.pheatmap(df = a, 
-                      main = names(my.c.list)[comb[i,1]], 
-                      col = rev(my.heatmap.col2),
-                      breaks = setdiff(seq(-1, 1, 0.1), 0),
-                     silent = TRUE) 
-  myplots[[2]] = (plot[[4]])
-  
-  
-  plot = my.pheatmap(df = b, 
-                      main = names(my.c.list)[comb[i,2]], 
-                      col = rev(my.heatmap.col1),
-                      breaks = setdiff(seq(-1, 1, 0.1), 0),
-                     silent = TRUE) 
-  myplots[[3]] = (plot[[4]])
-  plot = my.pheatmap(df = b, 
-                      main = names(my.c.list)[comb[i,2]], 
-                      col = rev(my.heatmap.col2),
-                      breaks = setdiff(seq(-1, 1, 0.1), 0),
-                     silent = TRUE) 
-  myplots[[4]] = (plot[[4]])
-  
-
-  diff = abs(a - b)
-  plot = my.pheatmap(df = diff,
-                      col = rev(my.dist.col), 
-                      main = paste0('Diffrence ', 
-                                    names(my.c.list)[comb[i,1]], ' - ', 
-                                    names(my.c.list)[comb[i,2]]),
-                      breaks = seq(0, 2, 0.2),
-                     silent = TRUE)
-  myplots[[5]] = (plot[[4]])
-  plot = my.pheatmap(df = diff,
-                      col = rev(my.dist.col2), 
-                      main = paste0('Diffrence ', 
-                                    names(my.c.list)[comb[i,1]], ' - ', 
-                                    names(my.c.list)[comb[i,2]]),
-                      breaks = seq(0, 2, 0.2),
-                     silent = TRUE)
-  myplots[[6]] = (plot[[4]])
-
-  gridExtra::grid.arrange(gridExtra::arrangeGrob(myplots[[1]], myplots[[3]], myplots[[5]], ncol=3),
-                          gridExtra::arrangeGrob(myplots[[2]], myplots[[4]], myplots[[6]], ncol=3),
-                          nrow = 2)
-
-  
-  
-}
-
-
-```
-
-
-#### NMDS subset
-
-```{r, 042_metabolomics.nmds.subset, echo=FALSE}
-
-
-subset = met[met$Time %in% 1:14, ]
-keep = grep('Plant|Stress|Time', colnames(subset), invert = TRUE)
-mymat = subset[, keep]
-
-time.levels = sort(as.numeric(unique(subset$Time)))
-
-NMDS.plots = my.NMDS(mymat = mymat, 
-                     subset = subset, 
-                     stress.levels = c('C', 'H', 'D', 'HD', 'W'),
-                     time.levels = time.levels,
-                     title = 'Leaf Metabolomics 1:14',
-                     k = 3)
-
-cowplot::plot_grid(NMDS.plots[[1]], NMDS.plots[[2]], NMDS.plots[[3]],  
-                   NMDS.plots[[4]], NMDS.plots[[5]], NMDS.plots[[6]],
-                   ncol=3, nrow = 2)
-
-
-subset = met[met$Time %in% 1:7, ]
-keep = grep('Plant|Stress|Time', colnames(subset), invert = TRUE)
-mymat = subset[, keep]
-
-time.levels = sort(as.numeric(unique(subset$Time)))
-
-NMDS.plots = my.NMDS(mymat = mymat, 
-                     subset = subset, 
-                     stress.levels = c('C', 'H', 'D', 'HD', 'W'),
-                     time.levels = time.levels,
-                     title = 'Leaf Metabolomics 1:7',
-                     k = 3)
-
-cowplot::plot_grid(NMDS.plots[[1]], NMDS.plots[[2]], NMDS.plots[[3]],  
-                   NMDS.plots[[4]], NMDS.plots[[5]], NMDS.plots[[6]],
-                   ncol=3, nrow = 2)
-
-subset = met[met$Time %in% 8:14, ]
-keep = grep('Plant|Stress|Time', colnames(subset), invert = TRUE)
-mymat = subset[, keep]
-
-time.levels = sort(as.numeric(unique(subset$Time)))
-
-NMDS.plots = my.NMDS(mymat = mymat, 
-                     subset = subset, 
-                     stress.levels = c('C', 'H', 'D', 'HD', 'W'),
-                     time.levels = time.levels,
-                     title = 'Leaf Metabolomics 8:14',
-                     k = 3)
-
-cowplot::plot_grid(NMDS.plots[[1]], NMDS.plots[[2]], NMDS.plots[[3]],  
-                   NMDS.plots[[4]], NMDS.plots[[5]], NMDS.plots[[6]],
-                   ncol=3, nrow = 2)
-
-subset = met[met$Time %in% 8:28, ]
-keep = grep('Plant|Stress|Time', colnames(subset), invert = TRUE)
-mymat = subset[, keep]
-
-time.levels = sort(as.numeric(unique(subset$Time)))
-
-NMDS.plots = my.NMDS(mymat = mymat, 
-                     subset = subset, 
-                     stress.levels = c('C', 'H', 'D', 'HD', 'W'),
-                     time.levels = time.levels,
-                     title = 'Leaf Metabolomics 8:28',
-                     k = 3)
-
-cowplot::plot_grid(NMDS.plots[[1]], NMDS.plots[[2]], NMDS.plots[[3]],  
-                   NMDS.plots[[4]], NMDS.plots[[5]], NMDS.plots[[6]],
-                   ncol=3, nrow = 2)
-
-
-subset = met[(met$Time %in% 1:7 & met$Stress %in% c('C', 'H', 'W')) |
-               (met$Time %in% 8:14 & met$Stress %in% c('D', 'HD')) , ]
-keep = grep('Plant|Stress|Time', colnames(subset), invert = TRUE)
-mymat = subset[, keep]
-
-time.levels = sort(as.numeric(unique(subset$Time)))
-
-NMDS.plots = my.NMDS(mymat = mymat, 
-                     subset = subset, 
-                     stress.levels = c('C', 'H', 'D', 'HD', 'W'),
-                     time.levels = time.levels,
-                     title = 'Metabolomics one week',
-                     k = 3)
-
-cowplot::plot_grid(NMDS.plots[[1]], NMDS.plots[[2]], NMDS.plots[[3]],  
-                   NMDS.plots[[4]], NMDS.plots[[5]], NMDS.plots[[6]],
-                   ncol=3, nrow = 2)
-
-
-```
-
-
-
-
-### t-tests
-
-```{r, 046_metabolomics.t.tests, echo=FALSE}
-
-data = rbind(Ctrl.H, Ctrl.D, H, D, HD, W)
-tmp = c(rep('Ctrl.H', nrow(Ctrl.H)),
-        rep('Ctrl.D', nrow(Ctrl.D)),
-        rep('H', nrow(H)),
-        rep('D', nrow(D)),
-        rep('HD', nrow(HD)),
-        rep('W', nrow(W)))
-data$Stress = tmp
-data$Stress = paste(data$Stress, data$Time, sep = '_')
-
-cat(blue('day 1\n'))
-data.1 = data[data$Time == 1, ]
-data.1.1 = data.1[data.1$Stress %in% c('Ctrl.H_1', 'H_1', 'W_1'), ]
-stat.test.1.1 = my.customised.t.test(data = data.1.1[, -grep('Plant|Time', colnames(data.1.1))], 
-                                 var.levels = colnames(data.1.1)[-grep('Plant|Time|Stress', colnames(data.1.1))], 
-                                 stress.levels = unique(data.1.1$Stress),
-                                 plot.violin = FALSE, 
-                                 plot.box = FALSE, 
-                                 plot.dot = TRUE,
-                                 single = TRUE,
-                                 y.lab = "Metabolomics",
-                                 p.cex.labels = 1, 
-                                 p.cex = 0.5,
-                                 p.palette = my.ggplot.palette[c(1, 2, 5)])
-cat(blue('day 8\n'))
-data.1 = data[data$Time == 1, ]
-data.1.2 = data.1[data.1$Stress %in% c('Ctrl.D_1', 'D_1', 'HD_1'), ]
-stat.test.1.2 = my.customised.t.test(data = data.1.2[, -grep('Plant|Time', colnames(data.1.2))], 
-                                 var.levels = colnames(data.1.2)[-grep('Plant|Time|Stress', colnames(data.1.2))], 
-                                 stress.levels = unique(data.1.2$Stress),
-                                 plot.violin = FALSE, 
-                                 plot.box = FALSE, 
-                                 plot.dot = TRUE,
-                                 single = TRUE,
-                                 y.lab = "Metabolomics",
-                                 p.cex.labels = 1, 
-                                 p.cex = 0.5,
-                                 p.palette =  my.ggplot.palette[c(1, 3, 4)])
-cat(blue('day 7\n'))
-data.2 = data[data$Time == 2, ]
-data.2.1 = data.2[data.2$Stress %in% c('Ctrl.H_2', 'H_2', 'W_2'), ]
-stat.test.2.1 = my.customised.t.test(data = data.2.1[, -grep('Plant|Time', colnames(data.2.1))], 
-                                 var.levels = colnames(data.2.1)[-grep('Plant|Time|Stress', colnames(data.2.1))], 
-                                 stress.levels = unique(data.2.1$Stress),
-                                 plot.violin = FALSE, 
-                                 plot.box = FALSE, 
-                                 plot.dot = TRUE,
-                                 single = TRUE,
-                                 y.lab = "Metabolomics",
-                                 p.cex.labels = 1, 
-                                 p.cex = 0.5,
-                                 p.palette = my.ggplot.palette[c(1, 2, 5)])
-cat(blue('day 14\n'))
-data.2 = data[data$Time == 2, ]
-data.2.2 = data.2[data.2$Stress %in% c('Ctrl.D_2', 'D_2', 'HD_2'), ]
-stat.test.2.2 = my.customised.t.test(data = data.2.2[, -grep('Plant|Time', colnames(data.2.2))], 
-                                 var.levels = colnames(data.2.2)[-grep('Plant|Time|Stress', colnames(data.2.2))], 
-                                 stress.levels = unique(data.2.2$Stress),
-                                 plot.violin = FALSE, 
-                                 plot.box = FALSE, 
-                                 plot.dot = TRUE,
-                                 single = TRUE,
-                                 y.lab = "Metabolomics",
-                                 p.cex.labels = 1, 
-                                 p.cex = 0.5,
-                                 p.palette =  my.ggplot.palette[c(1, 3, 4)])
-
-
-stat.test = rbind(stat.test.1.1,
-                  stat.test.1.2,
-                  stat.test.2.1,
-                  stat.test.2.2)
-data.table::setDT(stat.test)
-stat.test.leaves.metabolomics = stat.test
-ind = (grep('groups', colnames(stat.test.leaves.metabolomics)))
-stat.test.leaves.metabolomics = stat.test.leaves.metabolomics[, -..ind]
-
-fp = file.path('..', 'reports')
-fn = 't.tests_Metabolomics.txt'
-write.table(stat.test.leaves.metabolomics,
-            file = file.path(fp, fn), 
-            append = FALSE, 
-            quote = FALSE, 
-            sep = "\t",
-            eol = "\n", 
-            na = "NA", 
-            dec = ".", 
-            row.names = TRUE,
-            col.names = TRUE, 
-            qmethod = 'escape',
-            fileEncoding = "UTF-8")
-
-```
-
-
-
-### heatmap on stress START/STOP data
-
-
-```{r, 047_metabolomics.heatmap.stress.groups, echo=FALSE}
-
-
-my.heatmaply.cor(df = data[, keep2], 
-                 type = 'pearson', 
-                 dist_method = 'minkowski', 
-                 hclust_method = 'ward.D2',
-                 main = 'Metabolomics stress [start, stop]\nrcorr, p-val, minkowski, Ward.2',
-                 colors = rev(my.heatmap.col1))
-my.heatmaply.cor(df = data[, keep2], 
-                 type = 'pearson', 
-                 dist_method = 'minkowski', 
-                 hclust_method = 'ward.D2',
-                 main = 'Metabolomics stress [start, stop]\nrcorr, p-val, minkowski, Ward.2',
-                 colors = rev(my.heatmap.col2))
-
-```
-
-
-
-### logFC START/STOP stress
- 
-```{r, 048_metabolomics.plotly.logFC.heatmap, echo=FALSE}
-
-table(is.na(data[, keep2]))
-# NAs = min(H[!is.na(H)], na.rm = TRUE)/10
-# H[is.na(H)] = NAs
-# NAs = min(W[!is.na(W)], na.rm = TRUE)/10
-# W[is.na(W)] = NAs
-
-table(data[, keep2] == 0)
-table(Ctrl.H == 0)
-table(Ctrl.D == 0)
-table(H == 0)
-table(HD == 0)
-table(D == 0)
-table(W == 0)
-
-cat(red('impute 0\n'))
-no = Ctrl.D[, keep2]
-zeroes = min(setdiff(unlist(as.vector(no)), 0), na.rm = TRUE)/2
-Ctrl.D[Ctrl.D == 0] = zeroes
-no = D[, keep2]
-zeroes = min(setdiff(unlist(as.vector(no)), 0), na.rm = TRUE)/2
-D[D == 0] = zeroes
-
-
-
-
-leaf.met.log2FC = my.logFC(Ctrl.H = Ctrl.H, Ctrl.D = Ctrl.D, 
-                            H = H, D = D, HD = HD, W = W, 
-                            tp = 2, title = 'Metabolomics')
-
-mm <- list(
-    l = 0,
-    r = 0,
-    b = 0,
-    t = 40
-)
-m = max(abs(min(leaf.met.log2FC, na.rm = TRUE)), abs(max(leaf.met.log2FC, na.rm = TRUE)))
-p = plot_ly(z = leaf.met.log2FC, 
-            type = "heatmap",
-            y = rownames(leaf.met.log2FC), 
-            x = colnames(leaf.met.log2FC),
-            colors = rev(brewer.pal(n, 'RdBu')),
-            zmax = m, 
-            zmid = 0, 
-            zmin = -m,
-            width = 600, 
-            height = 300
-            ) %>%
-  layout(title = 'Leaf Metabolomics', 
-         margin = mm)
-print(p)
-saveWidget(p, 
-           file = "../reports/Leaf-Metabolomics_logFC.html",
-           selfcontained = TRUE)
-
-
-
-fn = 'log2FC_leaves-met.txt'
-write.table(leaf.met.log2FC,
-            file = file.path(fp, fn), 
-            append = FALSE, 
-            quote = FALSE, 
-            sep = "\t",
-            eol = "\n", 
-            na = "NA", 
-            dec = ".", 
-            row.names = TRUE,
-            col.names = TRUE, 
-            qmethod = 'escape',
-            fileEncoding = "UTF-8")
-
-```
-
-
-
-```{r, libraries.sources5}
-
-rm(list=setdiff(ls(), c("tubers.met.log2FC", 
-                        'stat.test.tubers.met',
-                        'tubers.met.avg',
-                        'pheno', 
-                        'tubers',
-                        'leaf.phenomics.log2FC',
-                        'stat.test.leaves.phenomics',
-                        'my.ggplot.palette',
-                        'my.heatmap.col1',
-                        'my.heatmap.col2',
-                        'my.dist.col',
-                        'leaf.horm.log2FC',
-                        'stat.test.leaves.hormonomics',
-                        'stat.test.leaves.metabolomics',
-                        'leaf.met.log2FC',
-                        'horm.subset',
-                        'met.subset')))
+rm(list=setdiff(ls(), c('pheno',
+                        'horm',
+                        'met'
+                        )))
 gc()
-source('02_f-ctions.R')
+source('01_f-ctions.R')
 gc()
 
 ```
 
-## transcriptomics
+## Omics level: transcriptomics
 
-```{r, 050_transcriptomics, echo=FALSE}
+```{r}
 
-fpi = file.path('..', '..', '_A_011_Data_inspection-R', 'output', 'clean')
+tissue = 'Leaves'
+o.l. = 'Transcriptomics'
 
+```
+
+
+### Read data
+
+```{r, 050_transcriptomics, echo=TRUE}
+
+fpi = file.path('..', 'input')
 fn = 'data_qPCR.txt'
-qPCR <- data.table::fread(file.path(fpi, fn), header = TRUE)
+qPCR = data.table::fread(file.path(fpi, fn), header = TRUE)
 data.table::setDF(qPCR)
 
+qPCR = merge(pheno, 
+             qPCR, 
+             by = 'SampleName', 
+             all.x = FALSE, 
+             all.y = TRUE)
+qPCR = qPCR[, -grep('SampleName', colnames(qPCR))]
 
-
-(m = max(stringr::str_count(qPCR$SampleName, pattern = '_'))+1)
-tmp = stringr::str_split_fixed(qPCR$SampleName, pattern = '_', m)
-tmp[, 2] = as.numeric(gsub('[SP]', '', tmp[, 2]))
-colnames(tmp) = c('Stress', 'Time', 'Plant')
-qPCR = (cbind(tmp, qPCR))
-qPCR = as.data.frame(qPCR)
-qPCR$Time = as.numeric(qPCR$Time)
-
-qPCR = qPCR[, -c(grep('SampleName', colnames(qPCR)))]
-qPCR = qPCR[qPCR$Stress != 'HDW', ]
-
-dt = data.table::as.data.table(qPCR[, -c(3:4)])
-dt = dt[ , lapply(.SD, mean, na.rm=TRUE) , by = c("Stress",  'Time')]
-dt = data.table::setDF(dt)
-
-tmp = reshape2::melt(qPCR[, -c(grep('Plant', colnames(qPCR)))], id.vars=c("Stress",   "Time"))
-table(tmp$Time)
-tmp$Time = as.numeric(tmp$Time)
-table(tmp$Time)
-
-
-
-```
-
-### ggplot
-
-```{r, 051_transcriptomics, echo=FALSE}
-
-
-myplot.ggplot(df = tmp, x = tmp$Stress, y = tmp$value, 
-              ncol = ceiling(length(levels(tmp$variable))/2), 
-              scales.y = "free_y", 
-              title = stringr::str_c('Transcriptomics\n', 
-                                     stringr::str_c(unique(tmp$Stress), collapse=', '),
-                                     collapse='' ), 
-              xlab = 'Stress', 
-              ylab = 'value', 
-              palette = my.ggplot.palette)
-myplot.ggplot(df = tmp[tmp$Stress != 'W', ], x = tmp[tmp$Stress != 'W', ]$Stress, y = tmp[tmp$Stress != 'W', ]$value, 
-              ncol = ceiling(length(levels(tmp$variable))/2), 
-              scales.y = "free_y", 
-              title = stringr::str_c('Transcriptomics\n', 
-                                     stringr::str_c(unique(tmp[tmp$Stress != 'W', ]$Stress), collapse=', '),
-                                     collapse='' ), 
-              xlab = 'Stress', 
-              ylab = 'value', 
-              palette = my.ggplot.palette)
-
-
-graphs <- tmp %>%
-  dplyr::group_by(variable) %>%
-  rstatix::doo(
-    ~ggpubr::ggdotplot(
-      data =., 
-      x = "Time", 
-      y = "value",
-      fill = "Stress", 
-      palette = my.ggplot.palette[c(1,3,2,4,5)], 
-      legend = "none",
-      add = c("jitter", "mean_sd"),
-      position = position_jitter(0.05),
-      ggtheme = ggpubr::theme_pubr(),
-      facet.by = c("Stress")
-      )
-      , result = "plots"
-    )
-
-variable <- levels(graphs$variable)
-plots <- graphs$plots %>% set_names(variable)
-for(var in variable){
-  graph.i <- plots[[var]] +
-    labs(title = var)
-  print(graph.i)
-} 
-
-```
-
-
-
-### NMDS
-
-```{r, 052_transcriptomics.nmds, echo=FALSE}
-
-
-keep2 = grep('Plant|Stress|Time', colnames(qPCR), invert = TRUE)
-
-mymat = qPCR[, keep2]
-
-time.levels = sort(as.numeric(unique(qPCR$Time)))
-# plot(time.levels, rep(0, length(time.levels)), pch = c(1, 16, 0, 15, 2, 17, 8), 
-#      col = 'black', cex = 2,
-#      yaxt='n', xaxt='n', ann=FALSE, bty='n')
-# axis(side = 1, at = time.levels, labels = time.levels)
-    
-
-NMDS.plots = my.NMDS(mymat = mymat, 
-                     subset = qPCR, 
-                     stress.levels = c('C', 'H', 'D', 'HD', 'W'),
-                     time.levels = time.levels,
-                     title = 'Transcriptomics',
-                     k = 3)
-
-cowplot::plot_grid(NMDS.plots[[1]], NMDS.plots[[2]], NMDS.plots[[3]],  
-                   NMDS.plots[[4]], NMDS.plots[[5]], NMDS.plots[[6]],
-                   ncol=3, nrow = 2)
-
-qPCR.subset = qPCR
-
-
-mymat = qPCR[qPCR$Stress != 'W', keep2]
-NMDS.plots = my.NMDS(mymat = mymat, 
-                     subset = qPCR[qPCR$Stress != 'W', ], 
-                     stress.levels = c('C', 'H', 'D', 'HD'),
-                     time.levels = time.levels,
-                     title = 'Transcriptomics without W',
-                     k = 3)
-cowplot::plot_grid(NMDS.plots[[1]], NMDS.plots[[2]], NMDS.plots[[3]],  
-                   NMDS.plots[[4]], NMDS.plots[[5]], NMDS.plots[[6]],
-                   ncol=3, nrow = 2)
-
-
-
-mymat = qPCR[, setdiff(keep2, grep('RD29B', colnames(qPCR)))]
-NMDS.plots = my.NMDS(mymat = mymat, 
-                     subset = qPCR[, -grep('RD29B', colnames(qPCR))], 
-                     stress.levels = c('C', 'H', 'D', 'HD', 'W'),
-                     time.levels = time.levels,
-                     title = 'Transcriptomics without RD29B',
-                     k = 3)
-
-cowplot::plot_grid(NMDS.plots[[1]], NMDS.plots[[2]], NMDS.plots[[3]],  
-                   NMDS.plots[[4]], NMDS.plots[[5]], NMDS.plots[[6]],
-                   ncol=3, nrow = 2)
-
+qPCR$SamplingDay = as.numeric(qPCR$SamplingDay)
+qPCR$Treatment = factor(qPCR$Treatment)
+qPCR = qPCR[order(qPCR$Treatment, qPCR$SamplingDay, qPCR$PlantNo), ]
 
 
 ```
 
 
-#### NMDS pairs, across all samples
+Repat procedure as for Hormonomics and Metabolomics
 
-```{r, 052_transcriptomics_NMDS.pairs, echo=FALSE}
-
-for (i in c('H', 'D', 'HD', 'W')){
-  print(i)
-  subset = qPCR[qPCR$Stress  %in% c('C', i), ]
-  mymat = subset[, keep2]
-  time.levels = sort(as.numeric(unique(subset$Time)))
-  NMDS.plots = my.NMDS(mymat = mymat, 
-                     subset = subset,
-                     stress.levels = c('C', i),
-                     time.levels = time.levels,
-                     title = paste0('Leaf Transcriptomics\nC ', i),
-                     k = 3)
-  myplot = cowplot::plot_grid(NMDS.plots[[1]], NMDS.plots[[2]], NMDS.plots[[3]],  
-                   NMDS.plots[[4]], NMDS.plots[[5]], NMDS.plots[[6]],
-                   ncol=3, nrow = 2)
-  print(myplot)
-}
-
-
-
-```
-
-### cor
-
-```{r, 053_transcriptomics.cor, echo=FALSE}
-
-d = qPCR[, -c(grep('Stress|Plant|Time', colnames(qPCR)))]
-par(mfrow = c(1,2))
-my.cor.plot(mymat = d, 
-            main = 'Transcriptomics (all tp)', 
-            col = rev(my.heatmap.col1), 
-            order = 'original', 
-            type = 'pearson', 
-            choose = 1)
-my.cor.plot(mymat = d, 
-            main = 'Transcriptomics (all tp)', 
-            col = rev(my.heatmap.col2), 
-            order = 'original', 
-            type = 'pearson', 
-            choose = 1)
-par(mfrow = c(1,1))
-
-
-d = qPCR[, -c(grep('Stress|Plant|Time', colnames(qPCR)))]
-my.pairs.panels(df = d, 
-                method = "pearson", 
-                palette = my.ggplot.palette[1:n], 
-                scale = FALSE,
-                main = 'Transcriptomics (all tp)',
-                cex.labels = 1, 
-                cex = 1)
-```
-
-
-
-### cor groups
-
-```{r, 054_transcriptomics.cor.group, echo=FALSE}
-
-keep2 = grep('Plant|Stress|Time', colnames(qPCR), invert = TRUE)
-
-Ctrl = as.matrix(qPCR[qPCR$Stress == 'C', keep2])
-H = as.matrix(qPCR[qPCR$Stress == 'H', keep2])
-D = as.matrix(qPCR[qPCR$Stress == 'D', keep2])
-HD = as.matrix(qPCR[qPCR$Stress == 'HD', keep2])
-W = as.matrix(qPCR[qPCR$Stress == 'W', keep2])
-
-par(mfrow=c(2,3))
-my.cor.plot(mymat = Ctrl,
-            main = 'Transcriptomics pearson cor (all tp)\nCtrl',
-            col = rev(my.heatmap.col1),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = H,
-            main = 'Transcriptomics pearson cor (all tp)\nH',
-            col = rev(my.heatmap.col1),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = D,
-            main = 'Transcriptomics pearson cor (all tp)\nD',
-            col = rev(my.heatmap.col1),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = W,
-            main = 'Transcriptomics pearson cor (all tp)\nW',
-            col = rev(my.heatmap.col1),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = HD,
-            main = 'Transcriptomics pearson cor (all tp)\nHD',
-            col = rev(my.heatmap.col1),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-par(mfrow=c(1,1))
-
-par(mfrow=c(2,3))
-my.cor.plot(mymat = Ctrl,
-            main = 'Transcriptomics pearson cor (all tp)\nCtrl',
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = H,
-            main = 'Transcriptomics pearson cor (all tp)\nH',
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = D,
-            main = 'Transcriptomics pearson cor (all tp)\nD',
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = W,
-            main = 'Transcriptomics pearson cor (all tp)\nW',
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = HD,
-            main = 'Transcriptomics pearson cor (all tp)\nHD',
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-par(mfrow=c(1,1))
-
-
-par(mfrow=c(1,2))
-palCWH = rainbow(6)[as.numeric(as.factor(qPCR[qPCR$Stress == 'C', 2]))]
-pie(rep(1,6), col = unique(palCWH), labels = unique(qPCR[qPCR$Stress == 'C', 2]), 
-    main = 'C H W')
-palDHD = unique(palCWH)[-c(1,5)]
-pie(rep(1,4), col = unique(palDHD), labels = unique(qPCR[qPCR$Stress == 'HD', 2]),
-    main = 'H HD')
-par(mfrow=c(1,1))
-
-my.pairs.panels(df = Ctrl, 
-                method = "pearson", 
-                palette = palCWH, 
-                scale = FALSE,
-                main = 'qPCR Ctrl (all tp)',
-                cex.labels = 1.0, 
-                cex = 1)
-my.pairs.panels(df = H, 
-                method = "pearson", 
-                palette = palCWH, 
-                scale = FALSE,
-                main = 'qPCR H (all tp)',
-                cex.labels = 1.0, 
-                cex = 1)
-my.pairs.panels(df = D, 
-                method = "pearson", 
-                palette = palDHD, 
-                scale = FALSE,
-                main = 'qPCR D (all tp)',
-                cex.labels = 1.0, 
-                cex = 1)
-my.pairs.panels(df = HD, 
-                method = "pearson", 
-                palette = palDHD, 
-                scale = FALSE,
-                main = 'qPCR HD (all tp)',
-                cex.labels = 1.0, 
-                cex = 1)
-my.pairs.panels(df = W, 
-                method = "pearson", 
-                palette = palCWH, 
-                scale = FALSE,
-                main = 'qPCR W (all tp)',
-                cex.labels = 1.0, 
-                cex = 1)
-
-
-
-
-####
-par(mfrow=c(2,3))
-my.cor.plot(mymat = as.matrix(qPCR[qPCR$Stress == 'C' & qPCR$Time %in% 1:14, keep2]),
-            main = 'qPCR pearson cor 1:14\nCtrl',
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = as.matrix(qPCR[qPCR$Stress == 'H' & qPCR$Time %in% 1:14, keep2]),
-            main = 'qPCR pearson cor 1:14\nH',
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = as.matrix(qPCR[qPCR$Stress == 'D' & qPCR$Time %in% 1:14, keep2]), # 1:7 so and so does not exist
-            main = 'qPCR pearson cor 8:14\nD',
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = as.matrix(qPCR[qPCR$Stress == 'W' & qPCR$Time %in% 1:14, keep2]),
-            main = 'qPCR pearson cor 1:14\nW',
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = as.matrix(qPCR[qPCR$Stress == 'HD' & qPCR$Time %in% 1:14, keep2]), # 1:7 so and so does not exist
-            main = 'qPCR pearson cor 8:14\nHD',
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-par(mfrow=c(1,1))
-
-
-par(mfrow=c(2,3))
-my.cor.plot(mymat = as.matrix(qPCR[qPCR$Stress == 'C' & qPCR$Time %in% 1:7, keep2]),
-            main = 'qPCR pearson cor 1:7\nCtrl',
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = as.matrix(qPCR[qPCR$Stress == 'H' & qPCR$Time %in% 1:7, keep2]),
-            main = 'qPCR pearson cor 1:7\nH',
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = as.matrix(qPCR[qPCR$Stress == 'D' & qPCR$Time %in% 8:14, keep2]),
-            main = 'qPCR pearson cor 8:14\nD',
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = as.matrix(qPCR[qPCR$Stress == 'W' & qPCR$Time %in% 1:7, keep2]),
-            main = 'qPCR pearson cor 1:7\nW',
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = as.matrix(qPCR[qPCR$Stress == 'HD' & qPCR$Time %in% 8:14, keep2]),
-            main = 'qPCR pearson cor 8:14\nHD',
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-par(mfrow=c(1,1))
-
-
-
-```
-
-
-### cor dist
-
-```{r, echo=FALSE}
-
-dtX = qPCR
-is.numeric(dtX$Time)
-
-Ctrl.H = (dtX[(dtX$Stress == 'C') & (dtX$Time %in% c(1,7)), 1:ncol(dtX)])
-Ctrl.D = (dtX[(dtX$Stress == 'C') & (dtX$Time %in% c(8,14)), 1:ncol(dtX)])
-H =  (dtX[(dtX$Stress == 'H') & (dtX$Time %in% c(1,7)), 1:ncol(dtX)])
-D =  (dtX[(dtX$Stress == 'D') & (dtX$Time %in% c(8,14)), 1:ncol(dtX)])
-HD =  (dtX[(dtX$Stress == 'HD') & (dtX$Time %in% c(8,14)), 1:ncol(dtX)])
-W =  (dtX[(dtX$Stress == 'W') & (dtX$Time %in% c(1,7)), 1:ncol(dtX)])
-
-Ctrl.H[Ctrl.H$Time == 7,]$Time = 2
-Ctrl.D[Ctrl.D$Time == 8,]$Time = 1
-Ctrl.D[Ctrl.D$Time == 14,]$Time = 2
-HD[HD$Time == 8,]$Time = 1
-HD[HD$Time == 14,]$Time = 2
-D[D$Time == 8,]$Time = 1
-D[D$Time == 14,]$Time = 2
-H[H$Time == 7,]$Time = 2
-W[W$Time == 7,]$Time = 2
-
-
-```
-
-
-
-
-```{r, 055_transcriptomics.cor.dist, echo=FALSE}
-
-keep1 = grep('Plant|Time|Stress', colnames(dtX), invert = TRUE)
-
-my.c.list = list (cor(Ctrl.H[, keep1], use = 'na.or.complete'), 
-                  cor(Ctrl.D[, keep1], use = 'na.or.complete'),
-                  cor(H[, keep1], use = 'na.or.complete'), 
-                  cor(D[, keep1], use = 'na.or.complete'), 
-                  cor(HD[, keep1], use = 'na.or.complete'), 
-                  cor(W[, keep1], use = 'na.or.complete'))
-names(my.c.list) = c('Ctrl.H', 'Ctrl.D', 'H', 'D', 'HD', 'W')
-
-
-comb = RcppAlgos::comboGrid(1:length(my.c.list), 1:length(my.c.list),  repetition = FALSE)
-
-for (i in 1:nrow(comb)){
-  
-
-  cat('blue'(names(my.c.list)[comb[i,1]], names(my.c.list)[comb[i,2]], '\n'))
-  a = my.c.list[[comb[i,1]]]
-  b = my.c.list[[comb[i,2]]]
-
-  plot = my.pheatmap(df = a, 
-                     main = names(my.c.list)[comb[i,1]], 
-                     col = rev(my.heatmap.col1),
-                     breaks = setdiff(seq(-1, 1, 0.1), 0),
-                     silent = TRUE) 
-  myplots = list(plot[[4]])
-  plot = my.pheatmap(df = a, 
-                      main = names(my.c.list)[comb[i,1]], 
-                      col = rev(my.heatmap.col2),
-                      breaks = setdiff(seq(-1, 1, 0.1), 0),
-                     silent = TRUE) 
-  myplots[[2]] = (plot[[4]])
-  
-  
-  plot = my.pheatmap(df = b, 
-                      main = names(my.c.list)[comb[i,2]], 
-                      col = rev(my.heatmap.col1),
-                      breaks = setdiff(seq(-1, 1, 0.1), 0),
-                     silent = TRUE) 
-  myplots[[3]] = (plot[[4]])
-  plot = my.pheatmap(df = b, 
-                      main = names(my.c.list)[comb[i,2]], 
-                      col = rev(my.heatmap.col2),
-                      breaks = setdiff(seq(-1, 1, 0.1), 0),
-                     silent = TRUE) 
-  myplots[[4]] = (plot[[4]])
-  
-
-  diff = abs(a - b)
-  plot = my.pheatmap(df = diff,
-                      col = rev(my.dist.col), 
-                      main = paste0('Diffrence ', 
-                                    names(my.c.list)[comb[i,1]], ' - ', 
-                                    names(my.c.list)[comb[i,2]]),
-                      breaks = seq(0, 2, 0.2),
-                     silent = TRUE)
-  myplots[[5]] = (plot[[4]])
-  plot = my.pheatmap(df = diff,
-                      col = rev(my.dist.col2), 
-                      main = paste0('Diffrence ', 
-                                    names(my.c.list)[comb[i,1]], ' - ', 
-                                    names(my.c.list)[comb[i,2]]),
-                      breaks = seq(0, 2, 0.2),
-                     silent = TRUE)
-  myplots[[6]] = (plot[[4]])
-
-  gridExtra::grid.arrange(gridExtra::arrangeGrob(myplots[[1]], myplots[[3]], myplots[[5]], ncol=3),
-                          gridExtra::arrangeGrob(myplots[[2]], myplots[[4]], myplots[[6]], ncol=3),
-                          nrow = 2)
-
-  
-  
-}
-
-
-
-```
-
-
-#### NMDS subset
-
-```{r, 052_transcriptomics.nmds.subset, echo=FALSE}
-
-
-subset = qPCR[qPCR$Time %in% 1:14, ]
-keep = grep('Plant|Stress|Time', colnames(subset), invert = TRUE)
-mymat = subset[, keep]
-
-time.levels = sort(as.numeric(unique(subset$Time)))
-
-NMDS.plots = my.NMDS(mymat = mymat, 
-                     subset = subset, 
-                     stress.levels = c('C', 'H', 'D', 'HD', 'W'),
-                     time.levels = time.levels,
-                     title = 'Transcriptomics 1:14',
-                     k = 3)
-
-cowplot::plot_grid(NMDS.plots[[1]], NMDS.plots[[2]], NMDS.plots[[3]],  
-                   NMDS.plots[[4]], NMDS.plots[[5]], NMDS.plots[[6]],
-                   ncol=3, nrow = 2)
-
-
-subset = qPCR[qPCR$Time %in% 1:7, ]
-keep = grep('Plant|Stress|Time', colnames(subset), invert = TRUE)
-mymat = subset[, keep]
-
-time.levels = sort(as.numeric(unique(subset$Time)))
-
-NMDS.plots = my.NMDS(mymat = mymat, 
-                     subset = subset, 
-                     stress.levels = c('C', 'H', 'D', 'HD', 'W'),
-                     time.levels = time.levels,
-                     title = 'Transcriptomics 1:7',
-                     k = 3)
-
-cowplot::plot_grid(NMDS.plots[[1]], NMDS.plots[[2]], NMDS.plots[[3]],  
-                   NMDS.plots[[4]], NMDS.plots[[5]], NMDS.plots[[6]],
-                   ncol=3, nrow = 2)
-
-subset = qPCR[qPCR$Time %in% 8:14, ]
-keep = grep('Plant|Stress|Time', colnames(subset), invert = TRUE)
-mymat = subset[, keep]
-
-time.levels = sort(as.numeric(unique(subset$Time)))
-
-NMDS.plots = my.NMDS(mymat = mymat, 
-                     subset = subset, 
-                     stress.levels = c('C', 'H', 'D', 'HD', 'W'),
-                     time.levels = time.levels,
-                     title = 'Transcriptomics 8:14',
-                     k = 3)
-
-cowplot::plot_grid(NMDS.plots[[1]], NMDS.plots[[2]], NMDS.plots[[3]],  
-                   NMDS.plots[[4]], NMDS.plots[[5]], NMDS.plots[[6]],
-                   ncol=3, nrow = 2)
-
-subset = qPCR[qPCR$Time %in% 8:28, ]
-keep = grep('Plant|Stress|Time', colnames(subset), invert = TRUE)
-mymat = subset[, keep]
-
-time.levels = sort(as.numeric(unique(subset$Time)))
-
-NMDS.plots = my.NMDS(mymat = mymat, 
-                     subset = subset, 
-                     stress.levels = c('C', 'H', 'D', 'HD', 'W'),
-                     time.levels = time.levels,
-                     title = 'Transcriptomics 8:28',
-                     k = 3)
-
-cowplot::plot_grid(NMDS.plots[[1]], NMDS.plots[[2]], NMDS.plots[[3]],  
-                   NMDS.plots[[4]], NMDS.plots[[5]], NMDS.plots[[6]],
-                   ncol=3, nrow = 2)
-
-
-subset = qPCR[(qPCR$Time %in% 1:7 & qPCR$Stress %in% c('C', 'H', 'W')) |
-               (qPCR$Time %in% 8:14 & qPCR$Stress %in% c('D', 'HD')) , ]
-keep = grep('Plant|Stress|Time', colnames(subset), invert = TRUE)
-mymat = subset[, keep]
-
-time.levels = sort(as.numeric(unique(subset$Time)))
-
-NMDS.plots = my.NMDS(mymat = mymat, 
-                     subset = subset, 
-                     stress.levels = c('C', 'H', 'D', 'HD', 'W'),
-                     time.levels = time.levels,
-                     title = 'qPCRonomics one week',
-                     k = 3)
-
-cowplot::plot_grid(NMDS.plots[[1]], NMDS.plots[[2]], NMDS.plots[[3]],  
-                   NMDS.plots[[4]], NMDS.plots[[5]], NMDS.plots[[6]],
-                   ncol=3, nrow = 2)
-
-
-
-```
-
-
-
-
-### t-tests
-
-```{r, 056_transcriptomics.t.tests, echo=FALSE}
-
-data = rbind(Ctrl.H, Ctrl.D, H, D, HD, W)
-tmp = c(rep('Ctrl.H', nrow(Ctrl.H)),
-        rep('Ctrl.D', nrow(Ctrl.D)),
-        rep('H', nrow(H)),
-        rep('D', nrow(D)),
-        rep('HD', nrow(HD)),
-        rep('W', nrow(W)))
-data$Stress = tmp
-data$Stress = paste(data$Stress, data$Time, sep = '_')
-
-cat(blue('day 1\n'))
-data.1 = data[data$Time == 1, ]
-data.1.1 = data.1[data.1$Stress %in% c('Ctrl.H_1', 'H_1', 'W_1'), ]
-stat.test.1.1 = my.customised.t.test(data = data.1.1[, -grep('Plant|Time', colnames(data.1.1))], 
-                                 var.levels = colnames(data.1.1)[-grep('Plant|Time|Stress', colnames(data.1.1))], 
-                                 stress.levels = unique(data.1.1$Stress),
-                                 plot.violin = FALSE, 
-                                 plot.box = FALSE, 
-                                 plot.dot = TRUE,
-                                 single = TRUE,
-                                 y.lab = "Transcriptomics",
-                                 p.cex.labels = 1, 
-                                 p.cex = 0.5,
-                                 p.palette = my.ggplot.palette[c(1, 2, 5)])
-cat(blue('day 8\n'))
-data.1 = data[data$Time == 1, ]
-data.1.2 = data.1[data.1$Stress %in% c('Ctrl.D_1', 'D_1', 'HD_1'), ]
-stat.test.1.2 = my.customised.t.test(data = data.1.2[, -grep('Plant|Time', colnames(data.1.2))], 
-                                 var.levels = colnames(data.1.2)[-grep('Plant|Time|Stress', colnames(data.1.2))], 
-                                 stress.levels = unique(data.1.2$Stress),
-                                 plot.violin = FALSE, 
-                                 plot.box = FALSE, 
-                                 plot.dot = TRUE,
-                                 single = TRUE,
-                                 y.lab = "Transcriptomics",
-                                 p.cex.labels = 1, 
-                                 p.cex = 0.5,
-                                 p.palette =  my.ggplot.palette[c(1, 3, 4)])
-cat(blue('day 7\n'))
-data.2 = data[data$Time == 2, ]
-data.2.1 = data.2[data.2$Stress %in% c('Ctrl.H_2', 'H_2', 'W_2'), ]
-stat.test.2.1 = my.customised.t.test(data = data.2.1[, -grep('Plant|Time', colnames(data.2.1))], 
-                                 var.levels = colnames(data.2.1)[-grep('Plant|Time|Stress', colnames(data.2.1))], 
-                                 stress.levels = unique(data.2.1$Stress),
-                                 plot.violin = FALSE, 
-                                 plot.box = FALSE, 
-                                 plot.dot = TRUE,
-                                 single = TRUE,
-                                 y.lab = "Transcriptomics",
-                                 p.cex.labels = 1, 
-                                 p.cex = 0.5,
-                                 p.palette = my.ggplot.palette[c(1, 2, 5)])
-cat(blue('day 14\n'))
-data.2 = data[data$Time == 2, ]
-data.2.2 = data.2[data.2$Stress %in% c('Ctrl.D_2', 'D_2', 'HD_2'), ]
-stat.test.2.2 = my.customised.t.test(data = data.2.2[, -grep('Plant|Time', colnames(data.2.2))], 
-                                 var.levels = colnames(data.2.2)[-grep('Plant|Time|Stress', colnames(data.2.2))], 
-                                 stress.levels = unique(data.2.2$Stress),
-                                 plot.violin = FALSE, 
-                                 plot.box = FALSE, 
-                                 plot.dot = TRUE,
-                                 single = TRUE,
-                                 y.lab = "Transcriptomics",
-                                 p.cex.labels = 1, 
-                                 p.cex = 0.5,
-                                 p.palette =  my.ggplot.palette[c(1, 3, 4)])
-
-
-stat.test = rbind(stat.test.1.1,
-                  stat.test.1.2,
-                  stat.test.2.1,
-                  stat.test.2.2)
-data.table::setDT(stat.test)
-stat.test.leaves.qPCR = stat.test
-ind = (grep('groups', colnames(stat.test.leaves.qPCR)))
-stat.test.leaves.qPCR = stat.test.leaves.qPCR[, -..ind]
-
-fp = file.path('..', 'reports')
-fn = 't.tests_leaves-qPCR_start.txt'
-write.table(stat.test.leaves.qPCR,
-            file = file.path(fp, fn), 
-            append = FALSE, 
-            quote = FALSE, 
-            sep = "\t",
-            eol = "\n", 
-            na = "NA", 
-            dec = ".", 
-            row.names = TRUE,
-            col.names = TRUE, 
-            qmethod = 'escape',
-            fileEncoding = "UTF-8")
-
-
-
-
-
-```
-
-
-
-
-### heatmap on stress START/STOP data
-
-```{r, 057_transcriptomics.heatmap.stress.groups, echo=FALSE}
-
-
-
-my.heatmaply.cor(df = data[, keep2], 
-                 type = 'pearson', 
-                 dist_method = 'minkowski', 
-                 hclust_method = 'ward.D2',
-                 main = 'Transcriptomics stress [start, stop]\nrcorr, p-val, minkowski, Ward.2',
-                 colors = rev(my.heatmap.col1))
-my.heatmaply.cor(df = data[, keep2], 
-                 type = 'pearson', 
-                 dist_method = 'minkowski', 
-                 hclust_method = 'ward.D2',
-                 main = 'Transcriptomics stress [start, stop]\nrcorr, p-val, minkowski, Ward.2',
-                 colors = rev(my.heatmap.col2))
-
-
-```
-
-
-
-### logFC START/STOP stress
- 
-```{r, 058_transcriptomics.plotly.logFC.heatmap, echo=FALSE}
-
-table(is.na(data[, keep2]))
-table(data[, keep2] == 0)
-
-
-leaf.qPCR.log2FC = my.logFC(Ctrl.H = Ctrl.H, Ctrl.D = Ctrl.D, 
-                            H = H, D = D, HD = HD, W = W, 
-                            tp = 2, title = 'Transcriptomics')
-
-mm <- list(
-    l = 0,
-    r = 0,
-    b = 0,
-    t = 40
-)
-m = max(abs(min(leaf.qPCR.log2FC, na.rm = TRUE)), abs(max(leaf.qPCR.log2FC, na.rm = TRUE)))
-p = plot_ly(z = leaf.qPCR.log2FC, 
-            type = "heatmap",
-            y = rownames(leaf.qPCR.log2FC), 
-            x = colnames(leaf.qPCR.log2FC),
-            colors = rev(brewer.pal(n, 'RdBu')),
-            zmax = m, 
-            zmid = 0, 
-            zmin = -m,
-            width = 600, 
-            height = 300
-            ) %>%
-  layout(title = 'Leaf Transcriptomics', 
-         margin = mm)
-print(p)
-saveWidget(p, 
-           file = "../reports/Leaf-Transcriptomics_logFC.html",
-           selfcontained = TRUE)
-
-
-    
-
-
-fn = 'log2FC_leaves-qPCR.txt'
-write.table(leaf.qPCR.log2FC,
-            file = file.path(fp, fn), 
-            append = FALSE, 
-            quote = FALSE, 
-            sep = "\t",
-            eol = "\n", 
-            na = "NA", 
-            dec = ".", 
-            row.names = TRUE,
-            col.names = TRUE, 
-            qmethod = 'escape',
-            fileEncoding = "UTF-8")
-
-
-```
 
 
 ```{r, libraries.sources6}
 
-rm(list=setdiff(ls(), c("tubers.met.log2FC", 
-                        'stat.test.tubers.met',
-                        'tubers.met.avg',
-                        'pheno', 
-                        'tubers',
-                        'leaf.phenomics.log2FC',
-                        'stat.test.leaves.phenomics',
-                        'my.ggplot.palette',
-                        'my.heatmap.col1',
-                        'my.heatmap.col2',
-                        'my.dist.col',
-                        'leaf.horm.log2FC',
-                        'stat.test.leaves.hormonomics',
-                        'stat.test.leaves.metabolomics',
-                        'leaf.met.log2FC',
-                        'stat.test.leaves.qPCR',
-                        'leaf.qPCR.log2FC',
-                        'qPCR.subset',
-                        'horm.subset',
-                        'met.subset')))
+rm(list=setdiff(ls(), c('pheno',
+                        'horm',
+                        'met',
+                        'qPCR'
+                        )))
 gc()
-source('02_f-ctions.R')
+source('01_f-ctions.R')
 gc()
 
-
-save.image(file = "02.RData")
+save.image(file = "01.RData")
 
 
 ```
-
 
 
 
@@ -2658,36 +738,23 @@ save.image(file = "02.RData")
 
 ## data
 
-```{r, 60_omics, echo=FALSE}
+```{r, 60_omics, echo=TRUE}
 
-colM = colnames(met.subset)
-colT = colnames(qPCR.subset)
-colH = colnames(horm.subset)
-colTub = colnames(tubers)
-colPh = colnames(pheno)
-colTubM = colnames(tubers.met.avg)
-colP = colnames(pf)
+colM = colnames(met)
+colT = colnames(qPCR)
+colH = colnames(horm)
 
-omics = merge(qPCR.subset, met.subset, 
-              by = c("Stress", "Time", "Plant"), 
+omics = merge(qPCR, met, 
+              by = c("Treatment", "SamplingDay", "PlantNo"), 
               all.x = FALSE, all.y = FALSE)
-omics = merge(omics, horm.subset, 
-              by = c("Stress", "Time", "Plant"), 
-              all.x = FALSE, all.y = FALSE)
-omics = merge(omics, pf, 
-              by = c("Stress", "Time", "Plant"), 
-              all.x = FALSE, all.y = FALSE)
-omics$Time = as.numeric(omics$Time)
-# omics$Plant = as.numeric(omics$Plant)
-omics$Plant = rep(1:4, nrow(omics)/4)
-omics$Plant = as.numeric(omics$Plant)
-omics = merge(omics, pheno, 
-              by = c("Stress", "Time", "Plant"), 
+omics = merge(omics, horm, 
+              by = c("Treatment", "SamplingDay", "PlantNo"), 
               all.x = FALSE, all.y = FALSE)
 
-omics = omics[, -grep('neoPA', colnames(omics))]
+omics$SamplingDay = as.numeric(omics$SamplingDay)
 
-keep2 = grep("Stress|Time|Plant", colnames(omics), invert = TRUE)
+
+keep2 = grep("Treatment|SamplingDay|PlantNo", colnames(omics), invert = TRUE)
 
 MT = intersect(keep2,
                which(colnames(omics) %in% c(colM, colT)))
@@ -2695,518 +762,11 @@ MH = intersect(keep2,
                which(colnames(omics) %in% c(colM, colH)))
 TH = intersect(keep2,
                which(colnames(omics) %in% c(colT, colH)))
-TPh = intersect(keep2,
-               which(colnames(omics) %in% c(colT, colPh)))
-MPh = intersect(keep2,
-               which(colnames(omics) %in% c(colM, colPh)))
-HPh = intersect(keep2,
-               which(colnames(omics) %in% c(colH, colPh)))
-ignore = c(1:3, which(colnames(omics) %in% c(colP)))
 
 ```
-
-## cor
-
-```{r, 61_omics.cor, echo=FALSE}
-
-# p1 = my.pheatmap(df = cor(omics[, keep2], use = 'na.or.complete'), 
-#             main = 'Omics', 
-#             col = rev(my.heatmap.col1),
-#             breaks = setdiff(seq(-1, 1, 0.1), 0),
-#             silent = TRUE)
-# my.pheatmap(df = cor(omics[, MT], use = 'na.or.complete'),
-#             main = 'Omics MT',
-#             col = rev(my.heatmap.col2),
-#             breaks = setdiff(seq(-1, 1, 0.1), 0),
-#             silent = FALSE)
-# gridExtra::grid.arrange(p1[[4]], p2[[4]], ncol=2, nrow = 1)
-
-
-par(mfrow = c(1,3))
-
-my.cor.plot(mymat = omics[, MT], 
-            main = 'Omics Met Trans (all tp)', 
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = omics[, MH], 
-            main = 'Omics Met Horm (all tp)', 
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = omics[, TH], 
-            main = 'Omics Trans Horm (all tp)', 
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-
-my.cor.plot(mymat = omics[, MPh], 
-            main = 'Omics Met Pheno (all tp)', 
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = omics[, HPh], 
-            main = 'Omics Horm Pheno (all tp)', 
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = omics[, TPh], 
-            main = 'Omics Trans Pheno (all tp)', 
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-
-# pheatmap::pheatmap(cor(omics[, -c(1:3)], use = 'na.or.complete'),
-#                    method = "color",
-#                    main = 'omics',
-#                    mar = c(0.5, 0.5, 0.25, 0.5),
-#                    tl.cex = 0.5,
-#                    fontsize_row = 3,
-#                    fontsize_col = 3,
-#                    tl.col = "grey45",
-#                    col = rev(my.heatmap.col2),
-#                    cluster_cols=TRUE,
-#                    cluster_rows=TRUE,
-#                    cellwidth = 5,
-#                    cellheight = 5,
-#                    breaks = setdiff(seq(-1, 1, 0.1), 0),
-#                    silent = FALSE)
-# pheatmap::pheatmap(cor(omics[, -c(1:3)], use = 'na.or.complete'), 
-#                    method = "color", 
-#                    main = 'omics', 
-#                    mar = c(0.5, 0.5, 0.25, 0.5),
-#                    tl.cex = 0.5,
-#                    fontsize_row = 3, 
-#                    fontsize_col = 3,
-#                    tl.col = "grey45", 
-#                    col = rev(my.heatmap.col2),
-#                    cluster_cols=FALSE, 
-#                    cluster_rows=FALSE,
-#                    cellwidth = 5, 
-#                    cellheight = 5,
-#                    breaks = setdiff(seq(-1, 1, 0.1), 0),
-#                    silent = FALSE)
-# pheatmap::pheatmap(cor(omics[, -c(1:3)], use = 'na.or.complete'), 
-#                    method = "color", 
-#                    main = 'omics', 
-#                    mar = c(0.5, 0.5, 0.25, 0.5),
-#                    tl.cex = 0.5,
-#                    fontsize_row = 3, 
-#                    fontsize_col = 3,
-#                    tl.col = "grey45", 
-#                    col = rev(my.heatmap.col1),
-#                    cluster_cols=FALSE, 
-#                    cluster_rows=FALSE,
-#                    cellwidth = 5, 
-#                    cellheight = 5,
-#                    breaks = setdiff(seq(-1, 1, 0.1), 0),
-#                    silent = FALSE)
-# pheatmap::pheatmap(cor(omics[, -c(1:3)], use = 'na.or.complete'), 
-#                    method = "color", 
-#                    main = 'omics', 
-#                    mar = c(0.5, 0.5, 0.25, 0.5),
-#                    tl.cex = 0.5,
-#                    fontsize_row = 3, 
-#                    fontsize_col = 3,
-#                    tl.col = "grey45", 
-#                    col = rev(my.heatmap.col1),
-#                    cluster_cols=TRUE, 
-#                    cluster_rows=TRUE,
-#                    cellwidth = 5, 
-#                    cellheight = 5,
-#                    breaks = setdiff(seq(-1, 1, 0.1), 0),
-#                    silent = FALSE)
-
-omics.stress = omics[omics$Time %in% 1:14, ]
-my.cor.plot(mymat = omics.stress[, MT], 
-            main = 'Omics Met Trans (1:14)', 
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = omics.stress[, MH], 
-            main = 'Omics Met Horm (1:14)', 
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = omics.stress[, TH], 
-            main = 'Omics Trans Horm (1:14)', 
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-
-my.cor.plot(mymat = omics.stress[, MPh], 
-            main = 'Omics Met Pheno (1:14)', 
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = omics.stress[, HPh], 
-            main = 'Omics Horm Pheno (1:14)', 
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = omics.stress[, TPh], 
-            main = 'Omics Trans Pheno (1:14)', 
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-
-
-subset = omics[(omics$Time %in% 1:7 & omics$Stress %in% c('C', 'H', 'W')) |
-               (omics$Time %in% 8:14 & omics$Stress %in% c('D', 'HD')) , ]
-
-
-
-my.cor.plot(mymat = subset[, MT], 
-            main = 'Omics Met Trans (1:7 or 8:14)', 
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = subset[, MH], 
-            main = 'Omics Met Horm (1:7 or 8:14)', 
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = subset[, TH], 
-            main = 'Omics Trans Horm (1:7 or 8:14)', 
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-
-my.cor.plot(mymat = subset[, MPh], 
-            main = 'Omics Met Pheno (1:7 or 8:14)', 
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = subset[, HPh], 
-            main = 'Omics Horm Pheno (1:7 or 8:14)', 
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-my.cor.plot(mymat = subset[, TPh], 
-            main = 'Omics Trans Pheno (1:7 or 8:14)', 
-            col = rev(my.heatmap.col2),
-            order = 'original',
-            type = 'pearson',
-            choose = 1)
-
-
-```
-
-
-
-
-### by groups
-
-
-```{r, 062_omics.cor.groups, echo=FALSE}
-
-Ctrl = omics[omics$Stress == 'C', -ignore]
-H = omics[omics$Stress == 'H', -ignore]
-D = omics[omics$Stress == 'D', -ignore]
-HD = omics[omics$Stress == 'HD', -ignore]
-W = omics[omics$Stress == 'W', -ignore]
-
-keep2 = grep("Stress|Time|Plant", colnames(Ctrl), invert = TRUE)
-# par(mfrow = c(2,3))
-# my.cor.plot(mymat = Ctrl[, keep2], 
-#             main = 'Ctrl', 
-#             col = rev(my.heatmap.col2),
-#             order = 'original',
-#             type = 'pearson',
-#             choose = 1)
-pheatmap::pheatmap(cor(Ctrl[, keep2], use = 'na.or.complete'), 
-                   method = "color", 
-                   main = 'Ctrl (all tp)', 
-                   mar = c(0.5, 0.5, 0.25, 0.5),
-                   tl.cex = 0.5,
-                   fontsize_row = 6, 
-                   fontsize_col = 6,
-                   tl.col = "grey45", 
-                   col = rev(my.heatmap.col2),
-                   cluster_cols=TRUE, 
-                   cluster_rows=TRUE,
-                   cellwidth = 7, 
-                   cellheight = 7,
-                   breaks = setdiff(seq(-1, 1, 0.1), 0),
-                   silent = FALSE)
-pheatmap::pheatmap(cor(H[, keep2], use = 'na.or.complete'), 
-                   method = "color", 
-                   main = 'H (all tp)', 
-                   mar = c(0.5, 0.5, 0.25, 0.5),
-                   tl.cex = 0.5,
-                   fontsize_row = 6, 
-                   fontsize_col = 6,
-                   tl.col = "grey45", 
-                   col = rev(my.heatmap.col2),
-                   cluster_cols=TRUE, 
-                   cluster_rows=TRUE,
-                   cellwidth = 7, 
-                   cellheight = 7,
-                   breaks = setdiff(seq(-1, 1, 0.1), 0),
-                   silent = FALSE)
-pheatmap::pheatmap(cor(D[, keep2], use = 'na.or.complete'), 
-                   method = "color", 
-                   main = 'D (all tp)', 
-                   mar = c(0.5, 0.5, 0.25, 0.5),
-                   tl.cex = 0.5,
-                   fontsize_row = 6, 
-                   fontsize_col = 6,
-                   tl.col = "grey45", 
-                   col = rev(my.heatmap.col2),
-                   cluster_cols=TRUE, 
-                   cluster_rows=TRUE,
-                   cellwidth = 7, 
-                   cellheight = 7,
-                   breaks = setdiff(seq(-1, 1, 0.1), 0),
-                   silent = FALSE)
-pheatmap::pheatmap(cor(HD[, keep2], use = 'na.or.complete'), 
-                   method = "color", 
-                   main = 'HD (all tp)', 
-                   mar = c(0.5, 0.5, 0.25, 0.5),
-                   tl.cex = 0.5,
-                   fontsize_row = 6, 
-                   fontsize_col = 6,
-                   tl.col = "grey45", 
-                   col = rev(my.heatmap.col2),
-                   cluster_cols=TRUE, 
-                   cluster_rows=TRUE,
-                   cellwidth = 7, 
-                   cellheight = 7,
-                   breaks = setdiff(seq(-1, 1, 0.1), 0),
-                   silent = FALSE)
-pheatmap::pheatmap(cor(W[, keep2], use = 'na.or.complete'), 
-                   method = "color", 
-                   main = 'W (all tp)', 
-                   mar = c(0.5, 0.5, 0.25, 0.5),
-                   tl.cex = 0.5,
-                   fontsize_row = 6, 
-                   fontsize_col = 6,
-                   tl.col = "grey45", 
-                   col = rev(my.heatmap.col2),
-                   cluster_cols=TRUE, 
-                   cluster_rows=TRUE,
-                   cellwidth = 7, 
-                   cellheight = 7,
-                   breaks = setdiff(seq(-1, 1, 0.1), 0),
-                   silent = FALSE)
-
-# par(mfrow = c(1,1))
-
-
-
-Ctrl = omics[omics$Stress == 'C' & omics$Time %in% 1:14, -ignore]
-H = omics[omics$Stress == 'H' & omics$Time %in% 1:14, -ignore]
-D = omics[omics$Stress == 'D' & omics$Time %in% 1:14, -ignore]
-HD = omics[omics$Stress == 'HD' & omics$Time %in% 1:14, -ignore]
-W = omics[omics$Stress == 'W' & omics$Time %in% 1:14, -ignore]
-keep2 = grep("Stress|Time|Plant", colnames(Ctrl), invert = TRUE)
-
-pheatmap::pheatmap(cor(Ctrl[, keep2], use = 'na.or.complete'), 
-                   method = "color", 
-                   main = 'Ctrl (1:14)', 
-                   mar = c(0.5, 0.5, 0.25, 0.5),
-                   tl.cex = 0.5,
-                   fontsize_row = 6, 
-                   fontsize_col = 6,
-                   tl.col = "grey45", 
-                   col = rev(my.heatmap.col2),
-                   cluster_cols=TRUE, 
-                   cluster_rows=TRUE,
-                   cellwidth = 7, 
-                   cellheight = 7,
-                   breaks = setdiff(seq(-1, 1, 0.1), 0),
-                   silent = FALSE)
-pheatmap::pheatmap(cor(H[, keep2], use = 'na.or.complete'), 
-                   method = "color", 
-                   main = 'H (1:14)', 
-                   mar = c(0.5, 0.5, 0.25, 0.5),
-                   tl.cex = 0.5,
-                   fontsize_row = 6, 
-                   fontsize_col = 6,
-                   tl.col = "grey45", 
-                   col = rev(my.heatmap.col2),
-                   cluster_cols=TRUE, 
-                   cluster_rows=TRUE,
-                   cellwidth = 7, 
-                   cellheight = 7,
-                   breaks = setdiff(seq(-1, 1, 0.1), 0),
-                   silent = FALSE)
-pheatmap::pheatmap(cor(D[, keep2], use = 'na.or.complete'), 
-                   method = "color", 
-                   main = 'D (8:14)', 
-                   mar = c(0.5, 0.5, 0.25, 0.5),
-                   tl.cex = 0.5,
-                   fontsize_row = 6, 
-                   fontsize_col = 6,
-                   tl.col = "grey45", 
-                   col = rev(my.heatmap.col2),
-                   cluster_cols=TRUE, 
-                   cluster_rows=TRUE,
-                   cellwidth = 7, 
-                   cellheight = 7,
-                   breaks = setdiff(seq(-1, 1, 0.1), 0),
-                   silent = FALSE)
-pheatmap::pheatmap(cor(HD[, keep2], use = 'na.or.complete'), 
-                   method = "color", 
-                   main = 'HD (8:14)', 
-                   mar = c(0.5, 0.5, 0.25, 0.5),
-                   tl.cex = 0.5,
-                   fontsize_row = 6, 
-                   fontsize_col = 6,
-                   tl.col = "grey45", 
-                   col = rev(my.heatmap.col2),
-                   cluster_cols=TRUE, 
-                   cluster_rows=TRUE,
-                   cellwidth = 7, 
-                   cellheight = 7,
-                   breaks = setdiff(seq(-1, 1, 0.1), 0),
-                   silent = FALSE)
-pheatmap::pheatmap(cor(W[, keep2], use = 'na.or.complete'), 
-                   method = "color", 
-                   main = 'W (1:14)', 
-                   mar = c(0.5, 0.5, 0.25, 0.5),
-                   tl.cex = 0.5,
-                   fontsize_row = 6, 
-                   fontsize_col = 6,
-                   tl.col = "grey45", 
-                   col = rev(my.heatmap.col2),
-                   cluster_cols=TRUE, 
-                   cluster_rows=TRUE,
-                   cellwidth = 7, 
-                   cellheight = 7,
-                   breaks = setdiff(seq(-1, 1, 0.1), 0),
-                   silent = FALSE)
-
-
-
-Ctrl.H = omics[omics$Stress == 'C' & omics$Time %in% 1:7, -ignore]
-Ctrl.D = omics[omics$Stress == 'C' & omics$Time %in% 8:14, -ignore]
-H = omics[omics$Stress == 'H' & omics$Time %in% 1:7, -ignore]
-D = omics[omics$Stress == 'D' & omics$Time %in% 8:14, -ignore]
-HD = omics[omics$Stress == 'HD' & omics$Time %in% 8:14, -ignore]
-W = omics[omics$Stress == 'W' & omics$Time %in% 1:7, -ignore]
-keep2 = grep("Stress|Time|Plant", colnames(Ctrl), invert = TRUE)
-
-pheatmap::pheatmap(cor(Ctrl.H[, keep2], use = 'na.or.complete'), 
-                   method = "color", 
-                   main = 'Ctrl (1:7)', 
-                   mar = c(0.5, 0.5, 0.25, 0.5),
-                   tl.cex = 0.5,
-                   fontsize_row = 6, 
-                   fontsize_col = 6,
-                   tl.col = "grey45", 
-                   col = rev(my.heatmap.col2),
-                   cluster_cols=TRUE, 
-                   cluster_rows=TRUE,
-                   cellwidth = 7, 
-                   cellheight = 7,
-                   breaks = setdiff(seq(-1, 1, 0.1), 0),
-                   silent = FALSE)
-pheatmap::pheatmap(cor(Ctrl.D[, keep2], use = 'na.or.complete'), 
-                   method = "color", 
-                   main = 'Ctrl (8:14)', 
-                   mar = c(0.5, 0.5, 0.25, 0.5),
-                   tl.cex = 0.5,
-                   fontsize_row = 6, 
-                   fontsize_col = 6,
-                   tl.col = "grey45", 
-                   col = rev(my.heatmap.col2),
-                   cluster_cols=TRUE, 
-                   cluster_rows=TRUE,
-                   cellwidth = 7, 
-                   cellheight = 7,
-                   breaks = setdiff(seq(-1, 1, 0.1), 0),
-                   silent = FALSE)
-pheatmap::pheatmap(cor(H[, keep2], use = 'na.or.complete'), 
-                   method = "color", 
-                   main = 'H (1:7)', 
-                   mar = c(0.5, 0.5, 0.25, 0.5),
-                   tl.cex = 0.5,
-                   fontsize_row = 6, 
-                   fontsize_col = 6,
-                   tl.col = "grey45", 
-                   col = rev(my.heatmap.col2),
-                   cluster_cols=TRUE, 
-                   cluster_rows=TRUE,
-                   cellwidth = 7, 
-                   cellheight = 7,
-                   breaks = setdiff(seq(-1, 1, 0.1), 0),
-                   silent = FALSE)
-pheatmap::pheatmap(cor(D[, keep2], use = 'na.or.complete'), 
-                   method = "color", 
-                   main = 'D (8:14)', 
-                   mar = c(0.5, 0.5, 0.25, 0.5),
-                   tl.cex = 0.5,
-                   fontsize_row = 6, 
-                   fontsize_col = 6,
-                   tl.col = "grey45", 
-                   col = rev(my.heatmap.col2),
-                   cluster_cols=TRUE, 
-                   cluster_rows=TRUE,
-                   cellwidth = 7, 
-                   cellheight = 7,
-                   breaks = setdiff(seq(-1, 1, 0.1), 0),
-                   silent = FALSE)
-pheatmap::pheatmap(cor(HD[, keep2], use = 'na.or.complete'), 
-                   method = "color", 
-                   main = 'HD (8:14)', 
-                   mar = c(0.5, 0.5, 0.25, 0.5),
-                   tl.cex = 0.5,
-                   fontsize_row = 6, 
-                   fontsize_col = 6,
-                   tl.col = "grey45", 
-                   col = rev(my.heatmap.col2),
-                   cluster_cols=TRUE, 
-                   cluster_rows=TRUE,
-                   cellwidth = 7, 
-                   cellheight = 7,
-                   breaks = setdiff(seq(-1, 1, 0.1), 0),
-                   silent = FALSE)
-pheatmap::pheatmap(cor(W[, keep2], use = 'na.or.complete'), 
-                   method = "color", 
-                   main = 'W (1:7)', 
-                   mar = c(0.5, 0.5, 0.25, 0.5),
-                   tl.cex = 0.5,
-                   fontsize_row = 6, 
-                   fontsize_col = 6,
-                   tl.col = "grey45", 
-                   col = rev(my.heatmap.col2),
-                   cluster_cols=TRUE, 
-                   cluster_rows=TRUE,
-                   cellwidth = 7, 
-                   cellheight = 7,
-                   breaks = setdiff(seq(-1, 1, 0.1), 0),
-                   silent = FALSE)
-
-
-
-
-```
-
 
 
 ## graph cor
-
-<https://stackoverflow.com/questions/3081066/what-techniques-exists-in-r-to-visualize-a-distance-matrix>
-
-<https://www.r-bloggers.com/2017/03/the-r-qgraph-package-using-r-to-visualize-complex-relationships-among-variables-in-a-large-dataset-part-one/>
 
 
 "cor"  Plots a correlation network. Runs cov2cor if input is detected to be a covariance matrix and plots the input as is
@@ -3218,361 +778,28 @@ pheatmap::pheatmap(cor(W[, keep2], use = 'na.or.complete'),
 
 
 
-```{r, 063_omics.qgraph.tst, echo=FALSE}
+```{r, 063_omics.qgraph.tst, echo=TRUE}
 
-cormat=cor(as.matrix(omics[, -keep2]), use = 'na.or.complete')
+cormat = cor(as.matrix(omics[, keep2]), use = 'na.or.complete')
 qgraph::qgraph(cormat, 
                shape='circle', 
                posCol='darkred', 
                negCol='darkblue',
                layout='spring', 
-               vsize=1, 
-               cut = 0.90, 
+               vsize = 4, 
+               cut = 0.95, 
                details = TRUE, 
                curveAll = TRUE,
                title = 'Omics',
-               minimum = 0.75)
-
-
-cormat=cor(as.matrix(omics[, -ignore]), use = 'na.or.complete')
-qgraph::qgraph(cormat, 
-               shape='circle', 
-               posCol='darkred', 
-               negCol='darkblue',
-               layout='spring', 
-               vsize=3, 
-               cut = 0.90, 
-               details = TRUE, 
-               curveAll = TRUE,
-               title = 'Omics M T H',
-               minimum = 0.75)
-
-
-for (i in c('C', 'H', 'D', 'HD', 'W')){
-  par(mfrow = c(1,2))
-  subset = omics[omics$Stress == i, ]
-  cormat=cor(as.matrix(subset[, -ignore]), use = 'na.or.complete')
-  qgraph::qgraph(cormat, 
-                 shape='circle', 
-                 posCol='darkred', 
-                 negCol='darkblue',
-                 layout='spring', 
-                 vsize=3, 
-                 cut = 0.90, 
-                 details = TRUE, 
-                 curveAll = TRUE,
-                 title = i,
-                 minimum = 0.75)
-  # Leave One Out
-  subset = omics[omics$Stress != i, ]
-  cormat=cor(as.matrix(subset[, -ignore]), use = 'na.or.complete')
-  g = qgraph::qgraph(cormat, 
-                 shape='circle', 
-                 posCol='darkred', 
-                 negCol='darkblue',
-                 layout='spring', 
-                 vsize=3, 
-                 cut = 0.90, 
-                 details = TRUE, 
-                 curveAll = TRUE,
-                 title = paste(setdiff(c('C', 'H', 'D', 'HD', 'W'), i), collapse = ', '),
-                 minimum = 0.75)
-  par(mfrow = c(1,1))
-
-}
-
-
-# dim(cormat)
-# names(g)
-# names(g$Edgelist)
-# names(g$Arguments)
-# range(g$Edgelist$from)
-# range(g$Edgelist$to)
-# length(g$Edgelist$weight)
-# plot(g$Edgelist$weight)
-# abline(h = 0.75, col = 'red')
-
-```
-
-
-### LOO subgraphs
-
-```{r, 064_omics.loo, echo=FALSE, results='hide'}
-
-# https://stackoverflow.com/questions/31171866/find-common-rows-between-two-large-matrices-in-r
-
-m1 = as.matrix(as.data.frame(rbind(cbind(1,2), 
-                                   cbind(9,10), 
-                                   cbind(5,6),
-                                   cbind(0,0))))
-m2 = as.matrix(as.data.frame(rbind(cbind(3,4), 
-                                   cbind(1,2), 
-                                   cbind(1,2),
-                                   cbind(3,4))))
-colnames(m1) = colnames(m2) = c('from', 'to')
-
-m1 = data.table::data.table(m1)
-data.table::setkey(m1, 'from', 'to')
-m1[,"index1" := .I]
-
-m2 = data.table::data.table(m2)
-data.table::setkey(m2, 'from', 'to')
-m2[,"index2" := .I]
-
-m5 = m1[m2]
-m4 = m2[m1]
-(overlap = m5[is.na(index1)==FALSE & is.na(index2)==FALSE,])
-(unique1 = m4[is.na(index1)==FALSE & is.na(index2)==TRUE,])
-(unique2 = m5[is.na(index1)==TRUE & is.na(index2)==FALSE,])
-
-```
-
-
-```{r, 065_omics.loo.fig, echo=FALSE}
-
-keep = grep('Stress|Time|Plant', colnames(omics), invert = TRUE)
-
-mycut = 0.80
-
-
-cormat0 = cor(as.matrix(omics[, keep]), use = 'na.or.complete')
-m0 = as.data.frame(which(abs(cormat0) >= mycut, arr.ind=TRUE))
-m0 = m0[m0[, 1] != m0[, 2], ]
-colnames(m0) = c('from', 'to')
-m0 = data.table::data.table(m0)
-data.table::setkey(m0, 'from', 'to')
-m0[,"index0" := .I]
-
-v = rownames(cormat0)
-
-
-n = expand.grid(unique(omics$Stress), unique(omics$Time))
-n = n[n$Var2 %in% 1:14, ]
-n = n[!(n$Var1 %in% c('D', 'HD') & n$Var2 %in% 1:7), ]
-n = n[!(n$Var1 %in% c('W') & n$Var2 %in% 8:14), ]
-# n = n[!(n$Var1 %in% c('C')), ]
-n$Var2 = as.numeric(n$Var2)
-n = n[order(n$Var1, n$Var2), ]
-loo = vector("list", nrow(n))
-names(loo) = paste(n[, 1], n[, 2], sep = '_')
-
-
-
-for (k in 1:nrow(n)){
-  
-  i = n[k, 2]
-  j = as.character(n[k, 1])
-  
-
-  
-  m1 = NULL
-  m2 = NULL
-
-  cormat1 = cor(as.matrix(omics[omics$Time == i, keep]), use = 'na.or.complete')
-  m1 = as.data.frame(which(abs(cormat1) >= mycut, arr.ind=TRUE))
-  m1 = m1[m1[, 1] != m1[, 2], ]
-  colnames(m1) = c('from', 'to')
-  m1 = data.table::data.table(m1)
-  data.table::setkey(m1, 'from', 'to')
-  m1[,"index1" := .I]
-  
-
-    cat(j, i, '\n')
-    
-    par(mfrow = c(2,3))
-    
-      qgraph::qgraph(cormat0, 
-                   shape='circle', 
-                   posCol='darkred', 
-                   negCol='darkblue',
-                   layout='spring', 
-                   vsize=5, 
-                   cut = mycut,
-                   details = TRUE, 
-                   curveAll = TRUE,
-                   title = 'All',
-                   minimum = mycut,
-                   labels = colnames(cormat0))
-          qgraph::qgraph(cormat1, 
-                   shape='circle', 
-                   posCol='darkred', 
-                   negCol='darkblue',
-                   layout='spring', 
-                   vsize=5, 
-                   cut = mycut, 
-                   details = TRUE, 
-                   curveAll = TRUE,
-                   title = paste('Tp:', i),
-                   minimum = mycut,
-                   labels = colnames(cormat1))
-    
-    cormat2 = cor(as.matrix(omics[(omics$Time == i) & (omics$Stress != j) , keep]), use = 'na.or.complete')
-    m2 = as.data.frame(which(abs(cormat2) >= mycut, arr.ind=TRUE))
-    m2 = m2[m2[, 1] != m2[, 2], ]
-    colnames(m2) = c('from', 'to')
-    m2 = data.table::data.table(m2)
-    data.table::setkey(m2, 'from', 'to')
-    m2[,"index2" := .I]
-    range(abs(cormat1)-abs(cormat2))
-
-    qgraph::qgraph(cormat2, 
-                   shape='circle', 
-                   posCol='darkred', 
-                   negCol='darkblue',
-                   layout='spring', 
-                   vsize=5, 
-                   cut = mycut,
-                   details = TRUE, 
-                   curveAll = TRUE,
-                   title = paste('LOO:', j, i),
-                   minimum = mycut,
-                   labels = colnames(cormat2)
-                   )
-    
-      m5 = m0[m1]
-      unique2 = m5[is.na(index0)==TRUE & is.na(index1)==FALSE,]
-      
-      tmp = as.data.frame(cbind(1:length(v), v))
-      colnames(tmp) = c('from', 'name1')
-      tmp$from = as.numeric(tmp$from)
-      unique2 = merge(unique2, tmp, by = 'from', all.x = TRUE, all.y = FALSE)
-      colnames(tmp) = c('to', 'name2')
-      tmp$to = as.numeric(tmp$to)
-      unique2 = merge(unique2, tmp, by = 'to', all.x = TRUE, all.y = FALSE)
-      g1v = as.data.frame(rbind(cbind(unique2$from, unique2$name1),
-                                cbind(unique2$to, unique2$name2)))
-      g1v = g1v[!duplicated(g1v), ]
-      colnames(g1v) = c('id', 'name')
-      g1v$id = as.numeric(g1v$id)
-      unique2 = unique2[, c(2,1,5,6,3,4)]
-      
-      
-      if(nrow(unique2) > 0){
-          g1 = igraph::graph_from_edgelist(as.matrix(unique2[, 1:2]), 
-                                           directed = TRUE)
-          gg1 = igraph::subgraph(g1, vids = g1v$id)
-          plot(gg1, #layout=igraph::layout_with_fr, 
-               layout= igraph::layout_with_kk,
-               vertex.size = 4,
-               vertex.label.dist=0.5, 
-               vertex.color="red", 
-               edge.arrow.size=0.05,
-               vertex.label = NA,
-               vertex.label.cex = 1,
-               main = paste('All - Tp', i))
-          
-      } else {
-        plot(1, type = "n",
-             yaxt='n', xaxt='n', ann=FALSE, bty='n',
-             xlab = "", ylab = "")
-      par(mfrow = c(1,1))
-      }
-      
-
-
-      m5 = m0[m2]
-      unique2 = m5[is.na(index0)==TRUE & is.na(index2)==FALSE,]
-      
-      tmp = as.data.frame(cbind(1:length(v), v))
-      colnames(tmp) = c('from', 'name1')
-      tmp$from = as.numeric(tmp$from)
-      unique2 = merge(unique2, tmp, by = 'from', all.x = TRUE, all.y = FALSE)
-      colnames(tmp) = c('to', 'name2')
-      tmp$to = as.numeric(tmp$to)
-      unique2 = merge(unique2, tmp, by = 'to', all.x = TRUE, all.y = FALSE)
-      g1v = as.data.frame(rbind(cbind(unique2$from, unique2$name1),
-                                cbind(unique2$to, unique2$name2)))
-      g1v = g1v[!duplicated(g1v), ]
-      colnames(g1v) = c('id', 'name')
-      g1v$id = as.numeric(g1v$id)
-      unique2 = unique2[, c(2,1,5,6,3,4)]
-      
-      
-      if(nrow(unique2) > 0){
-          g1 = igraph::graph_from_edgelist(as.matrix(unique2[, 1:2]), 
-                                           directed = TRUE)
-          gg1 = igraph::subgraph(g1, vids = g1v$id)
-          plot(gg1, #layout=igraph::layout_with_fr, 
-               layout= igraph::layout_with_kk,
-               vertex.size = 4,
-               vertex.label.dist=0.5, 
-               vertex.color="red", 
-               edge.arrow.size=0.05,
-               vertex.label = NA,
-               vertex.label.cex = 1,
-               main = paste('All -', j, i)) 
-          
-      } else {
-        plot(1, type = "n",
-             yaxt='n', xaxt='n', ann=FALSE, bty='n',
-             xlab = "", ylab = "")
-      par(mfrow = c(1,1))
-      }
-      
-      m5 = m1[m2]
-      overlap = m5[is.na(index1)==FALSE & is.na(index2)==FALSE,]
-      unique2 = m5[is.na(index1)==TRUE & is.na(index2)==FALSE,]
-      
-      # all(v == row.names(cormat2))
-      # all(v == colnames(cormat2))
-      tmp = as.data.frame(cbind(1:length(v), v))
-      colnames(tmp) = c('from', 'name1')
-      tmp$from = as.numeric(tmp$from)
-      unique2 = merge(unique2, tmp, by = 'from', all.x = TRUE, all.y = FALSE)
-      colnames(tmp) = c('to', 'name2')
-      tmp$to = as.numeric(tmp$to)
-      unique2 = merge(unique2, tmp, by = 'to', all.x = TRUE, all.y = FALSE)
-      g1v = as.data.frame(rbind(cbind(unique2$from, unique2$name1),
-                                cbind(unique2$to, unique2$name2)))
-      g1v = g1v[!duplicated(g1v), ]
-      colnames(g1v) = c('id', 'name')
-      g1v$id = as.numeric(g1v$id)
-      unique2 = unique2[, c(2,1,5,6,3,4)]
-      
-      
-      if(nrow(unique2) > 0){
-          g1 = igraph::graph_from_edgelist(as.matrix(unique2[, 1:2]), 
-                                           directed = TRUE)
-          gg1 = igraph::subgraph(g1, vids = g1v$id)
-
-          plot(gg1, #layout=igraph::layout_with_fr, 
-               layout = igraph::layout_with_kk,
-               vertex.size = 4,
-               vertex.label.dist=0.5, 
-               vertex.color="red", 
-               edge.arrow.size=0.05,
-               vertex.label = NA,
-                vertex.label.cex = 1,
-               main = paste('Tp', i, '- LOO', j, i)) 
-          
-          loo[[k]] = igraph::get.edgelist(g1) # keep oroginal order ID
-          names(loo[[k]])
-      } else {
-        plot(1, type = "n",
-             yaxt='n', xaxt='n', ann=FALSE, bty='n',
-             xlab = "", ylab = "")
-      }
-
-          plot(1, type = "n",
-             yaxt='n', xaxt='n', ann=FALSE, bty='n',
-             xlab = "", ylab = "")
-      par(mfrow = c(1,1))
-  
-  par(mfrow = c(1,1))
-  
-  
-  
-}
-
-
-par(mfrow = c(1,1))
-
-save(loo, v, omics, file = "loo.Rdata")
-
+               minimum = 0.70,
+               labels = colnames(omics[, keep2]),
+               label.cex = 1.5)
 
 
 ```
 
+
+For more options see <https://www.rdocumentation.org/packages/qgraph/versions/1.9.3/topics/qgraph>
 
 
 
