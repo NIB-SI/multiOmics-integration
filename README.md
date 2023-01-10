@@ -14,7 +14,7 @@
 - Omics' strategies: 
   * Hormonomics
   * Transcriptomics 
-  * Proteomics (non-targeted)
+  * Proteomics
   * Metabolomics 
   * Phenomics
 
@@ -63,8 +63,8 @@
    * pheatmap [{pheatmap}](https://cran.r-project.org/web/packages/pheatmap/index.html) - _A function to draw clustered heatmaps_
    * t_test [{rstatix}](https://cran.r-project.org/web/packages/rstatix/index.html)
    * ggdotplot, ggviolin [{ggpubr}](https://cran.r-project.org/web/packages/ggpubr/index.html)
-   * metaMDS {vegan} - _Nonmetric Multidimensional Scaling with Stable Solution from Random Starts, Axis Scaling and Species Scores_
-   * [{limma}](https://bioconductor.org/packages/release/bioc/html/limma.html)
+   * metaMDS [{vegan}](https://cran.r-project.org/web/packages/vegan/index.html) - _Nonmetric Multidimensional Scaling with Stable Solution from Random Starts, Axis Scaling and Species Scores_
+   * [{limma}](https://bioconductor.org/packages/release/bioc/html/limma.html) for e.g. non-targeted Proteomics, RNA-seq, ..
      * limma::lmFit
      * limma::makeContrasts
      * limma::contrasts.fit
