@@ -99,6 +99,6 @@
 - Data is expected to be arranged within data management framework, with complete and descriptive metadata files, including _Phenodata_ file. 
 - 'Omics files are expected to be preprocessed (see suggestions in Step 2). 
 - Minimal input files can be found within './input' directory. 
-- For Step 3: Statistical analysis of individual omics data layers run XX script. 
-- For Step 4: Correlation based network inference within/between each omics level run script YY. 
-- For Step 5: Integration across different omics datasets run ZZ script.
+- For Step 3: Statistical analysis of individual omics data layers run script [01_Step3.Rmd](https://github.com/NIB-SI/multiOmics-integration/blob/main/_I_Omics/_S_multiOmics/_A_multiOmics-integration-R/scripts/01_Step3.Rmd)
+- For Step 4: Correlation based network inference within/between each omics level run script [02_Step4.Rmd](https://github.com/NIB-SI/multiOmics-integration/blob/main/_I_Omics/_S_multiOmics/_A_multiOmics-integration-R/scripts/02_Step4.Rmd)
+- For Step 5: Integration across different omics datasets run script 03_Step5.Rnw
