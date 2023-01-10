@@ -6,8 +6,8 @@ output:
   html_document:
     fig_caption: yes
     self_contained: yes
-    fig_width: 16
-    fig_height: 16
+    fig_width: 12
+    fig_height: 9
     toc: yes
     toc_depth: 5
     number_sections: yes
@@ -27,8 +27,8 @@ editor_options:
 knitr::opts_chunk$set(#dev = c('pdf', 'png'),  # this embeds pdf and crates scrolable blocks
                       dev = c('png'), 
                       fig.align = 'center', 
-                      fig.height = 16, 
-                      fig.width = 16 ,
+                      fig.height = 9, 
+                      fig.width = 12 ,
                       warning = FALSE, message = FALSE
                       )
 # options(knitr.table.format = "html")
@@ -103,7 +103,7 @@ o.l. = 'Hormonomics'
 
 ### Read data
 
-```{r, 030_hormonomics, echo=TRUE}
+```{r, 030_hormonomics, echo=TRUE, warning = FALSE, message = FALSE}
 
 fpi = file.path('..', 'input')
 fn = 'data_hormonomics.txt'
@@ -131,7 +131,7 @@ keep2 = grep('PlantNo|Treatment|SamplingDay', colnames(horm), invert = TRUE)
 ### Plot data with ggplot
 
 
-```{r, 031_hormonomics.ggplot, echo=TRUE}
+```{r, 031_hormonomics.ggplot, echo=TRUE, warning = FALSE, message = FALSE}
 
 
 myplot.ggplot(df = horm.long, x = horm.long$Treatment, y = horm.long$value, 
@@ -178,7 +178,7 @@ for(var in variable){
 
 #### On all
 
-```{r, 032_hormonomics.nmds, echo=TRUE}
+```{r, 032_hormonomics.nmds, echo=TRUE, warning = FALSE, message = FALSE}
 
 subset = horm
 mymat = subset[, keep2]
@@ -262,7 +262,7 @@ if (k == 3){
 
 ### correlation
 
-```{r, 033_hormonomics.cor, echo=TRUE}
+```{r, 033_hormonomics.cor, echo=TRUE, warning = FALSE, message = FALSE}
 
 par(mfrow = c(2,2))
 my.cor.plot(mymat = as.matrix(horm[, keep2]), 
@@ -298,7 +298,7 @@ my.pairs.panels(df = as.matrix(horm[, keep2]),
                 palette = my.ggplot.palette, 
                 scale = FALSE,
                 main = paste(o.l., '(all tp)'),
-                cex.labels = 1, 
+                cex.labels = 1.5, 
                 cex = 1)
 
 
@@ -309,7 +309,7 @@ my.pairs.panels(df = as.matrix(horm[, keep2]),
 
 Here we have one Control and one Stress level - adapt as needed
 
-```{r, 034_hormonomics.cor.groups, echo=TRUE}
+```{r, 034_hormonomics.cor.groups, echo=TRUE, warning = FALSE, message = FALSE}
 
 print(stress.levels)
 Ctrl = as.matrix(horm[horm$Treatment == stress.levels[1], keep2])
@@ -343,27 +343,27 @@ my.cor.plot(mymat = Stress,
             choose = 1)
 par(mfrow=c(1,1))
 
-
+par(mfrow=c(2,2))
 palCS = rainbow(length(time.levels))[as.numeric(as.factor(horm[horm$Treatment == stress.levels[1], 2]))]
 pie(rep(1, length(time.levels)), 
     col = unique(palCS), 
     labels = unique(horm[horm$Treatment == stress.levels[1], 2]), 
     main = paste(stress.levels, collapse = ' '))
-
+par(mfrow=c(1,1))
 
 my.pairs.panels(df = Ctrl, 
                 method = "pearson", 
                 palette = palCS, 
                 scale = FALSE,
-                main = 'horm Ctrl (all tp)',
-                cex.labels = 1.0, 
+                main = paste(o.l., 'Ctrl (all tp)'),
+                cex.labels = 1.5, 
                 cex = 1)
 my.pairs.panels(df = Stress, 
                 method = "pearson", 
                 palette = palCS, 
                 scale = FALSE,
-                main = 'horm Stress (all tp)',
-                cex.labels = 1.0, 
+                main = paste(o.l., 'Stress (all tp)'),
+                cex.labels = 1.5, 
                 cex = 1)
 
 
@@ -375,7 +375,7 @@ my.pairs.panels(df = Stress,
 
 #### At specific time points
 
-```{r, echo=TRUE}
+```{r, echo=TRUE, warning = FALSE, message = FALSE}
 
 
 Ctrl = (horm[(horm$Treatment == stress.levels[1]) & 
@@ -392,7 +392,7 @@ Stress[Stress$SamplingDay != 1,]$SamplingDay = 2
 
 
 
-```{r, 035_hormonomics.cor.dist, echo=TRUE}
+```{r, 035_hormonomics.cor.dist, echo=TRUE, warning = FALSE, message = FALSE}
 
 my.c.list = list (cor(Ctrl[, keep2], use = 'na.or.complete'), 
                   cor(Stress[, keep2], use = 'na.or.complete'))
@@ -468,7 +468,7 @@ for (i in 1:nrow(comb)){
 
 ### t-tests
 
-```{r, 036_hormonomics.t.tests, echo=TRUE}
+```{r, 036_hormonomics.t.tests, echo=TRUE, warning = FALSE, message = FALSE}
 
 data = rbind(Ctrl, Stress)
 tmp = c(rep('Ctrl', nrow(Ctrl)),
@@ -538,7 +538,7 @@ rcorr Computes a matrix of Pearson's r or Spearman's rho rank correlation coeffi
 ### heatmap on Treatment START/STOP (as defined) data
 
 
-```{r, 037_hormonomics.heatmap.Treatment.groups, echo=TRUE}
+```{r, 037_hormonomics.heatmap.Treatment.groups, echo=TRUE, warning = FALSE, message = FALSE}
 
 my.heatmaply.cor(df = data[, keep2], 
                  type = 'pearson', 
@@ -559,7 +559,7 @@ my.heatmaply.cor(df = data[, keep2],
 
 ### logFC START/STOP Treatment
  
-```{r, 038_plotly.logFC.heatmap, echo=TRUE}
+```{r, 038_plotly.logFC.heatmap, echo=TRUE, warning = FALSE, message = FALSE}
 
 
 leaf.horm.log2FC = my.logFC(Ctrl = Ctrl,
@@ -586,12 +586,11 @@ p = plot_ly(z = leaf.horm.log2FC,
             width = 600, 
             height = 300
             ) %>%
-  layout(title = 'Leaf Hormonomics', 
+  layout(title = paste(tissue, o.l.), 
          margin = mm)
 print(p)
 
 fpo = file.path('..', 'reports')
-fn = 'Leaf-Hormonomics_logFC.html'
 fn = paste0(tissue, '-', o.l., '_log2FC.html')
 saveWidget(p, 
            file = file.path(fpo, fn),
@@ -617,7 +616,7 @@ write.table(leaf.horm.log2FC,
 
 
 
-```{r, libraries.sources2}
+```{r, libraries.sources2, echo=TRUE, warning = FALSE, message = FALSE, results='hide'}
 
 rm(list=setdiff(ls(), c('pheno',
                         'horm'
@@ -641,7 +640,7 @@ o.l. = 'Metabolomics'
 
 ### Read data
 
-```{r, 040_metabolomics, echo=TRUE}
+```{r, 040_metabolomics, echo=TRUE, warning = FALSE, message = FALSE}
 
 
 fpi = file.path('..', 'input')
@@ -663,10 +662,10 @@ met = met[order(met$Treatment, met$SamplingDay, met$PlantNo), ]
 
 ```
 
-Repat procedure as for Hormonomics
+Repeat procedure as for Hormonomics
 
 
-```{r, libraries.sources3}
+```{r, libraries.sources3, echo=TRUE, warning = FALSE, message = FALSE, results='hide'}
 
 rm(list=setdiff(ls(), c('pheno',
                         'horm',
@@ -690,7 +689,7 @@ o.l. = 'Transcriptomics'
 
 ### Read data
 
-```{r, 050_transcriptomics, echo=TRUE}
+```{r, 050_transcriptomics, echo=TRUE, warning = FALSE, message = FALSE}
 
 fpi = file.path('..', 'input')
 fn = 'data_qPCR.txt'
@@ -712,11 +711,11 @@ qPCR = qPCR[order(qPCR$Treatment, qPCR$SamplingDay, qPCR$PlantNo), ]
 ```
 
 
-Repat procedure as for Hormonomics and Metabolomics
+Repeat procedure as for Hormonomics and Metabolomics
 
 
 
-```{r, libraries.sources6}
+```{r, libraries.sources4, echo=TRUE, warning = FALSE, message = FALSE, results='hide'}
 
 rm(list=setdiff(ls(), c('pheno',
                         'horm',
@@ -738,7 +737,7 @@ save.image(file = "01.RData")
 
 ## data
 
-```{r, 60_omics, echo=TRUE}
+```{r, 60_omics, echo=TRUE, warning = FALSE, message = FALSE}
 
 colM = colnames(met)
 colT = colnames(qPCR)
@@ -778,7 +777,7 @@ TH = intersect(keep2,
 
 
 
-```{r, 063_omics.qgraph.tst, echo=TRUE}
+```{r, 063_omics.qgraph.tst, echo=TRUE, warning = FALSE, message = FALSE}
 
 cormat = cor(as.matrix(omics[, keep2]), use = 'na.or.complete')
 qgraph::qgraph(cormat, 
