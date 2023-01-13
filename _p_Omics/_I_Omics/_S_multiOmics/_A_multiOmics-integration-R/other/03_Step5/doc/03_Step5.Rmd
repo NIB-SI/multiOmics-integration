@@ -1,0 +1,98 @@
+
+
+```{r include=FALSE}
+#outputFile <- "report-copy.pdf"
+#render_markdown()
+library(knitr)
+opts_chunk$set(fig.path='./figs/',tidy=TRUE)
+opts_knit$set(concordance=TRUE)
+```
+
+# 
+## Author: A. Blejec
+
+
+
+```{r Author:,echo=FALSE}
+###############################################
+##                                           ##
+## (c) Andrej Blejec (andrej.blejec@nib.si)  ##
+##                                           ##
+###############################################
+```
+```{r initialize,echo=FALSE,results='hide',message=FALSE}
+options(width=70)
+#library(Hmisc)
+#library(xlsReadWrite)
+```
+
+## 
+
+```{r }
+
+```
+
+
+
+
+## SessionInfo
+
+```{r sessionInfo,results='asis',echo=FALSE}
+cat(win.version(),"<br>")
+sessionInfo()
+prefix <- "<a href='file:///"
+suffix <- "/</a><br>"
+sdir <- gsub("/","/<br> ",dirname(getwd()))
+#cat("Project path:<br>",sdir,"<br>")
+args <- commandArgs(trailingOnly = TRUE)
+mainFile <- basename(args[1])
+#
+mainFilePath <- file.path("../doc", mainFile)
+mainFilePath <- gsub("/./","/",mainFilePath)
+projectName <- rev((strsplit(dirname(getwd()), "/"))[[1]])[1]
+#
+sdir <- dirname(getwd())
+sdir <- strsplit(sdir,split="/")[[1]]
+cdir <- sapply(1:length(sdir),function(x) paste(sdir[1:x],collapse="/"))
+#
+#cat("<br>Project path: [\\href{run:",
+#dirname(getwd()),
+#"}{link}]\\\\<br>",sep="")
+##
+
+
+cat("<br>Project path:<br><br>")
+for(i in 1:length(sdir)) cat(
+   prefix, cdir[i], "'>", sdir[i],suffix, "<wbr>\n",sep=""
+   )
+
+# <a href="file:///C:\Programs\sort.mw">Link 1</a>
+cat("Main file :`", mainFilePath, "`<br>")
+#
+mainFile <- strsplit(mainFile,'.',fixed=TRUE)[[1]][1]
+projectName <- rev((strsplit(dirname(getwd()), "/"))[[1]])[1]
+cat("Project file: [\\href{run:",
+file.path(dirname(getwd()),paste0(projectName,".prj")),
+"}{link}]<br>",sep="")
+#
+```
+
+### View as vignette
+Project files can be viewed by pasting this code to \R\ console:
+```{r projectFiles,echo=FALSE,results='asis'}
+cat('projectName <-"',projectName,'"; ',sep="")
+cat(' mainFile <-"',mainFile,'"',sep="")
+```
+
+
+```{r vignette,echo=FALSE,results='asis'}
+cat(
+' commandArgs()\n',
+'library(tkWidgets)\n',
+'openPDF(file.path(dirname(getwd()),"doc",\n',
+'paste(mainFile,"PDF",sep=".")))\n',
+'viewVignette("viewVignette", projectName,\n',
+'file.path("../doc",paste(mainFile,"Rnw",sep=".")))\n'
+)
+#
+```

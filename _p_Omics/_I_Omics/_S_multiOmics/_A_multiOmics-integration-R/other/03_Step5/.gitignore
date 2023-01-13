@@ -1,0 +1,75 @@
+# Configure Git to use this file
+# as global .gitignore
+#
+#git config --global core.excludesfile ~/.gitignore
+#git config --global core.excludesfile C:/Users/ablejec/my.gitignore
+########################################################
+# Ignore all bin directories
+bin
+# Ignore all files ending with ~
+*~
+# Ignore the target directory
+# Matches "target" in any subfolder
+target/ 
+.svn/
+figs/
+out/
+TeX-Aux/
+TeXAux/
+Cache*/
+*.synctex
+*.eps
+*.gin
+#
+bla*.*
+*.bak
+*.tmp
+*.prj
+#
+# gitignore / LaTeX.gitignore
+#
+*.acn
+*.acr
+*.alg
+*.aux
+*.bbl
+*.blg
+*.dvi
+*.fdb_latexmk
+*.glg
+*.glo
+*.gls
+*.idx
+*.ilg
+*.ind
+*.ist
+*.lof
+*.log
+*.lot
+*.maf
+*.mtc
+*.mtc0
+*.nav
+*.nlo
+*.out
+*.pdfsync
+*.ps
+*.snm
+*.synctex.gz
+*.toc
+*.vrb
+*.xdy
+*.tdo
+#
+# gitignore / R.gitignore
+#
+# History files
+.Rhistory
+.Rdata
+
+# Example code in package build process
+*-Ex.R
+
+# RStudio
+.Rproj.user/
+*.Rproj
