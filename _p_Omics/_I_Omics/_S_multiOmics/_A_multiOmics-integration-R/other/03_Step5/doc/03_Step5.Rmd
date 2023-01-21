@@ -1,17 +1,14 @@
-
-
-```{r include=FALSE}
-#outputFile <- "report-copy.pdf"
-#render_markdown()
-library(knitr)
-opts_chunk$set(fig.path='./figs/',tidy=TRUE)
-opts_knit$set(concordance=TRUE)
-```
-
-# 
-## Author: A. Blejec
-
-
+---
+title: "Integration across different omics datasets"
+author: "Andrej Blejec"
+date: 16. 1. 2023
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: true
+    code_folding: show
+---
 
 ```{r Author:,echo=FALSE}
 ###############################################
@@ -20,22 +17,338 @@ opts_knit$set(concordance=TRUE)
 ##                                           ##
 ###############################################
 ```
-```{r initialize,echo=FALSE,results='hide',message=FALSE}
+
+```{r include=FALSE, message=FALSE, warnings=FALSE, cache=FALSE}
+require(knitr)
+render_markdown()
+opts_chunk$set( fig.path='./figs/'
+    , tidy=FALSE)
+opts_knit$set( concordance=TRUE
+    , root.dir = getwd()
+    , unnamed.chunk.label = "ch"
+    , width = 70
+)
+opts_knit$get("root.dir")
+```
+
+```{r additional arguments, echo=FALSE, message=FALSE, warnings=FALSE}
+addArgs <- NULL
+addArgs[1] <- c("")[1]
+```
+
+# Purpose of this document
+
+# File management system
+
+Files are managed under the pISA-tree framework. To take advantage of pISA-tree metadata information, we will use package `pisar` (For installation from GitHub see [pisar](https://github.com/NIB-SI/pisar)).
+```{r}
+library(pisar)
+pisa <- pisa()
+# Set output directory (needed for .Rmd -> HTML)
+pisa$oroot <- file.path(.aroot,"output")
+.oroot <- pisa$oroot
+```
+
+```{r set specific arguments,results='hide',message=FALSE,warning=FALSE,echo=FALSE}
+# Argumenti
+# 1. Ime izvorne datoteke za analizo
+# 2. Izbira genov (ime stolpca v featuredata)
+#
+ .callName <- addArgs[1]
+ .vzorci <- addArgs[2]
+#getwd()
+#args
+```
+
+```{r initialize,echo=FALSE,include=FALSE,message=FALSE,warning=FALSE}
 options(width=70)
 #library(Hmisc)
+#library(amisc)
+#library(Biobase)
 #library(xlsReadWrite)
+#library(xtable)
+#library(MASS)
+catln <- function(...) cat(...,"\n")
 ```
 
-## 
+Final document is in subdirectory `reports`:
+```{r }
+basename(outputFile)
+```
+
+## Info from pISA structure
+
+Input/data directory
 
 ```{r }
+.inroot
+```
 
+Results directory
+
+```{r }
+.oroot
+```
+
+```{r echo=FALSE}
+catln("project:\t",     .pname)
+catln("Investigation: ",.iname)
+catln("Study:         ",.sname)
+catln("Assay:         ",.aname)
+```
+
+# Packages and functions
+
+%For canonical correlation analysis we will use package \pkg{CCA}, which is used in our projects.
+%```{r message=FALSE,warning=FALSE}
+%library(CCA)
+%```
+
+A package with regularized CCA and multiomics DIABLO method is *mixOmics*. Package *igraph* is needed for network analysis.
+
+```{r message=FALSE,warning=FALSE}
+library(mixOmics)
+library(igraph)
+```
+
+Package for complex heatmaps.
+```{r message=FALSE,warning=FALSE}
+#BiocManager::install("ComplexHeatmap")
+library(ComplexHeatmap)
+# https://www.rdocumentation.org/packages/pheatmap/versions/1.0.12/topics/pheatmap
+library(pheatmap)
+```
+
+## Functions
+
+Some original and adapted functions can be found in the file that is silently processed here.
+
+%% Additional functions
+```{r result='hide'}
+out <- ""
+out <- paste(out,knit_child("005-Functions.Rmd", quiet=TRUE))
 ```
 
 
 
 
-## SessionInfo
+# Data
+
+It is advisable to first read phenodata and featuredata, followed by actual data input. This enables smart selection of samples, based on the sample selection column with the assay name.
+
+## Phenodata
+
+```{r }
+(pfn <- getMeta(.ameta
+    , "Phenodata"))
+dir(file.path(.aroot,dirname(pfn)), pattern = basename(pfn))
+phdata <- read.table(file.path(.aroot,pfn)
+  , header = TRUE
+  ,  sep = "\t"
+  , stringsAsFactors = FALSE
+  , row.names=1
+  )
+dim(phdata)
+names(phdata)
+```
+
+
+Check and use the sample selection column, if present.
+```{r }
+.aname
+selectId <- substr(gsub("-",".",.aname),2,nchar(.aname))
+selectId <- .vzorci
+selectId
+if(selectId %in% names(phdata)) pdata <- phdata[!is.na(phdata[,selectId]),] else
+pdata <- phdata
+dim(pdata)
+```
+
+Overview of selected samples:
+
+```{r }
+table(pdata$Treatment, pdata$SamplingDay)
+.treat <- unique(pdata$Treatment)
+.days <- unique(pdata$SamplingDay)
+.entry <- 0.5
+
+```
+
+```{r }
+summary(pdata)
+apply(pdata,2,function(x) summary(as.factor(x)))
+```
+
+## Featuredata
+
+```{r }
+(ffn <- getMeta(.ameta,"Featuredata"))
+```
+
+```{r }
+if(ffn != "")
+fdata <- read.table(file.path(.iroot,ffn)
+    , sep = "\t"
+    , header = TRUE
+    , na.strings = c("", "-")
+    , stringsAsFactors = FALSE
+    , row.names = 1
+    ) else fdata <- NULL
+head(fdata)
+```
+
+First few columns, if present.
+
+```{r }
+fdata[,1:2]
+```
+
+## Process data files
+
+For this project we aim to integrate several multi-omics datasets.
+In assay metadata file keys for data files start with keyword 'Data'.
+Extract object names from those lines.
+
+```{r}
+ind <- grep("^Data",.ameta[,1])
+datanames <-  gsub("^Data (.*):$","\\1",.ameta[ind,]$Key)
+datanames
+```
+
+
+Read data and assign  them to objects named by the second word in the key.
+```{r}
+cat("Created objects:\n\n")
+for (i in ind) {
+nm <- gsub("^Data (.*):$","\\1",.ameta[i,]$Key)
+x <- read.table(file.path(.aroot,.ameta[i,]$Value), header=TRUE, sep="\t")
+assign(nm,x)
+catln("\nDataset:", ls(pattern=nm))
+str(get(nm))
+}
+```
+
+\section{Combine datasets}
+
+Datasets for DIABLO need to be collected in a list, with rows corresponding to the same samples. The order of samples from shrinked phenodata will be enforced.
+
+The first component of the list will be grouping variable, indicating the conditions. We will create reasonable names for groups.
+
+```{r}
+sday <- paste0(0,pdata$SamplingDay)
+len <- nchar(sday)
+sday <- substr(sday,len-1,len)
+what <- paste(pdata$Treatment,sday,sep="")
+X <- list(status= what)
+names(X[[1]]) <- rownames(pdata)
+X
+```
+
+```{r}
+table(pdata$SamplingDay, what)
+```
+Put datasets into list X and ensure that they all have same order of samples, as in phenodata.
+```{r}
+datanames
+for(i in 1:length(datanames)){
+x <- get(datanames[i])
+rownames(x) <- x[,1]
+x <- x[,-1]
+X[[i+1]] <- x[rownames(pdata),]
+names(X)[i+1] <- datanames[i]
+}
+str(X)
+names(X)
+```
+
+Same sample names?
+
+```{r}
+OK <- TRUE
+for(i in 2:length(X)) {
+print(ok <- all(names(X[[1]])==rownames(X[[i]])))
+OK <- OK&ok
+}
+```
+
+```{r, echo=FALSE, results='asis'}
+if(OK) catln("Sample names in datasets match.") else catln("ERROR: Sample names in datasets do not match!!")
+```
+
+Put data into safe object `DATAall`.
+
+```{r}
+DATAall <- X
+DATA <- X
+```
+
+We will also need the names of treatment groups.
+
+```{r}
+groups <- unique(pdata$Treatment)
+groups
+```
+
+
+
+# Multiomics data integration with DIABLO
+
+
+
+```{r}
+CCDATA <- DATA
+names(CCDATA)
+```
+
+
+
+```{r}
+write("Entering 035-DIABLO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "bla.log", append=!TRUE)
+write(.oroot, "bla.log", append=TRUE)
+write(pisa$oroot, "bla.log", append=TRUE)
+write(commandArgs(trailingOnly = TRUE), "bla.log",append=TRUE)
+
+```
+
+```{r diablo, results='asis'}
+out <- ""
+out <- paste(out,knit_child("035-DIABLO-2.Rmd", quiet=TRUE))
+cat(out)
+```
+
+```{r}
+write("From 035-DIABLO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "bla.log", append=TRUE)
+```
+
+
+
+# Metadata files
+
+## Project
+
+```{r pmeta, echo=FALSE,results='asis'}
+.pmeta
+```
+
+## Investigation
+
+```{r imeta, echo=FALSE,results='asis'}
+.imeta
+```
+
+## Study
+
+```{r smeta, echo=FALSE,results='asis'}
+.smeta
+```
+
+## Assay
+
+```{r ameta, echo=FALSE,results='asis'}
+.ameta
+```
+
+# SessionInfo
 
 ```{r sessionInfo,results='asis',echo=FALSE}
 cat(win.version(),"<br>")
@@ -60,39 +373,33 @@ cdir <- sapply(1:length(sdir),function(x) paste(sdir[1:x],collapse="/"))
 #"}{link}]\\\\<br>",sep="")
 ##
 
-
-cat("<br>Project path:<br><br>")
+cat("<br>Local project path:<br><br>")
 for(i in 1:length(sdir)) cat(
    prefix, cdir[i], "'>", sdir[i],suffix, "<wbr>\n",sep=""
    )
 
+cat("<br>Links to project on GitHub:<br><br>")
+ind <- grep("^_",sdir)
+rind <- ind[1]-1
+
+prefix <- "<a href='https://github.com/NIB-SI/"
+cat("<ul>\n")
+cat("<li>",
+   file.path(prefix, sdir[rind]), "'>", sdir[rind],suffix, "</li>\n",sep=""
+   )
+for(i in 1:length(ind))  cat("   *  ",
+   file.path(prefix, sdir[rind], "tree/main", paste(sdir[ind[1:i]], collapse="/")), "'>", sdir[ind[i]],suffix, "\n",sep=""
+   )
+
+cat("<ul><br>\n")
+
 # <a href="file:///C:\Programs\sort.mw">Link 1</a>
-cat("Main file :`", mainFilePath, "`<br>")
+cat("<br>Main file :`", mainFilePath, "`<br>")
 #
 mainFile <- strsplit(mainFile,'.',fixed=TRUE)[[1]][1]
 projectName <- rev((strsplit(dirname(getwd()), "/"))[[1]])[1]
-cat("Project file: [\\href{run:",
-file.path(dirname(getwd()),paste0(projectName,".prj")),
-"}{link}]<br>",sep="")
+#cat("Project file: [\\href{run:",
+#file.path(dirname(getwd()),paste0(projectName,".prj")),
+#"}{link}]<br>",sep="")
 #
-```
-
-### View as vignette
-Project files can be viewed by pasting this code to \R\ console:
-```{r projectFiles,echo=FALSE,results='asis'}
-cat('projectName <-"',projectName,'"; ',sep="")
-cat(' mainFile <-"',mainFile,'"',sep="")
-```
-
-
-```{r vignette,echo=FALSE,results='asis'}
-cat(
-' commandArgs()\n',
-'library(tkWidgets)\n',
-'openPDF(file.path(dirname(getwd()),"doc",\n',
-'paste(mainFile,"PDF",sep=".")))\n',
-'viewVignette("viewVignette", projectName,\n',
-'file.path("../doc",paste(mainFile,"Rnw",sep=".")))\n'
-)
-#
-```
+``` 

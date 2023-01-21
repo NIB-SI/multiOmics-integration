@@ -1,0 +1,7 @@
+
+### Child file
+
+```{r}
+cat("This is from child\n")
+1:10
+```

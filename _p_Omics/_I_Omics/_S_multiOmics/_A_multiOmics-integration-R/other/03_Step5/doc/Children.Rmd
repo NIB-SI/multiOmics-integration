@@ -1,0 +1,62 @@
+---
+title: "Data integration"
+author: "Andrej Blejec"
+date: 16. 1. 2023
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: true
+    code_folding: show
+---
+
+```{r Author:,echo=FALSE}
+###############################################
+##                                           ##
+## (c) Andrej Blejec (andrej.blejec@nib.si)  ##
+##                                           ##
+###############################################
+```
+
+```{r include=FALSE, message=FALSE, warnings=FALSE, cache=FALSE}
+require(knitr)
+render_markdown()
+opts_chunk$set( fig.path='./figs/'
+    , tidy=FALSE)
+opts_knit$set( concordance=TRUE
+    , root.dir = getwd()
+    , unnamed.chunk.label = "ch"
+    , width = 70
+)
+opts_knit$get("root.dir")
+```
+
+`
+
+## Process data files
+
+
+## Child
+
+```{r child, results='asis'}
+out <- ""
+out <- paste(out,knit_child("child.Rmd", quiet=TRUE))
+cat(out)
+```
+Another way
+`r out`
+
+
+```{r 035a}
+blocks <- combn(3,2)
+j <- 1
+cutoff <- 0.8
+out35a <- ""
+for(j in 1:ncol(blocks)){
+    out35a <- paste( out35a, knit_child("035a-DIABLO-network.Rmd", quiet=TRUE))
+
+        if(interactive()) readline()
+}
+```
+`r out35a`
+

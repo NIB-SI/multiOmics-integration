@@ -1,0 +1,310 @@
+
+
+
+
+### Export networks to file
+
+Partial models for each treatment
+
+Another way, using DIABLO
+
+```{r }
+filter <- pdata$Treatment 
+XX1 <- lapply(CCDATA, function(x) if(is.null(dim(x))) x[filter] else x[filter,])
+```
+
+```{r }
+res1 <- block.splsda(X = XX1[-1]
+    , Y = as.factor(XX1[[1]])
+    , ncomp = ncomp
+    , keepX = list.keepX
+    , design = design
+    )
+
+```
+
+```{r }
+cutoff <- 0.0
+x <- res1
+layout.fun <- NULL
+label <-.treat[1]
+out23b <- ""
+  out23b <- paste( out23b, knit_child("035b-multipartite-network.Rmd", quiet=TRUE))
+
+```
+`r out23b`
+
+```{r }
+ly <- nw$layout
+```
+
+```{r }
+cutoff <- 0.7
+x <- res1
+layout.fun <- my.layout
+label <- .treat[1]
+out23b <- ""
+  out23b <- paste( out23b, knit_child("035b-multipartite-network.Rmd", quiet=TRUE))
+
+```
+`r out23b`
+
+
+```{r }
+filter <- pdata$Treatment 
+XX2 <- lapply(CCDATA, function(x) if(is.null(dim(x))) x[filter] else x[filter,])
+```
+
+```{r }
+res2 <- block.splsda(X = XX2[-1]
+    , Y = as.factor(XX2[[1]])
+    , ncomp = ncomp
+    , keepX = list.keepX
+    , design = design
+    )
+
+```
+
+
+
+```{r }
+cutoff <- 0.0
+x <- res2
+layout.fun <- NULL
+label <- .terat[2]
+out23b <- ""
+  out23b <- paste( out23b, knit_child("035b-multipartite-network.Rmd", quiet=TRUE))
+
+
+```
+`r out23b`
+
+```{r }
+ly <- nw$layout
+```
+
+
+
+```{r }
+cutoff <- 0.7
+x <- res2
+layout.fun <- my.layout
+label <- .treat[2]
+out23b <- ""
+  out23b <- paste( out23b, knit_child("035b-multipartite-network.Rmd", quiet=TRUE))
+  title(groups[2])
+
+```
+`r out23b`
+
+
+
+Save network file for combined and single treatments.
+Networks are in objects `res`, `res1` and `res2`.
+```{r eval=FALSE,echo=FALSE}
+# Complete network, cutoff = 0
+ndatasests <- length(res$loadings)
+N <- network(res, cutoff=0, blocks=pair, shape.node=c("rectangle","rectangle"))
+file <- paste0("network-",paste(.treat, collapse="_"),"-",paste(datasets, collapse="_"),".txt")
+label0 <- paste(paste(.treat, collapse=", "),"|",paste(datasets, collapse=", "),"; cutoff =",0)
+title <- label0
+suffix <- paste0(substr(names(DATA),1,2)[sets[-1]],collapse="-")
+e <- extractEdges(N, cnames=c(datasets,"w"))
+head(e)
+#
+```
+```{r eval=FALSE,echo=FALSE}
+if(!dir.exists(file.path(.oroot))) dir.create(file.path(.oroot))
+if(!dir.exists(file.path(.oroot,suffix))) dir.create(file.path(.oroot,suffix))
+#
+#my.write.table(e, file =file.path(.oroot,suffix,file), label=label0)
+
+```
+
+```{r }
+# Complete network, cutoff = 0, both
+datasets <- names(CCDATA[-1])
+ndatasets<- length(datasets)
+N <- network(res, cutoff=0, blocks=1:ndatasets, shape.node=c("rectangle"))
+        title(paste(.treat, collapse="_"),adj=0.8,outer=TRUE,line=-1)
+file <- paste0("network-",paste(.treat, collapse="_"),"-",paste(datasets, collapse="_"),".txt")
+label0 <- paste(paste(.treat, collapse=", "),"|",paste(datasets, collapse=", "),"; cutoff =",0)
+title <- label0
+suffix <- paste0(substr(names(DATA),1,2)[sets[-1]],collapse="-")
+e <- extractEdges2(N)
+colnames(e)[ncol(e)] <- paste(.treat, collapse=".")
+head(e)
+tail(e)
+dim(e)
+```
+
+```{r }
+# treatment 1
+.treat[1]
+N <- network(res1, cutoff=0, blocks=1:ndatasets, shape.node=c("rectangle"))
+        title(.treat[1],adj=0.8,outer=TRUE,line=-1)
+e1 <- extractEdges2(N)
+colnames(e1)[ncol(e1)] <- .treat[1]
+head(e1)
+dim(e1)
+
+```
+
+```{r }
+e <- merge(e,e1, sort=FALSE, all=TRUE)
+head(e)
+tail(e)
+```
+
+```{r }
+# treatment 2
+.treat[2]
+N <- network(res2, cutoff=0, blocks=1:ndatasets, shape.node=c("rectangle"))
+        title(.treat[2],adj=0.8,outer=TRUE,line=-1)
+e2 <- extractEdges2(N)
+colnames(e2)[ncol(e2)] <- .treat[2]
+head(e2)
+dim(e2)
+
+```
+
+```{r }
+e <- merge(e,e2, sort=FALSE, all=TRUE)
+head(e)
+tail(e)
+#
+```
+
+```{r }
+if(!dir.exists(file.path(.oroot))) dir.create(file.path(.oroot))
+if(!dir.exists(file.path(.oroot,suffix))) dir.create(file.path(.oroot,suffix))
+#
+my.write.table(e, file = file.path(.oroot,suffix,file), label=label0, na="0")
+
+```
+Missing edges are labeled as weight 0. This enables numeric filtration in Excel.
+
+### Visualize samples
+
+```{r }
+plotIndiv(res)
+
+```
+Starting point is centroid of values in all blocks
+```{r }
+plotArrow(res)
+
+```
+
+```{r }
+vars <- lapply(res$variates, head)
+vars
+```
+
+```{r }
+m <- 6
+n <- length(state)
+cols <- rep(0,n)
+set.seed(2346)
+smpl <- sample(1:n,m)
+cols[smpl] <- 1:m
+plotArrow(res, col=cols, pch=as.character(1:m))
+
+```
+Plotted points are scaled scores, scaling unknown. Scores are returned by the plotting function. What are scores for status variable (returned by plotting function)
+```{r }
+m <- 6
+df <- plotArrow(res, col=c(1:m,rep(0,n-m)), pch=as.character(1:m)
+,group=state
+)
+for(i in 1:6){
+points(res$variates$XX[i,1],res$variates$XX[i,2],cex=2, col=i)
+points(res$variates$YY[i,1],res$variates$YY[i,2],cex=2,col=i)
+points(res$variates$ZZ[i,1],res$variates$ZZ[i,2],cex=2, col=i)
+}
+for(j in 0:3){
+for(i in 1:6){
+points(df[j*100+i,1],df[j*100+i,2],cex=1, col=j+1, pch=16)
+}
+}
+```
+
+```{r }
+
+df <- plotArrow(res, col=cols, pch=as.character(1:m)
+,group=state
+)
+for(i in smpl){
+points(res$variates$XX[i,1],res$variates$XX[i,2],cex=2, col=i)
+points(res$variates$YY[i,1],res$variates$YY[i,2],cex=2,col=i)
+points(res$variates$ZZ[i,1],res$variates$ZZ[i,2],cex=2, col=i)
+}
+for(j in 0:3){
+for(i in smpl){
+points(df[j*100+i,1],df[j*100+i,2],cex=1, col=j+1, pch=16)
+}
+}
+```
+
+
+```{r }
+m <- 10
+col <- rep(0,n)
+
+for(off in 1:4){
+col[25*(off-1)+(1:m)] <- m*(off-1)+(1:m)
+}
+col
+df <- plotArrow(res, col=col, pch=as.character(1:m)
+    ,group=state
+)
+ind <- which(col>0)
+points(df[300+ind,1],df[300+ind,2],cex=2, col=4, pch=16)
+points(df[0+ind,1],df[0+ind,2],cex=2, col=1, pch=1,lwd=2)
+points(df[n+ind,1],df[n+ind,2],cex=2, col=2, pch=2,lwd=2)
+points(df[2*n+ind,1],df[2*n+ind,2],cex=2, col=3, pch=3,lwd=2)
+
+```
+
+
+```{r }
+str(df)
+head(df)
+tail(df)
+```
+
+Plot of scores for status
+
+```{r }
+plot(res$variates$Y[,1],res$variates$Y[,2])
+```
+
+Clustered Image Maps (CIMs) ("heat maps") for DIABLO
+```{r }
+cimDiablo(res, size.legend=0.7)
+
+```
+
+```{r }
+for(i in 1:ncomp) {
+    plotDiablo(res, comp=i)
+    title(paste("Component", i), adj=0.1, outer=TRUE, line=-1)
+    }
+
+```
+Another output of loadings ( == loadings component of the result)
+```{r }
+selectVar(res)
+
+```
+
+```{r }
+eval <- perf(res,validation = "Mfold", folds = 5)
+str(eval)
+
+```
+
+```{r }
+plot(eval)
+
+```

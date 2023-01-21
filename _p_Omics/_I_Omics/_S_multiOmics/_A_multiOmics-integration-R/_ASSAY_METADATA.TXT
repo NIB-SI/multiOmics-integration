@@ -2,7 +2,7 @@ Assay:	_A_multiOmics-integration-R
 Assay Class:	DRY
 Assay Type:	R
 Title:	multiOmics-integration
-Description:	Minimal, reproducible example for multi-Omics integration pipeline Assay
+Description:	Minimal reproducible example for multi-Omics integration pipeline Assay
 pISA Assay creation date:	2022-10-01
 pISA Assay creator:	MZ
 Analyst:	AB, MZ
