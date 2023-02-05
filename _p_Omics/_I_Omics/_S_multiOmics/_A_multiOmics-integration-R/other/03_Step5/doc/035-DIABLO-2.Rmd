@@ -251,12 +251,51 @@ title(paste("Component",comp), adj=0.1, line=-1, outer=TRUE)
 }
 ```
 
-The sample plot with the plotIndiv() function projects each sample into the space spanned by the components of each block (Figure 4). Clustering of the samples can be better assessed with this plot. It seems that the quality of clustering of the mRNA data is the highest with the miRNA clustering quality being the lowest. This suggests that the mRNA is likely to hold more discriminative power within the model.
+The sample plot with the plotIndiv() function projects each sample into the space spanned by the components of each block. Clustering of the samples can be  assessed with this plot.
 
-
-```{r fig.height=7}
-plotIndiv(final.diablo.model, ind.names = FALSE, legend = TRUE,
+```{r}
+plind <- plotIndiv(final.diablo.model, ind.names = FALSE, legend = TRUE,
           title = 'DIABLO Sample Plots'
+          , ellipse = TRUE
+          )
+```
+
+```{r fig.height=7, eval=FALSE, echo=FALSE}
+gr <- substr(final.diablo.model$names$sample,1,1)
+pchs <- c(C=1,H=16)
+pchs <- pchs[gr]
+pchs
+
+dy <- paste0("0",as.numeric(gsub("^.*S(.*)_.*","\\1",final.diablo.model$names$sample)))
+dy <- substr(dy,nchar(dy)-1,nchar(dy))
+dy
+pchs <- c(1,15,16,18)[as.numeric(as.factor(dy))]
+pchs
+cexs <- 1+dy/5
+gr2 <- final.diablo.model$names$colnames$Y
+gr2 <- substr(gr2, 1, 1)
+cols <- c(C=3, H=2, D = 7, W = 4)
+cols <- as.vector(cols[gr])
+plind <- plotIndiv(final.diablo.model, ind.names = FALSE, legend = TRUE,
+          title = 'DIABLO Sample Plots'
+         , group = gr
+         , pch = pchs
+          , pch.levels = dy
+          , cex = 2
+#          , col = cols
+#          , ellipse = TRUE
+)
+```
+
+```{r eval=FALSE, echo=FALSE}
+plind <- plotIndiv(final.diablo.model, ind.names = FALSE, legend = TRUE,
+          title = 'DIABLO Sample Plots'
+         , group = pchs
+         , pch = factor(gr)
+          , pch.levels = gr
+          , cex = 3
+#          , col = cols
+#          , ellipse = TRUE
 )
 ```
 
@@ -265,7 +304,9 @@ In the arrow plot below (Figure), the start of the arrow indicates the centroid 
 
 ```{r fig.height=7}
 plotArrow(final.diablo.model, ind.names = FALSE, legend = TRUE,
-          title = paste(groups,collapse=", "))
+          title = paste(groups,collapse=", ")
+
+          )
 ```
 
 ## Variable plots
@@ -303,9 +344,7 @@ Another visualisation of the correlations between the different types of
 variables is the relevance network, which is also built on the similarity
 matrix (as is the circos plot). Each colour represents a type of variable.
 
-```{r}
-write("Entering 035a !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "bla.log", append=TRUE)
-```
+
 
 ```{r 035a, results='asis'}
 blocks <- combn(length(data),2)
@@ -508,9 +547,7 @@ plotLoadings(res, comp = i, method = 'median', contrib="max")
 
 ```
 
-```{r}
-write("Mid diablo 1 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "bla.log", append=TRUE)
-```
+
 
 Plot variables
 
@@ -568,8 +605,17 @@ circosPlot(final.diablo.model, cutoff = 0.95, line = TRUE,
            , xpd=TRUE)
 
 ```
-```{r}
-write("Mid diablo 2 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "bla.log", append=TRUE)
+
+
+```{r, eval=FALSE, echo=FALSE}
+pdf("circosPlot.pdf")
+size.variables <- 1
+circosPlot(final.diablo.model, cutoff = 0.9, line = TRUE,
+           color.blocks= cols,
+           color.cor = c(3,2), size.labels = 1
+           , size.variables = size.variables
+           , xpd=TRUE)
+dev.off()
 ```
 # Export networks to file
 
@@ -671,26 +717,20 @@ cat(out23b)
 
 
 
-```{r}
-write("Mid diablo 3 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "bla.log", append=TRUE)
-```
+
 Save network file for combined and single treatments.
 Networks are in objects `res`, `res1` and `res2`.
 
 
-```{r}
-write("Mid diablo 4 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "bla.log", append=TRUE)
-```
+
 
 ## Network for `r paste(.treat, collapse=" and ")`.
 
 ```{r}
 # Complete network, cutoff = 0, both
-write("Mid diablo network !!!!!!!!!!!!!!!!!", "bla.log", append=TRUE)
 datasets <- names(CCDATA[-1])
 ndatasets<- length(datasets)
-write(datasets, "bla.log", append=TRUE)
-
+#
 N12 <- network(res
     , cutoff = 0
     , blocks = 1:ndatasets
@@ -698,17 +738,14 @@ N12 <- network(res
     , save = "png"
     , name.save="network-CH"
     )
-write("Mid diablo network 2 !!!!!!!!!!!!!!!!!", "bla.log", append=TRUE)
-
+#
 e <- extractEdges2(N12)
 colnames(e)[ncol(e)] <- paste(.treat, collapse=".")
 head(e)
 tail(e)
 dim(e)
 ```
-```{r}
-write("Mid diablo 4a !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "bla.log", append=TRUE)
-```
+
 ```{r}
 # treatment 1
 e1 <- extractEdges2(N1)
@@ -723,9 +760,7 @@ e <- merge(e,e1, sort=FALSE, all=TRUE)
 head(e)
 tail(e)
 ```
-```{r}
-write("Mid diablo 4b !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "bla.log", append=TRUE)
-```
+
 ```{r }
 # treatment 2
 .treat[2]
@@ -744,8 +779,6 @@ tail(e)
 ```
 ```{r}
 write("Mid diablo 5 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "bla.log", append=TRUE)
-write(file.path(.oroot,suffix,file), "bla.log", append=TRUE)
-
 ```
 
 Compose file name and necessary information for network export file
@@ -758,6 +791,12 @@ sets <- 1:length(DATA)
 suffix <- paste0(substr(names(DATA),1,2)[sets[-1]],collapse="-")
 ```
 
+
+```{r}
+write("Mid diablo 6 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "bla.log", append=TRUE)
+write(file.path(.oroot,suffix,file), "bla.log", append=TRUE)
+
+```
 Export edges table
 
 ```{r }
@@ -773,5 +812,6 @@ inspection and filtering out edges based on selected cutoff.
 Missing edges are labeled as weight 0. This enables numeric filtration in Excel.
 
 ```{r}
-write("End 035-DIABLO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "bla.log", append=TRUE)
+write("End diablo 7 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "bla.log", append=TRUE)
+
 ```

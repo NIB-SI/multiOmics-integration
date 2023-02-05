@@ -6,7 +6,7 @@
 #	Study :	 _S_multiOmics 
 #	Assay :	 _A_multiOmics-integration-R 
 #	Report :	 ../../../reports/03_Step5_render-03_Step5-HTML-C:\Users\ablejec\AppData\Roaming\WInEdt Team\WinEdt 11/Contrib/R-Sweave/.pdf 
-#	Date:	 2023-01-21 
+#	Date:	 2023-01-23 
 # 
 ""	"edge"	"group1"	"from"	"group2"	"to"	"C.H"	"C"	"H"
 "1"	"ho.IAA_me.Glukose"	"hormonomics"	"IAA"	"metabolomics"	"Glukose"	-0.085558266340189	-0.00970693607423324	-0.0313548571472355
