@@ -1,7 +1,7 @@
 ---
 title: "Integration across different omics datasets"
 author: "Andrej Blejec"
-date: 16. 1. 2023
+date: 07. 02. 2023
 output:
   html_document:
     toc: true
@@ -36,7 +36,13 @@ addArgs <- NULL
 addArgs[1] <- c("")[1]
 ```
 
-# Purpose of this document
+# Introduction
+
+[Needs more text]  
+
+In this document we present a work-flow for ntegration across different omics datasets.
+
+[Note] This is not the final version of the document.
 
 # File management system
 
