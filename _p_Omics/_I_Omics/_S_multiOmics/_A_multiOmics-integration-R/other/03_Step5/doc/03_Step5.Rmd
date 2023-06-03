@@ -238,7 +238,7 @@ str(get(nm))
 
 Datasets for DIABLO need to be collected in a list, with rows corresponding to the same samples. The order of samples from shrinked phenodata will be enforced.
 
-The first component of the list will be grouping variable, indicating the conditions. We will create reasonable names for groups.
+The first component of the list will be a grouping variable, indicating the conditions. We will create reasonable names for groups.
 
 ```{r}
 sday <- paste0(0,pdata$SamplingDay)
