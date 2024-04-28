@@ -11,6 +11,12 @@ options(width=70)
 
 ## Additional functions
 
+```{r}
+# cat + end of line
+catln <- function(...) cat(...,"\n")
+```
+
+
 ### Panel functions
 
 Panel functions for function `pairs()`

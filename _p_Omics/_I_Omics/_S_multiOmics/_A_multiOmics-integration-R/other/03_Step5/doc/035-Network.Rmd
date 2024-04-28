@@ -9,7 +9,7 @@
 options(width=70)
 ```
 Child: 035-Network.rnw
-### Cutoff =`r cutoff, \Sexpr{paste(names(res$X)[pair])` }
+### Cutoff =r  paste(cutoff,names(res$X)[pair]) 
 ```{r fig.cap=label}
 datasets <- names(res$X)[pair]
 set.seed(1234)
