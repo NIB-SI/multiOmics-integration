@@ -31,10 +31,10 @@ opts_knit$set( concordance=TRUE
 opts_knit$get("root.dir")
 ```
 
-```{r additional arguments, echo=FALSE, message=FALSE, warnings=FALSE}
-addArgs <- NULL
-addArgs[1] <- c("")[1]
-```
+%%```{r additional arguments, echo=FALSE, message=FALSE, warnings=FALSE}
+%%addArgs <- NULL
+%%addArgs[1] <- c("")[1]
+%%```
 
 # Introduction
 
@@ -46,25 +46,25 @@ In this document we present a work-flow for integration across different omics d
 
 # File management system
 
-Files are managed under the pISA-tree framework. To take advantage of pISA-tree metadata information, we will use package `pisar` (For installation from GitHub see [pisar](https://github.com/NIB-SI/pisar)).
-```{r}
-library(pisar)
-pisa <- pisa()
-# Set output directory (needed for .Rmd -> HTML)
-pisa$oroot <- file.path(.aroot,"output")
-.oroot <- pisa$oroot
-```
+Usually we use a file management system under the pISA-tree framework. For simplicity, all files ( scripts, data ,... ) are in one directory.
+%%```{r}
+%%library(pisar)
+%%pisa <- pisa()
+%%# Set output directory (needed for .Rmd -> HTML)
+%%pisa$oroot <- file.path(.aroot,"output")
+%%.oroot <- pisa$oroot
+%%```
 
-```{r set specific arguments,results='hide',message=FALSE,warning=FALSE,echo=FALSE}
-# Argumenti
-# 1. Ime izvorne datoteke za analizo
-# 2. Izbira genov (ime stolpca v featuredata)
-#
- .callName <- addArgs[1]
- .vzorci <- addArgs[2]
-#getwd()
-#args
-```
+%%```{r set specific arguments,results='hide',message=FALSE,warning=FALSE,echo=FALSE}
+%%# Argumenti
+%%# 1. Ime izvorne datoteke za analizo
+%%# 2. Izbira genov (ime stolpca v featuredata)
+%%#
+%% .callName <- addArgs[1]
+%% .vzorci <- addArgs[2]
+%%#getwd()
+%%#args
+%%```
 
 %%```{r initialize,echo=FALSE,include=FALSE,message=FALSE,warning=FALSE}
 %%options(width=70)
@@ -77,31 +77,31 @@ pisa$oroot <- file.path(.aroot,"output")
 %%catln <- function(...) cat(...,"\n")
 %%```
 
-Final document is in subdirectory `reports`:
-```{r }
-basename(outputFile)
-```
-
-## Info from pISA structure
-
-Input/data directory
-
-```{r }
-.inroot
-```
-
-Results directory
-
-```{r }
-.oroot
-```
-
-```{r echo=FALSE}
-cat("project:       ",.pname)
-cat("Investigation: ",.iname)
-cat("Study:         ",.sname)
-cat("Assay:         ",.aname)
-```
+%%Final document is in subdirectory `reports`:
+%%```{r }
+%%#basename(outputFile)
+%%```
+%%
+%%## Info from pISA structure
+%%
+%%Input/data directory
+%%
+%%```{r }
+%%.inroot
+%%```
+%%
+%%Results directory
+%%
+%%```{r }
+%%.oroot
+%%```
+%%
+%%```{r echo=FALSE}
+%%cat("project:       ",.pname)
+%%cat("Investigation: ",.iname)
+%%cat("Study:         ",.sname)
+%%cat("Assay:         ",.aname)
+%%```
 
 # Packages and functions
 
@@ -145,8 +145,11 @@ It is advisable to first read phenodata and featuredata, followed by actual data
 ## Phenodata
 
 ```{r }
-(pfn <- getMeta(.ameta
-    , "Phenodata"))
+#(pfn <- getMeta(.ameta
+#    , "Phenodata"))
+# phenodata file name
+pfn <- "../../phenodata_20221001.txt"
+# 
 dir(file.path(.aroot,dirname(pfn)), pattern = basename(pfn))
 phdata <- read.table(file.path(.aroot,pfn)
   , header = TRUE
