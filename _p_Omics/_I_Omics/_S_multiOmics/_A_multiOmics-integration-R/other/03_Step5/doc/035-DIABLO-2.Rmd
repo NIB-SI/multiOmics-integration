@@ -16,7 +16,7 @@ DIABLO from **`mixOmics`**  enables integration of more than two datasets.
 
 ## Organize data
 
-Thre datasets are organized as a list of matrices with same samples as rows and variables in columns.
+Three datasets are organized as a list of matrices with same samples as rows and variables in columns.
 
 ```{r }
 data <- CCDATA[-1]
@@ -260,44 +260,44 @@ plind <- plotIndiv(final.diablo.model, ind.names = FALSE, legend = TRUE,
           )
 ```
 
-```{r fig.height=7, eval=FALSE, echo=FALSE}
-gr <- substr(final.diablo.model$names$sample,1,1)
-pchs <- c(C=1,H=16)
-pchs <- pchs[gr]
-pchs
-
-dy <- paste0("0",as.numeric(gsub("^.*S(.*)_.*","\\1",final.diablo.model$names$sample)))
-dy <- substr(dy,nchar(dy)-1,nchar(dy))
-dy
-pchs <- c(1,15,16,18)[as.numeric(as.factor(dy))]
-pchs
-cexs <- 1+dy/5
-gr2 <- final.diablo.model$names$colnames$Y
-gr2 <- substr(gr2, 1, 1)
-cols <- c(C=3, H=2, D = 7, W = 4)
-cols <- as.vector(cols[gr])
-plind <- plotIndiv(final.diablo.model, ind.names = FALSE, legend = TRUE,
-          title = 'DIABLO Sample Plots'
-         , group = gr
-         , pch = pchs
-          , pch.levels = dy
-          , cex = 2
-#          , col = cols
-#          , ellipse = TRUE
-)
-```
-
-```{r eval=FALSE, echo=FALSE}
-plind <- plotIndiv(final.diablo.model, ind.names = FALSE, legend = TRUE,
-          title = 'DIABLO Sample Plots'
-         , group = pchs
-         , pch = factor(gr)
-          , pch.levels = gr
-          , cex = 3
-#          , col = cols
-#          , ellipse = TRUE
-)
-```
+%%```{r fig.height=7, eval=FALSE, echo=FALSE}
+%%gr <- substr(final.diablo.model$names$sample,1,1)
+%%pchs <- c(C=1,H=16)
+%%pchs <- pchs[gr]
+%%pchs
+%%
+%%dy <- paste0("0",as.numeric(gsub("^.*S(.*)_.*","\\1",final.diablo.model$names$sample)))
+%%dy <- substr(dy,nchar(dy)-1,nchar(dy))
+%%dy
+%%pchs <- c(1,15,16,18)[as.numeric(as.factor(dy))]
+%%pchs
+%%cexs <- 1+dy/5
+%%gr2 <- final.diablo.model$names$colnames$Y
+%%gr2 <- substr(gr2, 1, 1)
+%%cols <- c(C=3, H=2, D = 7, W = 4)
+%%cols <- as.vector(cols[gr])
+%%plind <- plotIndiv(final.diablo.model, ind.names = FALSE, legend = TRUE,
+%%          title = 'DIABLO Sample Plots'
+%%         , group = gr
+%%         , pch = pchs
+%%          , pch.levels = dy
+%%          , cex = 2
+%%#          , col = cols
+%%#          , ellipse = TRUE
+%%)
+%%```
+%%
+%%```{r eval=FALSE, echo=FALSE}
+%%plind <- plotIndiv(final.diablo.model, ind.names = FALSE, legend = TRUE,
+%%          title = 'DIABLO Sample Plots'
+%%         , group = pchs
+%%         , pch = factor(gr)
+%%          , pch.levels = gr
+%%          , cex = 3
+%%#          , col = cols
+%%#          , ellipse = TRUE
+%%)
+%%```
 
 In the arrow plot below (Figure), the start of the arrow indicates the centroid between all data sets for a given sample and the tips of the arrows indicate the location of that sample in each block. Such graphics highlight the agreement between all data sets at the sample level. While somewhat difficult to interpret, even qualitatively, Figure 5 shows that the agreement within the LumA group seems to be the highest and lowest in the Her2 group.
 
@@ -313,8 +313,10 @@ plotArrow(final.diablo.model, ind.names = FALSE, legend = TRUE,
 
 Several graphical outputs are available to visualise and mine the associations between the selected variables.
 
-The best starting point to evaluate the correlation structure between variables is with the correlation circle plot, depicted in Figure 6. A majority of the miRNA variables are positively correlated with the first component while the mRNA variables seem to separate along this dimension. These first two components correlate highly with the selected variables from the proteomics dataset. From this, the correlation of each selected feature from all three datasets can be evaluated based on their proximity. s
-
+The best starting point to evaluate the correlation structure between variables is with the correlation circle plot, depicted in Figure 6. A majority of the miRNA variables are positively correlated with the first component while the mRNA variables seem to separate along this dimension. These first two components correlate highly with the selected variables from the proteomics dataset. From this, the correlation of each selected feature from all three datasets can be evaluated based on their proximity.
+```{r}
+write("Variable plots", "bla.log", append=TRUE)
+```
 
 ```{r fig.width=7, fig.height=7}
 if(length(data)==3) pick <- 1:3 else pick <- c(4,1:3)
@@ -325,8 +327,6 @@ plotVar(final.diablo.model, var.names = FALSE,
         , pch = pchs, cex = rep(2,length(data))
         , col = cols
 )
-
-
 ```
 
 The circos plot is exclusive to integrative frameworks and represents the correlations between variables of different types, represented on the side quadrants. From Figure 7, it seems that the miRNA variables are almost entirely negatively correlated with the other two dataframes. The proteomics features are the opposite, such that they display primarily positive correlations while the mRNA variables are more mixed. Note that these correlations are above a value of 0.7 (cutoff = 0.7). All the interpretations made above are only relevant for features with very strong correlations.
@@ -653,7 +653,7 @@ out23b <- ""
 N1 <- nw
 cat(out23b)
 ```
-Save network layout for further plots, used by layout function `my.layout`. 
+Save network layout for further plots, used by layout function `my.layout`.
 ```{r }
 ly <- nw$layout
 ```
@@ -699,7 +699,7 @@ N2 <- nw
 cat(out23b)
 ```
 
-Save layout for further plots, used by layout function `my.layout`. 
+Save layout for further plots, used by layout function `my.layout`.
 ```{r }
 ly <- nw$layout
 ```
@@ -807,8 +807,8 @@ my.write.table(e, file = file.path(.oroot,suffix,file)
 , label=label0, na="0")
 ```
 
-Table with edges for networks based on combined treatments (C, H) and single treatments (C) and (H) is exported as a text file. This table can be used for 
-inspection and filtering out edges based on selected cutoff. 
+Table with edges for networks based on combined treatments (C, H) and single treatments (C) and (H) is exported as a text file. This table can be used for
+inspection and filtering out edges based on selected cutoff.
 Missing edges are labeled as weight 0. This enables numeric filtration in Excel.
 
 ```{r}

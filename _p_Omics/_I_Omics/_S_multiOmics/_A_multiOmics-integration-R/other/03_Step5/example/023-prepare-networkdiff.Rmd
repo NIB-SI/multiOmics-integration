@@ -1,0 +1,270 @@
+```{r echo=FALSE}
+###############################################
+##                                           ##
+## (c) Andrej Blejec (andrej.blejec@nib.si)  ##
+##                                           ##
+###############################################
+```
+```{r echo=FALSE,results='hide'}
+options(width=70)
+```
+Child: 023-prepare-networkdiff.rnw
+
+Prepare data sets for treatment groups.
+```{r }
+pdata$Treatment
+groups <- unique(pdata$Treatment)
+paste(groups, collapse=", ")
+```
+
+
+### Prepare `r paste(groups, collapse=", ") Network difference: \Sexpr{paste(names(res$X)[pair])`}
+
+```{r }
+rownames(X)
+rownames(Y)
+```
+
+```{r }
+head(colnames(X))
+head(colnames(Y))
+```
+
+We will produce networks for each treatment and then experiment with the differences of networks. Should one need to transform data, FUN can be replaced by a suitable function, e.g. logarithm.
+
+
+```{r }
+<<>>=
+FUN <- I
+X1 <- FUN(X[pdata$Treatment %in% groups[1],])
+rownames(X1)
+Y1 <- FUN(Y[pdata$Treatment %in% groups[1],])
+rownames(Y1)
+X2 <- FUN(X[pdata$Treatment %in% groups[2],])
+rownames(X2)
+Y2 <- FUN(Y[pdata$Treatment %in% groups[2],])
+rownames(Y2)
+@
+```
+
+Perform canonical correlation for groups:
+
+
+```{r }
+maxcomp <- min(3,ncol(X),ncol(Y))
+ccmix <- rcc(X1,Y1, ncomp=maxcomp, lambda1=0.1,lambda2=0.2)
+mt1 <- ccmix
+```
+
+
+
+```{r }
+maxcomp <- min(3,ncol(X),ncol(Y))
+ccmix <- rcc(X2,Y2, ncomp=maxcomp, lambda1=0.1,lambda2=0.2)
+mt2 <- ccmix
+```
+
+Plot loadings
+
+```{r }
+
+comp <- 1
+showLoadingDiff <- function(mt1,mt2, comp=1, part=15, dsets=c("X","Y"),groups=c("1","2")){
+lim <- abs(diff(range(mt1$loadings$X[,comp])))/part
+par(mfrow=c(1,2))
+xlab <- paste("Loadings",comp," | group",groups[1])
+ylab <- paste("Loadings",comp," | group",groups[2])
+plot(mt1$loadings$X[,comp],mt2$loadings$X[,comp], pty="s",
+xlab=xlab, ylab=ylab, main=dsets[1])
+abline(c(0,1),col=2)
+rect(-1,-lim,1,lim,col="grey95", border=NA)
+rect(-lim,-1,lim,1,col="grey95", border=NA)
+abline(v=0,h=0)
+interest1 <- (abs(mt1$loadings$X[,comp]-mt2$loadings$X[,comp])>lim) & (abs(mt1$loadings$X[,comp])>lim)&(abs(mt2$loadings$X[,comp])>lim)
+col  <- c(1,2)[interest1+1]
+pch <- c(1,16)[interest1+1]
+points(mt1$loadings$X[,comp],mt2$loadings$X[,comp], col=col,pch=pch)
+box()
+#
+lim <- abs(diff(range(mt1$loadings$Y[,comp])))/part
+xlab <- paste("Loadings",comp," | group",groups[1])
+ylab <- paste("Loadings",comp," | group",groups[2])
+plot(mt1$loadings$Y[,comp],mt2$loadings$Y[,comp], pty="s",
+xlab=xlab, ylab=ylab, main=dsets[2])
+abline(c(0,1),col=2)
+rect(-1,-lim,1,lim,col="grey95", border=NA)
+rect(-lim,-1,lim,1,col="grey95", border=NA)
+abline(v=0,h=0)
+interest2 <- (abs(mt1$loadings$Y[,comp]-mt2$loadings$Y[,comp])>lim) & (abs(mt1$loadings$Y[,comp])>lim)&(abs(mt2$loadings$Y[,comp])>lim)
+col  <- c(1,2)[interest2+1]
+pch <- c(1,16)[interest2+1]
+points(mt1$loadings$Y[,comp],mt2$loadings$Y[,comp], col=col, pch=pch)
+box()
+print(cbind(mt1$loadings$X[interest1,comp],mt2$loadings$X[interest1,comp]))
+print(cbind(mt1$loadings$Y[interest2,comp],mt2$loadings$Y[interest2,comp]))
+print(colnames(X)[interest1])
+print(colnames(Y)[interest2])
+invisible(list(interestx=interest1, interesty=interest2))
+}
+if(interactive()) showLoadingDiff(mt1,mt2,comp=1)
+```
+
+```{r }
+showLoadingDiff(mt1,mt2,comp=1, dsets=datasets, groups=groups)
+```
+
+```{r }
+showLoadingDiff(mt1,mt2,comp=2, dsets=datasets, groups=groups)
+
+```
+
+```{r }
+showLoadingDiff(mt1,mt2,comp=3, dsets=datasets, groups=groups)
+```
+
+Explained variance
+
+```{r }
+par(mfrow=c(1,2))
+mt1$explained_variance
+ev1 <- sapply(mt1$explained_variance, cumsum)
+mt2$explained_variance
+ev2 <- sapply(mt2$explained_variance, cumsum)
+xylim <- range(ev1,ev2)
+plot(ev1[,"X"],ev1[,"Y"], type="b", xlim=xylim,ylim=xylim, xlab=names(CCDATA)[2], ylab=names(CCDATA)[3], lwd=2)
+title(groups[1])
+plot(ev2[,"X"],ev2[,"Y"], type="b", , xlim=xylim,ylim=xylim, xlab=names(CCDATA)[2], ylab=names(CCDATA)[3], lwd=2)
+title(groups[2])
+title("Cumulative explained variance", outer=TRUE)
+```
+
+Set colors
+```{r }
+col1 <- rgb(t(col2rgb("yellow"))/255,alpha=1)
+col2 <- rgb(t(col2rgb("lightblue"))/255,alpha=1)
+```
+
+Correlations
+
+```{r }
+
+m1 <- network(mt1
+    , shape.node = c("rectangle","rectangle")
+    , color.node = c(col1,col2)
+#    , layout = layout_in_circle
+)
+title(paste(groups[1],"Cutoff =", 0),adj=1)
+```
+
+Save network file
+```{r }
+# Complete network, cutoff = 0
+i <- 1
+N <- m1
+file <- paste0("network-",paste(.treat[i], collapse="_"),"-",paste(datasets, collapse="_"),".txt")
+label <- paste(paste(.treat[i], collapse=", "),"|",paste(datasets, collapse=", "),"; cutoff =",0)
+suffix <- paste0(substr(names(DATA),1,2)[sets[-1]],collapse="-")
+e <- extractEdges(N, cnames=c(datasets,"w"))
+head(e)
+#
+if(!dir.exists(file.path(.oroot))) dir.create(file.path(.oroot))
+if(!dir.exists(file.path(.oroot,suffix))) dir.create(file.path(.oroot,suffix))
+#
+#my.write.table(e, file =file.path(.oroot,suffix,file), label=label)
+
+```
+
+
+
+```{r }
+set.seed(1234)
+m2 <- network(mt2
+    , shape.node = c("rectangle","rectangle")
+    , color.node = c(col1,col2)
+#    , layout = layout_in_circle
+      )
+title(paste(groups[2],"Cutoff =", 0),adj=1)
+```
+
+Save network file
+```{r }
+# Complete network, cutoff = 0
+i <- 2
+N <- m2
+file <- paste0("network-",paste(.treat[i], collapse="_"),"-",paste(datasets, collapse="_"),".txt")
+label <- paste(paste(.treat[i], collapse=", "),"|",paste(datasets, collapse=", "),"; cutoff =",0)
+suffix <- paste0(substr(names(DATA),1,2)[sets[-1]],collapse="-")
+e <- extractEdges(N, cnames=c(datasets,"w"))
+head(e)
+#
+if(!dir.exists(file.path(.oroot))) dir.create(file.path(.oroot))
+if(!dir.exists(file.path(.oroot,suffix))) dir.create(file.path(.oroot,suffix))
+#
+#my.write.table(e, file =file.path(.oroot,suffix,file), label=label)
+
+```
+
+Heatmap of used correlation matrix
+
+```{r echo=FALSE, results="hide"}
+# ce mi je dovolj 19 vrednosti
+library(RColorBrewer)
+colsh  <-  c(rev(brewer.pal(9, "Blues")), 'grey95', brewer.pal(9, "Reds"))
+#colsh <- rev(brewer.pal(11,"RdBu"))
+limits <- seq(-1,1,length=length(cols)+1)
+limits
+```
+
+
+
+```{r }
+r <- m1$M
+if(max(dim(r)) > 30) ind <- my.heatmap(r, col = colsh, zlim=c(-1,1),scale="none") else
+ind <- my.heatmap(r, col = colsh, zlim=c(-1,1),scale="none",add.expr=abline(h=0.5+(1:nrow(r)),v=0.5+1:ncol(r),col="white"))
+title(.treat[1])
+```
+
+```{r }
+r <- m2$M
+if(max(dim(r)) > 30) ind <- my.heatmap(r, col = colsh, zlim=c(-1,1),scale="none") else
+ind <- my.heatmap(r, col = colsh, zlim=c(-1,1),scale="none",add.expr=abline(h=0.5+(1:nrow(r)),v=0.5+1:ncol(r),col="white"))
+title(.treat[2])
+```
+
+
+```{r }
+par(mfrow=c(1,2))
+rm1 <- sort(as.vector(m1$M))
+ct1 <- unique(round(quantile(abs(rm1),c(.75,.9,.95)),1))
+plot(rm1,rank(rm1)/length(rm1), xlab = "Absolute correlation"
+    , ylab = "Quantile rank",
+    , main = groups[1])
+abline(v=ct1,col=2)
+#
+rm2 <- sort(as.vector(m2$M))
+ct2 <- unique(round(quantile(abs(rm2),c(.75,.9,.95)),2))
+plot(rm2,rank(rm2)/length(rm2), xlab = "Absolute correlation"
+    , ylab = "Quantile rank"
+    , main = groups[2])
+abline(v=ct2,col=2)
+ct1
+ct2
+```
+
+Convert used correlation matrix into bipolar binary matrix:
+Convert absolute correlations below threshold to zero. Remaining values are converted into signed ones.
+
+```{r }
+toBinary <- function(r, cutoff=0.5){
+ones <- abs(r)>=cutoff
+r[!ones] <- 0
+r[ones] <- r[ones]/abs(r[ones])
+return(r)
+}
+```
+
+
+
+
+
+

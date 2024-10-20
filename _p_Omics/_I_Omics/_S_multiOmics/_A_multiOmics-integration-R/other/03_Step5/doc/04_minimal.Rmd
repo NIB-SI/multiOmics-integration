@@ -47,6 +47,9 @@ In this document we present a work-flow for integration across different omics d
 # File management system
 
 Usually we use a file management system under the pISA-tree framework. For simplicity, all files ( scripts, data ,... ) are in one directory.
+```{r}
+.aroot <- "."
+```
 %%```{r}
 %%library(pisar)
 %%pisa <- pisa()
@@ -148,8 +151,9 @@ It is advisable to first read phenodata and featuredata, followed by actual data
 #(pfn <- getMeta(.ameta
 #    , "Phenodata"))
 # phenodata file name
-pfn <- "../../phenodata_20221001.txt"
-# 
+.aroot <- "../example"
+pfn <- "phenodata_20221001.txt"
+#
 dir(file.path(.aroot,dirname(pfn)), pattern = basename(pfn))
 phdata <- read.table(file.path(.aroot,pfn)
   , header = TRUE
@@ -244,9 +248,9 @@ We have data on hormonomics, metabolomics, and qPCR:
 %%```
 
 ```{r}
-hormonomics <- read.table(file.path(.aroot,"./input/data_hormonomics.txt"), header=TRUE, sep="\t")
-metabolomics <- read.table(file.path(.aroot,"./input/data_metabolomics.txt"), header=TRUE, sep="\t")
-qPCR <- read.table(file.path(.aroot,"./input/data_qPCR.txt"), header=TRUE, sep="\t")
+hormonomics <- read.table(file.path(.aroot,"data_hormonomics.txt"), header=TRUE, sep="\t")
+metabolomics <- read.table(file.path(.aroot,"data_metabolomics.txt"), header=TRUE, sep="\t")
+qPCR <- read.table(file.path(.aroot,"data_qPCR.txt"), header=TRUE, sep="\t")
 ```
 
 For future use, we need the text names of dataset objects:
@@ -329,9 +333,9 @@ names(CCDATA)
 
 
 ```{r}
-write("Entering 035-DIABLO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "bla.log", append=!TRUE)
+.oroot <- "../example"
+write("Entering 035-DIABLO-2 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "bla.log", append=!TRUE)
 write(.oroot, "bla.log", append=TRUE)
-write(pisa$oroot, "bla.log", append=TRUE)
 write(commandArgs(trailingOnly = TRUE), "bla.log",append=TRUE)
 
 ```
@@ -343,7 +347,7 @@ cat(out)
 ```
 
 ```{r}
-write("From 035-DIABLO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "bla.log", append=TRUE)
+write("From 035-DIABLO-2 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "bla.log", append=TRUE)
 ```
 
 
@@ -379,4 +383,4 @@ write("From 035-DIABLO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "bla.log", append=TRUE)
 ```{r sessionInfo,results='asis',echo=FALSE}
 cat(win.version(),"<br>")
 sessionInfo()
-``` 
+```

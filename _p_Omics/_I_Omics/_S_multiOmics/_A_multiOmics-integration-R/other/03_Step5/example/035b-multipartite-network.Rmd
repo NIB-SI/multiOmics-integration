@@ -1,0 +1,43 @@
+```{r echo=FALSE}
+###############################################
+##                                           ##
+## (c) Andrej Blejec (andrej.blejec@nib.si)  ##
+##                                           ##
+###############################################
+```
+```{r echo=FALSE,results='hide'}
+options(width=70)
+```
+### Cutoff = `r cutoff`
+
+
+```{r }
+ndata <- length(data)
+lbl <- gsub(", ","-",label)
+nfn <- paste("network-035b",lbl,cutoff*10,sep="-")
+#png(nfn, res = 600, width = 4000, height = 4000)
+write(nfn, "bla.log", append=TRUE)
+```
+
+```{r echo=!FALSE, eval=!FALSE}
+set.seed(1234)
+nw <- my.network(x
+        , blocks = 1:ndata
+        , color.node = cols
+        , cutoff = cutoff
+        , shape.node = "rectangle"
+        , layout = layout.fun
+        , save = "png"
+        , name.save = nfn
+        )
+#        title( #main=paste(names(data), sep=", "),
+#        sub=paste("Cutoff = ",cutoff))
+#        title(label,adj=0.8,outer=TRUE,line=-1)
+#        legend("bottomright", pch=15,pt.cex=2,col=cols, legend=names(data),
+#        bty="n")
+#        text(ly[,1],ly[,2],names(V(nw$gR)))
+#dev.off()
+```
+
+![`r nfn`](`r  paste0(nfn,".png")`)
+
