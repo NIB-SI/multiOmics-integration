@@ -773,7 +773,7 @@ suffix <- paste0(substr(names(DATA),1,2)[sets[-1]],collapse="-")
 
 ```{r}
 write("Mid diablo 6 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "bla.log", append=TRUE)
-write(file.path(.oroot,suffix,file), "bla.log", append=TRUE)
+write(file.path(suffix,file), "bla.log", append=TRUE)
 write(file, "bla.log", append=TRUE)
 
 ```

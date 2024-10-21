@@ -167,10 +167,9 @@ suffix <- paste0(substr(names(DATA),1,2)[sets[-1]],collapse="-")
 e <- extractEdges(N, cnames=c(datasets,"w"))
 head(e)
 #
-if(!dir.exists(file.path(.oroot))) dir.create(file.path(.oroot))
-if(!dir.exists(file.path(.oroot,suffix))) dir.create(file.path(.oroot,suffix))
+
 #
-#my.write.table(e, file =file.path(.oroot,suffix,file), label=label)
+#my.write.table(e, file =file.path(suffix,file), label=label)
 
 ```
 
@@ -197,10 +196,9 @@ suffix <- paste0(substr(names(DATA),1,2)[sets[-1]],collapse="-")
 e <- extractEdges(N, cnames=c(datasets,"w"))
 head(e)
 #
-if(!dir.exists(file.path(.oroot))) dir.create(file.path(.oroot))
-if(!dir.exists(file.path(.oroot,suffix))) dir.create(file.path(.oroot,suffix))
+
 #
-#my.write.table(e, file =file.path(.oroot,suffix,file), label=label)
+#my.write.table(e, file =file.path(suffix,file), label=label)
 
 ```
 
