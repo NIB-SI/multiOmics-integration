@@ -24,7 +24,7 @@ str(data)
 length(data)
 ```
 
-In addition, outcome, phenotypic state or in our case treatment can also be determined. Let us say, the we have four treatments A, B, C and D.
+In addition, outcome, phenotypic state or in our case treatment can also be determined. We have combination of two treatments and four time points.
 
 ```{r }
 state <- factor(CCDATA[[1]])
@@ -36,7 +36,8 @@ str(state)
 
 ## Initial analysis
 
-Note: Here we will follow the analysis as in http://mixomics.org/mixdiablo/diablo-tcga-case-study/.
+Note: Here we will follow the analysis as in 
+http://mixomics.org/mixdiablo/diablo-tcga-case-study/.
 
 
 ## Pairwise PLS comparisons
@@ -46,9 +47,8 @@ list.keepX = c(25, 25) # select arbitrary values of features to keep
 list.keepY = c(25, 25)
 ```
 
-```{r fig.cap="Circle Correlation Plots for pairwise PLS models on ADAPT data. Only displays the at most top 25 features for each dimension, subsetting by those with a correlation above 0.5.", fig.height=7}
+```{r fig.cap="Circle Correlation Plots for pairwise PLS models on ADAPT data. At most top 25 features for each dimension with correlation above 0.5, are displayed.", fig.height=7}
 par(mfrow=c(2,2))
-cutoffs <- c(0.5)
 pairs <- combn(1:length(names(data)),2)
 nms <- names(data)
 outn <- ""
@@ -73,20 +73,19 @@ for(j in 1:ncol(pairs) ){
     cat("Results in:",paste0("spls",j),"\n")
     cat("Correlation between pls variates:\n")
     print(round(cor(x$variates$X, x$variates$Y),5))
-#   for(cutoff in cutoffs){
+#
    plotVar(x, cutoff = cutoff, title = paste(nms[pair],collapse=", "),
         legend = c(nms[pair][1], nms[pair][2]),
         var.names = FALSE, style = 'graphics',
         pch = pchs[pair], cex = c(2,2),
         col = cols[pair])
-#   }
-
 }
 ```
 
 ## Initial DIABLO model
 
-Following the suggestion in the source, we will use design matrices with values. This is supposed to keep low classification error rate.
+Following the suggestion in the source, we will use design matrices with values. 
+This is supposed to keep low classification error rate.
 
 ```{r }
 entry <- .entry
@@ -111,6 +110,9 @@ To choose the number of components for the final DIABLO model, the function `per
 
 
 ```{r eval=FALSE}
+# Tuning of features can take a substantial amount of time.
+# Chunk not evaluated for this document.
+#
 # run component number tuning with repeated CV
 system.time(perf.diablo = perf(basic.diablo.model, validation = 'Mfold',
                    folds = 3, nrepeat = 10))
@@ -118,9 +120,12 @@ system.time(perf.diablo = perf(basic.diablo.model, validation = 'Mfold',
 plot(perf.diablo) # plot output of tuning
 ```
 
-The classification rate stays
+
 
 ```{r eval=FALSE}
+# Tuning of features can take a substantial amount of time.
+# Chunk not evaluated for this document.
+#
 # set the optimal ncomp value
 ncomp  <-  perf.diablo$choice.ncomp$WeightedVote["Overall.BER", "centroids.dist"]
 # show the optimal choice for ncomp for each dist metric
@@ -130,7 +135,7 @@ perf.diablo$choice.ncomp$WeightedVote
 For classification, the analysis suggests
 the number of  components.
 
-(Tuning takes some time.) From previous tuning sessions one can conclude, that the classification rate stays roughly unchanged after two to four components, so we will set the number of components to number of data sets:
+ From previous tuning sessions one can conclude, that the classification rate stays roughly unchanged after two to four components, so we will set the number of components to the number of data sets:
 
 
 ```{r }
@@ -165,6 +170,9 @@ test.keepX
 
 
 ```{r eval=FALSE}
+# Tuning of features can take a substantial amount of time.
+# Chunk not evaluated for this document.
+#
 # run the feature selection tuning
 system.time(tune.model  <-  tune.block.splsda(X = data, Y = Y, ncomp = ncomp, cpus=4,
                               test.keepX = test.keepX, design = design,
@@ -174,6 +182,9 @@ system.time(tune.model  <-  tune.block.splsda(X = data, Y = Y, ncomp = ncomp, cp
 ```
 
 ```{r eval=FALSE}
+# Tuning of features can take a substantial amount of time.
+# Chunk not evaluated for this document.
+#
 # run the feature selection tuning
 system.time(tune.model  <-  tune.block.splsda(X = data, Y = Y, ncomp = ncomp, cpus=4,
                               test.keepX = test.keepX, design = design,
@@ -184,22 +195,25 @@ system.time(tune.model  <-  tune.block.splsda(X = data, Y = Y, ncomp = ncomp, cp
 
 The number of features to select on each component is returned in
 ```{r eval=FALSE}
+# Tuning of features can take a substantial amount of time.
+# Chunk not evaluated for this document.
+#
 list.keepX = tune.model$choice.keepX # set the optimal values of features to retain
 list.keepX
 ```
 
-Tuning of features can take a substantial amount of time. From previous runs, we can conclude to limit number of variates mostly in proteomics. However, I do not see the effect of this limitations except in a short list of, presumably, important features. Loadings are different. Previous analyses suggest the following list:
+Tuning of features can take a substantial amount of time. 
+Previous analyses suggest the following list:
 
   $metabolomics
-     [1] 10 10 5 5
+     [1] 10 10 5
   $hormonomics
-     [1] 5 5 10 5
+     [1] 5 5 10
   $qPCR
-     [1] 10 10 5 5
+     [1] 10 10 5
 
-
+We have decided to keep 10 variates for each component.
 ```{r }
-
 keepX <- list(
     metabolomics = rep(10, ncomp),
     hormonomics = rep(10, ncomp),
@@ -263,7 +277,7 @@ plind <- plotIndiv(final.diablo.model, ind.names = FALSE, legend = TRUE,
 
 
 
-In the arrow plot below (Figure), the start of the arrow indicates the centroid between all data sets for a given sample and the tips of the arrows indicate the location of that sample in each block. Such graphics highlight the agreement between all data sets at the sample level. While somewhat difficult to interpret, even qualitatively, Figure 5 shows that the agreement within the LumA group seems to be the highest and lowest in the Her2 group.
+In the arrow plot below, the start of the arrow indicates the centroid between all data sets for a given sample and the tips of the arrows indicate the location of that sample in each block. Such graphics highlight the agreement between all data sets at the sample level. While somewhat difficult to interpret, even qualitatively, this arrow plot shows proximities of C01 and H01 (both day 1), C07 and C08, and H07 and H08 ( both a day apart). While C samples are in forth quadrant ( D1 < 0, D2 > 0), H samples have ( D1 < 0, D2 < 0) except H14 that is separated on the positive part of Dimension 1.
 
 
 ```{r fig.height=7}
@@ -275,13 +289,15 @@ plotArrow(final.diablo.model, ind.names = FALSE, legend = TRUE,
 
 ## Variable plots
 
-Several graphical outputs are available to visualise and mine the associations between the selected variables.
+Several graphical outputs are available to visualise and mine the associations 
+between the selected variables.
 
-The best starting point to evaluate the correlation structure between variables is with the correlation circle plot, depicted in Figure 6. A majority of the miRNA variables are positively correlated with the first component while the mRNA variables seem to separate along this dimension. These first two components correlate highly with the selected variables from the proteomics dataset. From this, the correlation of each selected feature from all three datasets can be evaluated based on their proximity. s
+The best starting point to evaluate the correlation structure 
+between variables is with the correlation circle plot. A majority of the qPCR variables are positively correlated only with the first component. The hormonomics and metabolomics variables seem to separate along first two dimensions. These first two components correlate highly with the selected variables from the all three dataset. From this, the correlation of each selected feature from all three datasets can be evaluated based on their proximity. 
 
 
-```{r fig.width=7, fig.height=7}
-if(length(data)==3) pick <- 1:3 else pick <- c(4,1:3)
+```{r fig.width=8, fig.height=8}
+#if(length(data)==3) pick <- 1:3 else pick <- c(4,1:3)
 #cols <- c('orange1', 'brown1', 'lightgreen',"lightblue")[pick]
 #pchs <- c(16, 17, 15, 18)[pick]
 cols <- c('orange1', 'brown1', 'lightgreen')
@@ -295,7 +311,8 @@ plotVar(final.diablo.model, var.names = FALSE,
 
 ```
 
-The circos plot is exclusive to integrative frameworks and represents the correlations between variables of different types, represented on the side quadrants. From Figure 7, it seems that the miRNA variables are almost entirely negatively correlated with the other two dataframes. The proteomics features are the opposite, such that they display primarily positive correlations while the mRNA variables are more mixed. Note that these correlations are above a value of 0.7 (cutoff = 0.7). All the interpretations made above are only relevant for features with very strong correlations.
+The circos plot is exclusive to integrative frameworks and represents 
+the correlations between variables of different types, represented on the side quadrants. It seems that the qPCR variables are almost entirely negatively correlated with the other two dataframes. Just few from metabolomics and hormonomics are positively correlated.  Note that these correlations are above a value of 0.7 (cutoff = 0.7). All the interpretations made above are only relevant for features with very strong correlations.
 
 
 ```{r fig.width=7, fig.height=7}
