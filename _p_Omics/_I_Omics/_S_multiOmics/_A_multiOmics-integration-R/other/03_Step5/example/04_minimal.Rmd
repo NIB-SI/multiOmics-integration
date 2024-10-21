@@ -31,11 +31,6 @@ opts_knit$set( concordance=TRUE
 opts_knit$get("root.dir")
 ```
 
-%%```{r additional arguments, echo=FALSE, message=FALSE, warnings=FALSE}
-%%addArgs <- NULL
-%%addArgs[1] <- c("")[1]
-%%```
-
 # Introduction
 
 [Needs more text]
@@ -48,72 +43,6 @@ In this document we present a work-flow for integration across different omics d
 
 Usually we use a file management system under the pISA-tree framework. 
 For simplicity, all files ( scripts, data ,... ) are in one directory.
-
-```{r}
-.aroot <- "."
-```
-%%```{r}
-%%library(pisar)
-%%pisa <- pisa()
-%%# Set output directory (needed for .Rmd -> HTML)
-%%pisa$oroot <- file.path(.aroot,"output")
-%%.oroot <- pisa$oroot
-%%```
-
-%%```{r set specific arguments,results='hide',message=FALSE,warning=FALSE,echo=FALSE}
-%%# Argumenti
-%%# 1. Ime izvorne datoteke za analizo
-%%# 2. Izbira genov (ime stolpca v featuredata)
-%%#
-%% .callName <- addArgs[1]
-%% .vzorci <- addArgs[2]
-%%#getwd()
-%%#args
-%%```
-
-%%```{r initialize,echo=FALSE,include=FALSE,message=FALSE,warning=FALSE}
-%%options(width=70)
-%%#library(Hmisc)
-%%#library(amisc)
-%%#library(Biobase)
-%%#library(xlsReadWrite)
-%%#library(xtable)
-%%#library(MASS)
-%%catln <- function(...) cat(...,"\n")
-%%```
-
-%%Final document is in subdirectory `reports`:
-%%```{r }
-%%#basename(outputFile)
-%%```
-%%
-%%## Info from pISA structure
-%%
-%%Input/data directory
-%%
-%%```{r }
-%%.inroot
-%%```
-%%
-%%Results directory
-%%
-%%```{r }
-%%.oroot
-%%```
-%%
-%%```{r echo=FALSE}
-%%cat("project:       ",.pname)
-%%cat("Investigation: ",.iname)
-%%cat("Study:         ",.sname)
-%%cat("Assay:         ",.aname)
-%%```
-
-# Packages and functions
-
-%For canonical correlation analysis we will use package \pkg{CCA}, which is used in our projects.
-%```{r message=FALSE,warning=FALSE}
-%library(CCA)
-%```
 
 A package with regularized CCA and multiomics DIABLO method is *mixOmics*. Package *igraph* is needed for network analysis.
 
@@ -140,9 +69,6 @@ out <- ""
 out <- paste(out,knit_child("005-Functions.Rmd", quiet=TRUE))
 ```
 
-
-
-
 # Data
 
 It is advisable to first read the phenodata (or sample description file), followed by actual data input. This enables smart selection of samples, based on the sample selection column with the assay name.
@@ -155,8 +81,7 @@ It is advisable to first read the phenodata (or sample description file), follow
 # phenodata file name
 pfn <- "phenodata_20221001.txt"
 #
-dir(file.path(.aroot,dirname(pfn)), pattern = basename(pfn))
-phdata <- read.table(file.path(.aroot,pfn)
+phdata <- read.table(pfn
   , header = TRUE
   ,  sep = "\t"
   , stringsAsFactors = FALSE
@@ -166,18 +91,6 @@ dim(phdata)
 names(phdata)
 pdata <- phdata
 ```
-
-
-%%Check and use the sample selection column, if present.
-%%```{r }
-%%.aname
-%%selectId <- substr(gsub("-",".",.aname),2,nchar(.aname))
-%%selectId <- .vzorci
-%%selectId
-%%if(selectId %in% names(phdata)) pdata <- phdata[!is.na(phdata[,selectId]),] else
-%%pdata <- phdata
-%%dim(pdata)
-%%```
 
 Overview of selected samples:
 
@@ -194,64 +107,19 @@ summary(pdata)
 apply(pdata,2,function(x) summary(as.factor(x)))
 ```
 
-%%## Featuredata
-%%
-%%```{r }
-%%(ffn <- getMeta(.ameta,"Featuredata"))
-%%```
-%%
-%%```{r }
-%%if(ffn != "")
-%%fdata <- read.table(file.path(.iroot,ffn)
-%%    , sep = "\t"
-%%    , header = TRUE
-%%    , na.strings = c("", "-")
-%%    , stringsAsFactors = FALSE
-%%    , row.names = 1
-%%    ) else fdata <- NULL
-%%head(fdata)
-%%```
-%%
-%%First few columns, if present.
-%%
-%%```{r }
-%%fdata[,1:2]
-%%```
+
 
 ## Process data files
 
 For this project we aim to integrate several multi-omics datasets.
 We have data on hormonomics, metabolomics, and qPCR:
 
-%%In the assay metadata file keys for data files start with keyword 'Data'.
-%%Extract object names from those lines.
-%%
-%%```{r}
-%%ind <- grep("^Data",.ameta[,1])
-%%datanames <-  gsub("^Data (.*):$","\\1",.ameta[ind,]$Key)
-%%datanames
-%%```
-%%
 
-%%
-%%
-%%Read data and put them in variables named indatasets:
-%%```{r}
-%%cat("Created objects:\n\n")
-%%
-%%for (i in ind) {
-%%nm <- gsub("^Data (.*):$","\\1",.ameta[i,]$Key)
-%%x <- read.table(file.path(.aroot,.ameta[i,]$Value), header=TRUE, sep="\t")
-%%assign(nm,x)
-%%catln("\nDataset:", ls(pattern=nm))
-%%str(get(nm))
-%%}
-%%```
 
 ```{r}
-hormonomics <- read.table(file.path(.aroot,"data_hormonomics.txt"), header=TRUE, sep="\t")
-metabolomics <- read.table(file.path(.aroot,"data_metabolomics.txt"), header=TRUE, sep="\t")
-qPCR <- read.table(file.path(.aroot,"data_qPCR.txt"), header=TRUE, sep="\t")
+hormonomics <- read.table("data_hormonomics.txt", header=TRUE, sep="\t")
+metabolomics <- read.table("data_metabolomics.txt", header=TRUE, sep="\t")
+qPCR <- read.table("data_qPCR.txt", header=TRUE, sep="\t")
 ```
 
 For future use, we need the text names of dataset objects:
@@ -319,11 +187,7 @@ groups <- unique(pdata$Treatment)
 groups
 ```
 
-
-
 # Multiomics data integration with DIABLO
-
-
 
 ```{r}
 CCDATA <- DATA
@@ -332,10 +196,8 @@ names(CCDATA)
 
 
 
-```{r}
-.oroot <- "."
+```{r }
 write("Entering 035-DIABLO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "bla.log", append=!TRUE)
-write(.oroot, "bla.log", append=TRUE)
 write("commandArgs:", "bla.log", append=TRUE)
 write(commandArgs(trailingOnly = TRUE), "bla.log",append=TRUE)
 write("End commandArgs", "bla.log", append=TRUE)
@@ -351,33 +213,6 @@ cat(out)
 write("From 035-DIABLO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "bla.log", append=TRUE)
 ```
 
-
-
-%%# Metadata files
-%%
-%%## Project
-%%
-%%```{r pmeta, echo=FALSE,results='asis'}
-%%.pmeta
-%%```
-%%
-%%## Investigation
-%%
-%%```{r imeta, echo=FALSE,results='asis'}
-%%.imeta
-%%```
-%%
-%%## Study
-%%
-%%```{r smeta, echo=FALSE,results='asis'}
-%%.smeta
-%%```
-%%
-%%## Assay
-%%
-%%```{r ameta, echo=FALSE,results='asis'}
-%%.ameta
-%%```
 
 # SessionInfo
 
