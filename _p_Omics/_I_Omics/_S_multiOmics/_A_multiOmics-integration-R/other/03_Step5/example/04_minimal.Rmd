@@ -24,7 +24,7 @@ render_markdown()
 opts_chunk$set( fig.path='./figs/'
     , tidy=FALSE)
 opts_knit$set( concordance=TRUE
-    , root.dir = getwd()
+    , root.dir = getwd() # working directory for all chunks
     , unnamed.chunk.label = "ch"
     , width = 70
 )
@@ -32,7 +32,6 @@ opts_knit$get("root.dir")
 ```
 
 # Introduction
-
 
 [Needs more text]
 
@@ -206,7 +205,7 @@ write("End commandArgs", "bla.log", append=TRUE)
 
 ```{r diablo, results='asis'}
 out <- ""
-#out <- paste(out,knit_child("035-DIABLO-2.Rmd", quiet=TRUE))
+out <- paste(out,knit_child("035-DIABLO-2.Rmd", quiet=TRUE))
 cat(out)
 ```
 
