@@ -145,7 +145,7 @@ out <- paste(out,knit_child("005-Functions.Rmd", quiet=TRUE))
 
 # Data
 
-It is advisable to first read phenodata, followed by actual data input. This enables smart selection of samples, based on the sample selection column with the assay name.
+It is advisable to first read the phenodata (or sample description file), followed by actual data input. This enables smart selection of samples, based on the sample selection column with the assay name.
 
 ## Phenodata
 
