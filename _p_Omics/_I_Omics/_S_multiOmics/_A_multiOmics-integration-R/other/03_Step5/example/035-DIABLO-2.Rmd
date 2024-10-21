@@ -342,7 +342,6 @@ for(j in 1:ncol(blocks)){
 cat(out35a)
 ```
 
-The function plotLoadings() visualises the loading weights of each selected variable on each component and each data set (Figure 9). The colour indicates the class in which the variable has the maximum level of expression (contrib = 'max') using the median (method = 'median'). Figure 9 depicts the loading values for the second dimension.
 
 
 ## Multipartite network
@@ -373,7 +372,7 @@ out35b <- ""
   out35b <- paste( out35b, knit_child("035b-multipartite-network.Rmd", quiet=TRUE))
 cat(out35b)
 ```
-`r out35b`
+
 
 ```{r results='asis'}
 cutoff <- 0.7
@@ -394,6 +393,10 @@ out35b <- ""
 cat(out35b)
 ```
 
+## Visualize loadings
+
+The function plotLoadings() visualises the loading weights of each selected 
+variable on each component and each data set. The colour indicates the class in which the variable has the maximum level of expression (contrib = 'max') using the median (method = 'median'). Figure below depicts the loading values for each dimension.
 
 
 ```{r plotLoadings, fig.height=7}
@@ -405,7 +408,8 @@ plotLoadings(final.diablo.model, comp = i, contrib = 'max', method = 'median')
 
 ## Heatmap (clustered image map)
 
-The cimDIABLO() function is a clustered image map specifically implemented to represent the multi-omics molecular signature expression for each sample. From figure below the areas of homogeneous expression levels for a set of samples across a set of features can be determined. For instance, the H14 samples were the only group to show extremely high levels of expression for a specific set of genes and metabolites. This indicates these features are fairly discriminating for this subtype.
+The cimDIABLO() function is a clustered image map specifically implemented 
+to represent the multi-omics molecular signature expression for each sample. From figure below the areas of homogeneous expression levels for a set of samples across a set of features can be determined. For instance, the H14 samples were the only group to show extremely high levels of expression for a specific set of genes and metabolites. This indicates these features are fairly discriminating for this subtype.
 
 
 ```{r cim1}
@@ -418,9 +422,10 @@ dev.off()
 
 ![`r cimfn`](`r cimfn`)
 
+## AUC and ROC plots
 
-
-An AUC plot per block can also be obtained using the function auroc(). The interpretation of this output may not be particularly insightful in relation to the performance evaluation of our methods, but can complement the statistical analysis..
+An AUC plot per block can also be obtained using the function auroc(). 
+The interpretation of this output may not be particularly insightful in relation to the performance evaluation of our methods, but can complement the statistical analysis.
 
 
 ```{r }
@@ -437,9 +442,11 @@ res12 <- final.diablo.model
 
 ## Final analysis
 
-Design matrix determines which datasets (blocks) are connected. We will connect all blocks:
+Design matrix determines which datasets (blocks) are connected. 
+We will connect all blocks:
 
-According to recommendation from tuning, design matrix should have small antries that provide better predictions.
+According to recommendation from tuning, design matrix should have 
+small entries that provide better predictions.
 
 ```{r }
 entry <- .entry

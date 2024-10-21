@@ -14,17 +14,11 @@ write("Entered 035a !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "bla.log", append=TRUE)
 ```{r}
 nfn <- paste0("network-035a-",paste(names(data)[blocks[,j]], collapse="-"),"-",cutoff*10)
 #nfn <- paste0("network-035a-",j,"-",cutoff*10)
+nfn
 write(nfn, "bla.log", append=TRUE)
 ```
 
-```{r echo=FALSE, eval=FALSE}
-png(paste0(nfn,".png"), res = 600, width = 4000, height = 4000)
-plot(1:10)
-title(nfn)
-dev.off()
-```
 
-Error: figure margins too large
 ```{r echo=!FALSE, eval=TRUE}
 png(paste0(nfn,".png"), res = 600, width = 4000, height = 4000)
 nw <- network(final.diablo.model
@@ -41,5 +35,7 @@ nw <- network(final.diablo.model
 #dev.off()
 ```
 
-Image: 
-![`r nfn`](`r paste0(nfn,".png")`)
+Image:
+
+=![`r nfn`](`r paste0(nfn,".png")`)=
+
