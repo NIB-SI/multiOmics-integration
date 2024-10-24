@@ -1,0 +1,24 @@
+Assay:	_A_DiABLO-R
+Short Name:	DiABLO-R
+Assay Class:	DRY
+Assay Type:	R
+Title:	Multiblock sPLS-DA
+Description:	Multiblock sPLS-DA
+pISA Assay creation date:	2022-09-06
+pISA Assay creator:	Andrej Blejec
+Analyst:	Andrej Blejec
+Phenodata:	./input/phenodata_subset_2023-03-08.txt
+Featuredata:	
+Data hormonomics:	./input/data_hormonomics.txt
+Data metabolomics:	./input/data_metabolomics.txt
+Data phenomics:	./input/data_Phenomics.txt
+Data proteomics:	./input/data_Proteomics.txt
+Data qPCR:	./input/data_qPCR.txt
+Filter proteomics 36:	./input/Proteomics-subset-annotation.txt
+Names proteomics:	./input/Proteomics-subset-annotation.txt
+Principal investigator:	Kristina Gruden
+License:	CC BY 4.0, MIT
+Sharing permission:	Private
+Upload to FAIRDOMHub:	Yes
+GitHub:	https://github.com/NIB-SI/multiOmics-integration/_p_Omics/_I_Omics/_S_multiOmics/_A_DiABLO-R
+Notes:	details in README.MD
