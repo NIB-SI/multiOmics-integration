@@ -35,7 +35,8 @@ nw <- network(final.diablo.model
 #dev.off()
 ```
 
-Image:
 
-=![`r nfn`](`r paste0(nfn,".png")`)=
+Cutoff = `r cutoff`
+
+![`r nfn`](`r paste0(nfn,".png")`)
 

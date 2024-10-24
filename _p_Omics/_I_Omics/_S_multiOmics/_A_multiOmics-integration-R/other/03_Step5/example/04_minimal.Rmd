@@ -39,10 +39,8 @@ In this document we present a work-flow for integration across different omics d
 
 [Note] This is not the final version of the document.
 
-# File management system
+# Packages and files
 
-Usually we use a file management system under the pISA-tree framework. 
-For simplicity, all files ( scripts, data ,... ) are in one directory.
 
 A package with regularized CCA and multiomics DIABLO method is *mixOmics*. Package *igraph* is needed for network analysis.
 
@@ -69,9 +67,31 @@ out <- ""
 out <- paste(out,knit_child("005-Functions.Rmd", quiet=TRUE))
 ```
 
-# Data
+## File names
 
-It is advisable to first read the phenodata (or sample description file), followed by actual data input. This enables smart selection of samples, based on the sample selection column with the assay name.
+Usually we use a file management system under the pISA-tree framework. 
+For simplicity, all files ( scripts, data ,... ) are in one directory.
+
+Sample description file (aka phenodata)
+```{r }
+pfn <- "phenodata_20221001.txt"
+```
+
+Data file names
+
+```{r}
+file1 <- "data_hormonomics.txt"
+file2 <- "data_metabolomics.txt"
+file3 <- "data_qPCR.txt"
+```
+
+For future use and labeling, we need text names of dataset objects.
+```{r}
+datanames <- c("hormonomics",  "metabolomics", "qPCR")
+```
+
+
+It is advisable to first read the phenodata, followed by actual data input. This enables smart selection of samples, based on the sample selection column with the assay name.
 
 ## Phenodata
 
@@ -79,7 +99,7 @@ It is advisable to first read the phenodata (or sample description file), follow
 #(pfn <- getMeta(.ameta
 #    , "Phenodata"))
 # phenodata file name
-pfn <- "phenodata_20221001.txt"
+pfn
 #
 phdata <- read.table(pfn
   , header = TRUE
@@ -107,27 +127,24 @@ summary(pdata)
 apply(pdata,2,function(x) summary(as.factor(x)))
 ```
 
-
-
 ## Process data files
 
 For this project we aim to integrate several multi-omics datasets.
 We have data on hormonomics, metabolomics, and qPCR:
 
 
-
 ```{r}
-hormonomics <- read.table("data_hormonomics.txt", header=TRUE, sep="\t")
-metabolomics <- read.table("data_metabolomics.txt", header=TRUE, sep="\t")
-qPCR <- read.table("data_qPCR.txt", header=TRUE, sep="\t")
+hormonomics <- read.table(file1, header=TRUE, sep="\t")
+metabolomics <- read.table(file2, header=TRUE, sep="\t")
+qPCR <- read.table(file3, header=TRUE, sep="\t")
 ```
 
-For future use, we need the text names of dataset objects:
+List dataset names
 ```{r}
-datanames <- c("hormonomics",  "metabolomics", "qPCR")
+datanames
 ```
 
-\section{Combine datasets}
+## Combine datasets
 
 Datasets for DIABLO need to be collected in a list, with rows corresponding to the same samples. The order of samples from shrinked phenodata will be enforced.
 
@@ -143,12 +160,46 @@ names(X[[1]]) <- rownames(pdata)
 X
 ```
 
+### Experimental: randomization
+
+One idea is to randomize treatments by permuting the combined status codes before attributing them to the actual dsample conditions.
+
 ```{r}
-table(pdata$SamplingDay, what)
+randomize <- TRUE
+# prefix short numbers with zero
+sday <- paste0(0,pdata$SamplingDay)
+len <- nchar(sday)
+sday <- substr(sday,len-1,len)
+trt <- pdata$Treatment
+what <- paste(trt,sday,sep="")
+what
+if(randomize) {
+set.seed(1234)
+  what <- sample(what, length(what), FALSE)
+  pdata$Treatment <- substr(what,1,1)
+  pdata$SamplingDay <- substr(what,2,3)
+  print(pdata$Treatment)
+  print(pdata$SamplingDay)
+}
+what
+X <- list(status= what)
+names(X[[1]]) <- rownames(pdata)
+X
 ```
-Put datasets into list X and ensure that they all have same order of samples, as in phenodata.
+
+
+
+```{r}
+print(addmargins(table(pdata$SamplingDay, what)), zero.print=".")
+print(addmargins(table(pdata$Treatment, what)), zero.print=".")
+print(addmargins(table(sday, what)), zero.print=".")
+print(addmargins(table(trt, what)), zero.print=".")
+
+```
+Put datasets into list X and ensure that they all have same order of samples as in phenodata.
 ```{r}
 datanames
+i <- 1
 for(i in 1:length(datanames)){
 x <- get(datanames[i])
 rownames(x) <- x[,1]
@@ -160,7 +211,7 @@ str(X)
 names(X)
 ```
 
-Same sample names?
+Check if sample names in all datasets match.
 ```{r}
 OK <- TRUE
 for(i in 2:length(X)) {
@@ -173,10 +224,9 @@ OK <- OK&ok
 if(OK) catln("Sample names in datasets match.") else catln("ERROR: Sample names in datasets do not match!!")
 ```
 
-Put data into safe object `DATAall`.
+Put data into safe object `DATA`. 
 
 ```{r}
-DATAall <- X
 DATA <- X
 ```
 

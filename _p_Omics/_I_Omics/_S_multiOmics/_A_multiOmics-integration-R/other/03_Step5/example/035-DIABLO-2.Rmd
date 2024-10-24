@@ -36,7 +36,7 @@ str(state)
 
 ## Initial analysis
 
-Note: Here we will follow the analysis as in 
+Note: Additional insights can be found at 
 http://mixomics.org/mixdiablo/diablo-tcga-case-study/.
 
 
@@ -84,7 +84,8 @@ for(j in 1:ncol(pairs) ){
 
 ## Initial DIABLO model
 
-Following the suggestion in the source, we will use design matrices with values. 
+Following the suggestion in the source, we will use 
+design matrices with small values. 
 This is supposed to keep low classification error rate.
 
 ```{r }
@@ -105,35 +106,40 @@ basic.diablo.model = block.splsda(X = data, Y = Y, ncomp = 5, design = design)
 
 ## Tuning the number of components
 
+Details of tuning process can be found in the 
+http://mixomics.org/mixdiablo/diablo-tcga-case-study/.
 
-To choose the number of components for the final DIABLO model, the function `perf()` is run with 3-fold cross-validation repeated 10 times. Fold number should be smaller than minimal number of samples in groups.
-
-
-```{r eval=FALSE}
-# Tuning of features can take a substantial amount of time.
-# Chunk not evaluated for this document.
-#
-# run component number tuning with repeated CV
-system.time(perf.diablo = perf(basic.diablo.model, validation = 'Mfold',
-                   folds = 3, nrepeat = 10))
-
-plot(perf.diablo) # plot output of tuning
-```
+The process can be computer time consuming and was performed separately. 
 
 
-
-```{r eval=FALSE}
-# Tuning of features can take a substantial amount of time.
-# Chunk not evaluated for this document.
-#
-# set the optimal ncomp value
-ncomp  <-  perf.diablo$choice.ncomp$WeightedVote["Overall.BER", "centroids.dist"]
-# show the optimal choice for ncomp for each dist metric
-perf.diablo$choice.ncomp$WeightedVote
-```
-
-For classification, the analysis suggests
-the number of  components.
+%% To choose the number of components for the final DIABLO model, the function `perf()` is run with 3-fold cross-validation repeated 10 times. Fold number should be smaller than minimal number of samples in groups.
+%% 
+%% 
+%% ```{r eval=FALSE}
+%% # Tuning of features can take a substantial amount of time.
+%% # Chunk not evaluated for this document.
+%% #
+%% # run component number tuning with repeated CV
+%% system.time(perf.diablo = perf(basic.diablo.model, validation = 'Mfold',
+%%                    folds = 3, nrepeat = 10))
+%% 
+%% plot(perf.diablo) # plot output of tuning
+%% ```
+%% 
+%% 
+%% 
+%% ```{r eval=FALSE}
+%% # Tuning of features can take a substantial amount of time.
+%% # Chunk not evaluated for this document.
+%% #
+%% # set the optimal ncomp value
+%% ncomp  <-  perf.diablo$choice.ncomp$WeightedVote["Overall.BER", "centroids.dist"]
+%% # show the optimal choice for ncomp for each dist metric
+%% perf.diablo$choice.ncomp$WeightedVote
+%% ```
+%% 
+%% For classification, the analysis suggests
+%% the number of  components.
 
  From previous tuning sessions one can conclude, that the classification rate stays roughly unchanged after two to four components, so we will set the number of components to the number of data sets:
 
@@ -147,70 +153,68 @@ ncomp
 
 ## Tuning the number of features
 
-This tuning function should be used to tune the keepX parameters in the block.splsda() function.
 
 We choose the optimal number of variables to select in each data set using the tune.block.splsda() function, for a grid of keepX values for each type of omics. Note that the function has been set to favour a relatively small signature while allowing us to obtain a sufficient number of variables for downstream validation and/or interpretation. See ?tune.block.splsda.
 
-The function tune is run with 10-fold cross validation, but repeated only once. Note that for a more thorough tuning process, provided sufficient computational time, we could increase the nrepeat argument. Here we have saved the results into an RData object that is available for download as the tuning can take a very long time, especially on lower end machines.
+%% The function tune is run with 10-fold cross validation, but repeated only once. Note that for a more thorough tuning process, provided sufficient computational time, we could increase the nrepeat argument. Here we have saved the results into an RData object that is available for download as the tuning can take a very long time, especially on lower end machines.
+%% 
+%% 
+%% ```{r }
+%% x <- list()
+%% for (i in 1:length(data)){
+%% x[[i]] <- c( seq(5,min(30, ncol(data[[i]])) ,5))
+%% }
+%% names(x) <- names(data)
+%% test.keepX  <-  x
+%% test.keepX
+%% #list (c(5:9, seq(10, 18, 2), seq(20,30,5)),
+%% #                   c(5:9, seq(10, 18, 2), seq(20,30,5)),
+%% #                   c(5:9, seq(10, 18, 2), seq(20,30,5)))
+%% ```
+%% 
+%% 
+%% 
+%% ```{r eval=FALSE}
+%% # Tuning of features can take a substantial amount of time.
+%% # Chunk not evaluated for this document.
+%% #
+%% # run the feature selection tuning
+%% system.time(tune.model  <-  tune.block.splsda(X = data, Y = Y, ncomp = ncomp, cpus=4,
+%%                               test.keepX = test.keepX, design = design,
+%%                               validation = 'Mfold', folds = 3, nrepeat = 1,
+%%                               dist = "centroids.dist")
+%%                               )
+%% ```
+%% 
+%% ```{r eval=FALSE}
+%% # Tuning of features can take a substantial amount of time.
+%% # Chunk not evaluated for this document.
+%% #
+%% # run the feature selection tuning
+%% system.time(tune.model  <-  tune.block.splsda(X = data, Y = Y, ncomp = ncomp, cpus=4,
+%%                               test.keepX = test.keepX, design = design,
+%%                               validation = 'loo', folds = 3, nrepeat = 1,
+%%                               dist = "centroids.dist")
+%%                               )
+%% ```
+%% 
+%% The number of features to select on each component is returned in
+%% ```{r eval=FALSE}
+%% # Tuning of features can take a substantial amount of time.
+%% # Chunk not evaluated for this document.
+%% #
+%% list.keepX = tune.model$choice.keepX # set the optimal values of features to retain
+%% list.keepX
+%% ```
 
-
-```{r }
-x <- list()
-for (i in 1:length(data)){
-x[[i]] <- c( seq(5,min(30, ncol(data[[i]])) ,5))
-}
-names(x) <- names(data)
-test.keepX  <-  x
-test.keepX
-#list (c(5:9, seq(10, 18, 2), seq(20,30,5)),
-#                   c(5:9, seq(10, 18, 2), seq(20,30,5)),
-#                   c(5:9, seq(10, 18, 2), seq(20,30,5)))
-```
-
-
-
-```{r eval=FALSE}
-# Tuning of features can take a substantial amount of time.
-# Chunk not evaluated for this document.
-#
-# run the feature selection tuning
-system.time(tune.model  <-  tune.block.splsda(X = data, Y = Y, ncomp = ncomp, cpus=4,
-                              test.keepX = test.keepX, design = design,
-                              validation = 'Mfold', folds = 3, nrepeat = 1,
-                              dist = "centroids.dist")
-                              )
-```
-
-```{r eval=FALSE}
-# Tuning of features can take a substantial amount of time.
-# Chunk not evaluated for this document.
-#
-# run the feature selection tuning
-system.time(tune.model  <-  tune.block.splsda(X = data, Y = Y, ncomp = ncomp, cpus=4,
-                              test.keepX = test.keepX, design = design,
-                              validation = 'loo', folds = 3, nrepeat = 1,
-                              dist = "centroids.dist")
-                              )
-```
-
-The number of features to select on each component is returned in
-```{r eval=FALSE}
-# Tuning of features can take a substantial amount of time.
-# Chunk not evaluated for this document.
-#
-list.keepX = tune.model$choice.keepX # set the optimal values of features to retain
-list.keepX
-```
-
-Tuning of features can take a substantial amount of time. 
-Previous analyses suggest the following list:
-
-  $metabolomics
-     [1] 10 10 5
-  $hormonomics
-     [1] 5 5 10
-  $qPCR
-     [1] 10 10 5
+%% Previous analyses suggest the following list:
+%% 
+%%   $metabolomics   
+%%      [1] 10 10 5   
+%%   $hormonomics   
+%%      [1] 5 5 10   
+%%   $qPCR   
+%%      [1] 10 10 5   
 
 We have decided to keep 10 variates for each component.
 ```{r }
@@ -231,7 +235,8 @@ The final DIABLO model is run as:
 
 ```{r }
 # set the optimised DIABLO model
-final.diablo.model = block.splsda(X = data, Y = Y, ncomp = ncomp
+final.diablo.model = block.splsda(X = data, Y = as.factor(state)
+                          ,  ncomp = ncomp
                           , keepX = list.keepX
                           , design = design)
 
@@ -267,10 +272,13 @@ title(paste("Component",comp), adj=0.1, line=-1, outer=TRUE)
 
 The sample plot with the plotIndiv() function projects each sample into the space spanned by the components of each block. Clustering of the samples can be  assessed with this plot.
 
-```{r}
-plind <- plotIndiv(final.diablo.model, ind.names = FALSE, legend = TRUE,
-          title = 'DIABLO Sample Plots'
-          , ellipse = TRUE
+```{r fig.height=7}
+plind <- plotIndiv(final.diablo.model, 
+          ind.names = FALSE, 
+          legend = TRUE,
+          title = 'DIABLO Sample Plots',
+          guide="none",
+          ellipse = TRUE
           )
 ```
 
@@ -312,10 +320,18 @@ plotVar(final.diablo.model, var.names = FALSE,
 ```
 
 The circos plot is exclusive to integrative frameworks and represents 
-the correlations between variables of different types, represented on the side quadrants. It seems that the qPCR variables are almost entirely negatively correlated with the other two dataframes. Just few from metabolomics and hormonomics are positively correlated.  Note that these correlations are above a value of 0.7 (cutoff = 0.7). All the interpretations made above are only relevant for features with very strong correlations.
+the correlations between variables of different types, represented on the side quadrants. It seems that the qPCR variables are almost entirely negatively correlated with the other two dataframes. Just few from metabolomics and hormonomics are positively correlated.  Note that these correlations are above a value of 0.7 (cutoff = 0.7). All  interpretations made above are only relevant for features with very strong correlations.
 
+Plot variables
 
-```{r fig.width=7, fig.height=7}
+```{r fig.width=8,fig.height=7}
+#plotVar(res, cutoff=0.5, legend = TRUE, overlap=!FALSE, style='graphics')
+#plotVar(res, cutoff=0.5, legend = TRUE, overlap=FALSE, style='graphics')
+plotVar(final.diablo.model, cutoff=0.5, legend = TRUE, comp=c(1,2), overlap=FALSE, style='ggplot2', col=cols)
+plotVar(final.diablo.model, cutoff=0.5, legend = TRUE, comp=c(2,3), overlap=FALSE, col=cols)
+```
+
+```{r fig.width=7, fig.height=8}
 circosPlot(final.diablo.model, cutoff = 0.7, line = TRUE,
            color.blocks= cols,
            color.cor = c(3,2), size.labels = 1
@@ -323,9 +339,10 @@ circosPlot(final.diablo.model, cutoff = 0.7, line = TRUE,
 ```
 
 ## Relevance networks
+
 Another visualisation of the correlations between the different types of
 variables is the relevance network, which is also built on the similarity
-matrix (as is the circos plot). Each colour represents a type of variable.
+matrix (as is the circos plot). Colour represent variable type.
 
 
 
@@ -343,7 +360,6 @@ cat(out35a)
 ```
 
 
-
 ## Multipartite network
 
 
@@ -359,30 +375,12 @@ cat(out35b)
 
 
 ```{r }
+# Save network layout in ly, used by my.layout function.
 if(exists(deparse(substitute(nw)))) ly <- nw$layout else ly <- NULL
 
 ```
 
-```{r results='asis'}
-cutoff <- 0.5
-x <- final.diablo.model
-layout.fun <- my.layout
-label <- paste(.treat, collapse=", ")
-out35b <- ""
-  out35b <- paste( out35b, knit_child("035b-multipartite-network.Rmd", quiet=TRUE))
-cat(out35b)
-```
 
-
-```{r results='asis'}
-cutoff <- 0.7
-x <- final.diablo.model
-label <- paste(.treat, collapse=", ")
-out35b <- ""
-  out35b <- paste( out35b, knit_child("035b-multipartite-network.Rmd", quiet=TRUE))
-
-cat(out35b)
-```
 
 ```{r results='asis'}
 cutoff <- 0.8
@@ -432,8 +430,11 @@ The interpretation of this output may not be particularly insightful in relation
 par(mfrow=c(2,2))
 for(i in 1:length(data))
 auc.splsda = auroc(final.diablo.model, roc.block = names(data[i]),
-                   roc.comp = 2, print = FALSE)
+                   roc.comp = 1, print = FALSE)
 ```
+
+
+
 
 ```{r }
 res12 <- final.diablo.model
@@ -443,7 +444,7 @@ res12 <- final.diablo.model
 ## Final analysis
 
 Design matrix determines which datasets (blocks) are connected. 
-We will connect all blocks:
+We will connect all blocks.
 
 According to recommendation from tuning, design matrix should have 
 small entries that provide better predictions.
