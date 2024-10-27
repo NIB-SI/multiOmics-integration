@@ -78,16 +78,6 @@ usetest <- !TRUE
 ```
 
 Sample description file (aka phenodata)
-```{r eval=!usetest, echo=!usetest}
-pfn <- "./input/phenodata_subset_2023-03-08.txt"
-files <- c(
-   "./input/data_hormonomics.txt"
- , "./input/data_metabolomics.txt"
- , "./input/data_qPCR.txt"
-# , "./input/data_Phenomics.txt"
-# , "./input/data_Proteomics.txt"
- )
-```
 
 ```{r eval=usetest, echo=usetest}
 pfn <- "phenodata_20221001.txt"
@@ -97,6 +87,19 @@ files <- c(
  , "data_qPCR.txt"
 )
 ```
+
+```{r eval=!usetest, echo=!usetest}
+pfn <- "./input/phenodata_subset_2023-03-08.txt"
+files <- c(
+   "./input/data_hormonomics.txt"
+ , "./input/data_metabolomics.txt"
+ , "./input/data_qPCR.txt"
+ , "./input/data_Phenomics.txt"
+  , "./input/data_Proteomics.txt"
+ )
+```
+
+
 
 Phenodata file name:
 ```{r}
@@ -117,7 +120,7 @@ datanames <- c(
     , "metabolomics"
     , "qPCR"
 #    , "phenomics"
-#    , "proteomics"
+     , "proteomics"
 )
 datanames
 ```

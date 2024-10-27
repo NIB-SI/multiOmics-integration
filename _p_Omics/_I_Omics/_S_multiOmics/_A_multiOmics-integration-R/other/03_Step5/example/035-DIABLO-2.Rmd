@@ -234,13 +234,13 @@ We choose the optimal number of variables to select in each data set using the t
         
 We have decided to keep 10 variates for each component.
 ```{r }
-keepX <- list(
+if(FALSE) keepX <- list(
     metabolomics = rep(10, ncomp),
     hormonomics = rep(10, ncomp),
     qPCR = rep(10, ncomp)
     )
 list.keepX = list()
-for (i in 1:length(data)) list.keepX[[i]] <- keepX[[names(data)[i]]]
+for (i in 1:length(data)) list.keepX[[i]] <- rep(10, ncomp)
 names(list.keepX) <- names(data)
 list.keepX
 ```
@@ -324,8 +324,8 @@ between variables is with the correlation circle plot. A majority of the qPCR va
 #if(length(data)==3) pick <- 1:3 else pick <- c(4,1:3)
 #cols <- c('orange1', 'brown1', 'lightgreen',"lightblue")[pick]
 #pchs <- c(16, 17, 15, 18)[pick]
-cols <- c('orange1', 'brown1', 'lightgreen')
-pchs <- c(16, 17, 15)
+cols <- c('orange1', 'brown1', 'lightgreen','lightblue')[1:length(data)]
+pchs <- c(16, 17, 15, 14)[1:length(data)]
 plotVar(final.diablo.model, var.names = FALSE,
         style = 'graphics', legend = TRUE
         , pch = pchs, cex = rep(2,length(data))
