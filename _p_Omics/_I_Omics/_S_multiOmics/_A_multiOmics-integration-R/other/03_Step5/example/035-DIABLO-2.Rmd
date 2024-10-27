@@ -54,7 +54,7 @@ list.keepY = c(25, 25)
 
 
 
-```{r  eval=FALSE, fig.cap="Circle Correlation Plots for pairwise PLS models on ADAPT data. At most top 25 features for each dimension with correlation above 0.5, are displayed.", fig.height=7}
+```{r  fig.cap="Circle Correlation Plots for pairwise PLS models on ADAPT data. At most top 25 features for each dimension with correlation above 0.5, are displayed.", fig.height=7}
 par(mfrow=c(2,2))
 pairs <- combn(1:length(names(data)),2)
 nms <- names(data)

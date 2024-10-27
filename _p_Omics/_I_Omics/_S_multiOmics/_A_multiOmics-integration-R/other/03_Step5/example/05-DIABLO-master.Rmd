@@ -72,16 +72,14 @@ out <- paste(out,knit_child("005-Functions.Rmd", quiet=TRUE))
 Usually we use a file management system under the pISA-tree framework. 
 For simplicity, all files ( scripts, data ,... ) are in one directory.
 
-Sample description file (aka phenodata)
-```{r }
-pfn <- "phenodata_20221001.txt"
-#pfn <- "./input/phenodata_subset_2023-03-08.txt"
+Control of file source
+```{r}
+usetest <- !TRUE
 ```
 
-Data file names
-
-```{r filenames, eval=FALSE}
-
+Sample description file (aka phenodata)
+```{r eval=!usetest, echo=!usetest}
+pfn <- "./input/phenodata_subset_2023-03-08.txt"
 files <- c(
    "./input/data_hormonomics.txt"
  , "./input/data_metabolomics.txt"
@@ -89,16 +87,26 @@ files <- c(
 # , "./input/data_Phenomics.txt"
 # , "./input/data_Proteomics.txt"
  )
-files
 ```
 
-```{r eval=!FALSE}
- files <- c(
+```{r eval=usetest, echo=usetest}
+pfn <- "phenodata_20221001.txt"
+files <- c(
    "data_hormonomics.txt"
  , "data_metabolomics.txt"
  , "data_qPCR.txt"
 )
-files
+```
+
+Phenodata file name:
+```{r}
+pfn
+```
+
+Data file names
+
+```{r }
+files 
 ```
 
 For future use and labeling, we need text names of dataset objects.
@@ -114,6 +122,11 @@ datanames <- c(
 datanames
 ```
 
+Define groups to consider. In a small example, we will pick two groups, based on treatment:
+
+```{r}
+useTreatment <- c("C","H")
+```
 
 It is advisable to first read the phenodata, followed by actual data input. This enables smart selection of samples, based on the sample selection column with the assay name.
 
@@ -131,6 +144,14 @@ phdata <- read.table(pfn
 dim(phdata)
 names(phdata)
 pdata <- phdata
+```
+
+Filter out groups
+```{r}
+pdata$Treatment
+pdata <- pdata[pdata$Treatment %in% useTreatment,]
+pdata$Treatment
+dim(pdata)
 ```
 
 Overview of selected samples:
