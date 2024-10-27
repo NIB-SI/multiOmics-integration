@@ -75,19 +75,43 @@ For simplicity, all files ( scripts, data ,... ) are in one directory.
 Sample description file (aka phenodata)
 ```{r }
 pfn <- "phenodata_20221001.txt"
+#pfn <- "./input/phenodata_subset_2023-03-08.txt"
 ```
 
 Data file names
 
-```{r}
-file1 <- "data_hormonomics.txt"
-file2 <- "data_metabolomics.txt"
-file3 <- "data_qPCR.txt"
+```{r filenames, eval=FALSE}
+
+files <- c(
+   "./input/data_hormonomics.txt"
+ , "./input/data_metabolomics.txt"
+ , "./input/data_qPCR.txt"
+# , "./input/data_Phenomics.txt"
+# , "./input/data_Proteomics.txt"
+ )
+files
+```
+
+```{r eval=!FALSE}
+ files <- c(
+   "data_hormonomics.txt"
+ , "data_metabolomics.txt"
+ , "data_qPCR.txt"
+)
+files
 ```
 
 For future use and labeling, we need text names of dataset objects.
-```{r}
-datanames <- c("hormonomics",  "metabolomics", "qPCR")
+
+```{r datanames}
+datanames <- c(
+      "hormonomics"
+    , "metabolomics"
+    , "qPCR"
+#    , "phenomics"
+#    , "proteomics"
+)
+datanames
 ```
 
 
@@ -96,9 +120,6 @@ It is advisable to first read the phenodata, followed by actual data input. This
 ## Phenodata
 
 ```{r }
-#(pfn <- getMeta(.ameta
-#    , "Phenodata"))
-# phenodata file name
 pfn
 #
 phdata <- read.table(pfn
@@ -115,7 +136,7 @@ pdata <- phdata
 Overview of selected samples:
 
 ```{r }
-table(pdata$Treatment, pdata$SamplingDay)
+addmargins(table(pdata$Treatment, pdata$SamplingDay))
 .treat <- unique(pdata$Treatment)
 .days <- unique(pdata$SamplingDay)
 .entry <- 0.5
@@ -133,15 +154,27 @@ For this project we aim to integrate several multi-omics datasets.
 We have data on hormonomics, metabolomics, and qPCR:
 
 
+%% ```{r}
+%% hormonomics <- read.table(file1, header=TRUE, sep="\t")
+%% metabolomics <- read.table(file2, header=TRUE, sep="\t")
+%% qPCR <- read.table(file3, header=TRUE, sep="\t")
+%% ```
+
+Read all datafiles and assign them to named objects
 ```{r}
-hormonomics <- read.table(file1, header=TRUE, sep="\t")
-metabolomics <- read.table(file2, header=TRUE, sep="\t")
-qPCR <- read.table(file3, header=TRUE, sep="\t")
+for (i in 1:length(files)){
+  print(datanames[i])
+  assign(datanames[i], read.table(files[i], header=TRUE, sep="\t"))
+  print(head(get(datanames[i])))
+}
+
 ```
 
-List dataset names
+
+Check if all `r length(datanames)` objects are created
 ```{r}
 datanames
+datanames %in% ls()
 ```
 
 ## Combine datasets
@@ -224,6 +257,7 @@ write("commandArgs:", "bla.log", append=TRUE)
 write(commandArgs(trailingOnly = TRUE), "bla.log",append=TRUE)
 write("End commandArgs", "bla.log", append=TRUE)
 ```
+
 
 ```{r diablo, results='asis'}
 out <- ""

@@ -19,7 +19,7 @@ nfn <- paste("network-035b",lbl,cutoff*10,sep="-")
 write(nfn, "bla.log", append=TRUE)
 ```
 
-```{r echo=!FALSE, eval=!FALSE}
+```{r }
 set.seed(1234)
 nw <- my.network(x
         , blocks = 1:ndata

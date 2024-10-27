@@ -24,6 +24,10 @@ str(data)
 length(data)
 ```
 
+```{r}
+cimfn <- "cim.png"
+```
+
 In addition, outcome, phenotypic state or in our case treatment can also be determined. We have combination of two treatments and four time points.
 
 ```{r }
@@ -47,7 +51,10 @@ list.keepX = c(25, 25) # select arbitrary values of features to keep
 list.keepY = c(25, 25)
 ```
 
-```{r fig.cap="Circle Correlation Plots for pairwise PLS models on ADAPT data. At most top 25 features for each dimension with correlation above 0.5, are displayed.", fig.height=7}
+
+
+
+```{r  eval=FALSE, fig.cap="Circle Correlation Plots for pairwise PLS models on ADAPT data. At most top 25 features for each dimension with correlation above 0.5, are displayed.", fig.height=7}
 par(mfrow=c(2,2))
 pairs <- combn(1:length(names(data)),2)
 nms <- names(data)
@@ -58,7 +65,7 @@ cols <- c('orange1', 'lightgreen', "red")
 if(length(data)==3) pick <- 1:3 else pick <- c(4,1:3)
 cols <- c('orange1', 'brown1', 'lightgreen',"lightblue")[pick]
 pchs <- c(16, 17, 15, 18)[pick]
-j <- 4
+j <- 1
 cutoff <- 0.5
 for(j in 1:ncol(pairs) ){
     pair <- pairs[,j]
@@ -82,6 +89,8 @@ for(j in 1:ncol(pairs) ){
 }
 ```
 
+
+
 ### Initial DIABLO model
 
 Following the suggestion in the source, we will use 
@@ -102,6 +111,13 @@ With a design in place, the initial DIABLO model can be generated. An arbitraril
 # form basic DIABLO model
 Y <- state
 basic.diablo.model = block.splsda(X = data, Y = Y, ncomp = 5, design = design)
+```
+
+
+
+```{r}
+######################################## test eval
+knitr::opts_chunk$set(eval=!FALSE)
 ```
 
 ### Tuning the number of components
@@ -288,7 +304,7 @@ plind <- plotIndiv(final.diablo.model,
 In the arrow plot below, the start of the arrow indicates the centroid between all data sets for a given sample and the tips of the arrows indicate the location of that sample in each block. Such graphics highlight the agreement between all data sets at the sample level. While somewhat difficult to interpret, even qualitatively, this arrow plot shows proximities of C01 and H01 (both day 1), C07 and C08, and H07 and H08 ( both a day apart). While C samples are in forth quadrant ( D1 < 0, D2 > 0), H samples have ( D1 < 0, D2 < 0) except H14 that is separated on the positive part of Dimension 1.
 
 
-```{r fig.height=7}
+```{r plotArrow, fig.height=7}
 plotArrow(final.diablo.model, ind.names = FALSE, legend = TRUE,
           title = paste(groups,collapse=", ")
 
@@ -393,8 +409,8 @@ cat(out35b)
 
 ## Visualize loadings
 
-The function plotLoadings() visualises the loading weights of each selected 
-variable on each component and each data set. The colour indicates the class in which the variable has the maximum level of expression (contrib = 'max') using the median (method = 'median'). Figure below depicts the loading values for each dimension.
+The function "plotLoadings" visualises the loading weights of each selected  variable on each component and each data set. The colour indicates the class in which the variable has the maximum level of expression "contrib = 'max'" using the median "method = 'median'". Figure below depicts the loading values for each dimension.
+
 
 
 ```{r plotLoadings, fig.height=7}
@@ -409,9 +425,11 @@ plotLoadings(final.diablo.model, comp = i, contrib = 'max', method = 'median')
 The cimDIABLO() function is a clustered image map specifically implemented 
 to represent the multi-omics molecular signature expression for each sample. From figure below the areas of homogeneous expression levels for a set of samples across a set of features can be determined. For instance, the H14 samples were the only group to show extremely high levels of expression for a specific set of genes and metabolites. This indicates these features are fairly discriminating for this subtype.
 
+```{r}
+cimfn <- "cim.png"
+```
 
 ```{r cim1}
-cimfn <- "cim.png"
 png(cimfn, res = 600, width = 4000, height = 4000)
 cimDiablo(final.diablo.model, size.legend=0.7)
 dev.off()
@@ -443,7 +461,7 @@ res <- final.diablo.model
 
 Estimate classification error rate. The error rate should drop by more components used.
 
-```{r eval=!FALSE}
+```{r }
 # run component number tuning with repeated CV
 system.time(perf.diablo  <-  perf(res, validation = 'Mfold',
                    folds = 3, nrepeat = 10))
@@ -754,4 +772,5 @@ Missing edges are labeled as weight 0. This enables numeric filtration in other 
 write("End diablo 7 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "bla.log", append=TRUE)
 
 ```
+
 

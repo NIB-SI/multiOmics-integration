@@ -1,3 +1,66 @@
+### Tuning the number of features
+
+
+We choose the optimal number of variables to select in each data set using 
+the tune.block.splsda() function, for a grid of keepX values for each type of 
+omics. Note that the function has been set to favour a relatively small 
+signature while allowing us to obtain a sufficient number of variables for 
+downstream validation and/or interpretation. See ?tune.block.splsda. 
+
+%% The function tune is run with 10-fold cross validation, but repeated only 
+once. Note that for a more thorough tuning process, provided sufficient 
+computational time, we could increase the nrepeat argument. Here we have 
+saved the results into an RData object that is available for download as the 
+tuning can take a very long time, especially on lower end machines. %% %% %% 
+```{r } %% x <- list() %% for (i in 1:length(data)){ %% x[[i]] <- c( 
+seq(5,min(30, ncol(data[[i]])) ,5)) %% } %% names(x) <- names(data) %% 
+test.keepX  <-  x %% test.keepX %% #list (c(5:9, seq(10, 18, 2), 
+seq(20,30,5)), %% #                   c(5:9, seq(10, 18, 2), seq(20,30,5)), 
+%% #                   c(5:9, seq(10, 18, 2), seq(20,30,5))) %% ``` %% %% %% 
+%% ```{r eval=FALSE} %% # Tuning of features can take a substantial amount of 
+time. %% # Chunk not evaluated for this document. %% # %% # run the feature 
+selection tuning %% system.time(tune.model  <-  tune.block.splsda(X = data, Y 
+= Y, ncomp = ncomp, cpus=4, %%                               test.keepX = 
+test.keepX, design = design, %%                               validation = 
+'Mfold', folds = 3, nrepeat = 1, %%                               dist = 
+"centroids.dist") %%                               ) %% ``` %% %% ```{r 
+eval=FALSE} %% # Tuning of features can take a substantial amount of time. %% 
+# Chunk not evaluated for this document. %% # %% # run the feature selection 
+tuning %% system.time(tune.model  <-  tune.block.splsda(X = data, Y = Y, 
+ncomp = ncomp, cpus=4, %%                               test.keepX = 
+test.keepX, design = design, %%                               validation = 
+'loo', folds = 3, nrepeat = 1, %%                               dist = 
+"centroids.dist") %%                               ) %% ``` %% %% The number 
+of features to select on each component is returned in %% ```{r eval=FALSE} 
+%% # Tuning of features can take a substantial amount of time. %% # Chunk not 
+evaluated for this document. %% # %% list.keepX = tune.model$choice.keepX # 
+set the optimal values of features to retain %% list.keepX %% ``` 
+
+ Previous analyses suggest the following list: 
+ 
+   $metabolomics   [1] 10 10 5   
+   $hormonomics   [1] 5 5 10   
+   $qPCR   [1] 10 10 5 
+        
+We have decided to keep 10 variates for each component. ```{r } keepX <- 
+list( 
+    metabolomics = rep(10, ncomp), hormonomics = rep(10, ncomp), qPCR = 
+    rep(10, ncomp) ) 
+list.keepX = list() for (i in 1:length(data)) list.keepX[[i]] <- 
+keepX[[names(data)[i]]] names(list.keepX) <- names(data) list.keepX ``` 
+
+## Final model 
+
+The final DIABLO model is run as: 
+
+```{r } # set the optimised DIABLO model final.diablo.model = block.splsda(X 
+= data, Y = as.factor(state) 
+                          ,  ncomp = ncomp , keepX = list.keepX , design = 
+                          design) 
+
+``` 
+
+
 
 The selected variables can be extracted with the function selectVar(), for 
 example in each block, as seen below. Note that the stability of selected 
@@ -30,6 +93,8 @@ be  assessed with this plot.
 ``` 
 
 
+
+
 In the arrow plot below, the start of the arrow indicates the centroid 
 between all data sets for a given sample and the tips of the arrows indicate 
 the location of that sample in each block. Such graphics highlight the 
@@ -40,15 +105,13 @@ C samples are in forth quadrant ( D1 < 0, D2 > 0), H samples have ( D1 < 0,
 D2 < 0) except H14 that is separated on the positive part of Dimension 1. 
 
 
-```{r fig.height=7} plotArrow(final.diablo.model, ind.names = FALSE, legend = 
-TRUE, 
+```{r plotArrow fig.height=7} plotArrow(final.diablo.model, ind.names = 
+FALSE, legend = TRUE, 
           title = paste(groups,collapse=", ") 
 
-          ) 
-          ``` 
+          ) ``` 
 
-
-## Variable plots
+## Variable plots 
 
 Several graphical outputs are available to visualise and mine the 
 associations between the selected variables. 
@@ -91,7 +154,7 @@ legend = TRUE, comp=c(1,2), overlap=FALSE, style='ggplot2', col=cols)
 plotVar(final.diablo.model, cutoff=0.5, legend = TRUE, comp=c(2,3), 
 overlap=FALSE, col=cols) ``` 
 
-```{r fig.width=7, fig.height=8} circosPlot(final.diablo.model, cutoff = 0.7, 
+```{r fig.width=7, fig.height=7} circosPlot(final.diablo.model, cutoff = 0.7, 
 line = TRUE, 
            color.blocks= cols, color.cor = c(3,2), size.labels = 1 , 
            xpd=TRUE) 
@@ -113,7 +176,14 @@ matrix (as is the circos plot). Colour represent variable type.
         if(interactive()) readline() } cat(out35a) ``` 
 
 
-## Multipartite network 
+
+```{r} write("End diablo 7 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "bla.log", 
+append=TRUE) 
+
+```
+
+
+## Multipartite network
 
 
 ```{r results='asis'} cutoff <- 0.0 x <- final.diablo.model layout.fun <- 
@@ -150,7 +220,7 @@ plotLoadings(final.diablo.model, comp = i, contrib = 'max', method =
 ``` 
 
 
-## Heatmap (clustered image map) 
+## Clustered image map  ( Heatmap ) 
 
 The cimDIABLO() function is a clustered image map specifically implemented to 
 represent the multi-omics molecular signature expression for each sample. 
@@ -160,9 +230,10 @@ samples were the only group to show extremely high levels of expression for a
 specific set of genes and metabolites. This indicates these features are 
 fairly discriminating for this subtype. 
 
+```{r} cimfn <- "cim.png" ``` 
 
-```{r cim1} cimfn <- "cim.png" png(cimfn, res = 600, width = 4000, height = 
-4000) cimDiablo(final.diablo.model, size.legend=0.7) dev.off() 
+```{r cim1} png(cimfn, res = 600, width = 4000, height = 4000) 
+cimDiablo(final.diablo.model, size.legend=0.7) dev.off() 
 
 ``` 
 
@@ -182,44 +253,14 @@ auroc(final.diablo.model, roc.block = names(data[i]),
 
 
 
+Save finil DIABLO model for future use in networks. ```{r } res <- 
+final.diablo.model ``` 
 
-```{r } res12 <- final.diablo.model 
-
-``` 
-
-## Final analysis 
-
-Design matrix determines which datasets (blocks) are connected. We will 
-connect all blocks. 
-
-According to recommendation from tuning, design matrix should have small 
-entries that provide better predictions. 
-
-```{r } entry <- .entry design <- matrix(entry, length(data), length(data), 
-   dimnames = list(names(data), names(data))) diag(design) <- 0 design ``` 
-
-Based on tuning part, we can keep two to four components. 
-
-```{r } list.keepX ncomp = length(list.keepX[[1]]) ncomp ``` You can also 
-control the number of variables to be kept for each component. ```{r } #keepX 
-<- list(XX=rep(3,ncomp), YY=rep(3,ncomp), ZZ=rep(3, ncomp)) #keepX ``` We 
-will not restrict variables. 
-
-Now we can do the calculation ```{r } res <- block.splsda(X = data 
-    , Y = as.factor(state) , ncomp = ncomp , keepX = list.keepX , design = 
-    design ) 
-
-``` 
-
-Model `res` and `final.diablo.model` do not differ: 
-
-```{r } sapply(names(res$loadings), function(name) all(res$loadings[[name]] - 
-final.diablo.model$loadings[[name]]==0)) ``` 
 
 Estimate classification error rate. The error rate should drop by more 
 components used. 
 
-```{r eval=FALSE} # run component number tuning with repeated CV 
+```{r eval=!FALSE} # run component number tuning with repeated CV 
 system.time(perf.diablo  <-  perf(res, validation = 'Mfold', 
                    folds = 3, nrepeat = 10)) 
 
@@ -229,7 +270,7 @@ plot(perf.diablo) # plot output of tuning
 
 
 
-Names of kept variables 
+## Names of kept variables 
 
 ```{r } # the features selected to form components for (comp in 1:ncomp){ 
 cat("\nComponent ", comp,":\n") for(i in 1:length(data)){ 
@@ -244,7 +285,7 @@ which(keptVars%in%selectVar(res, comp=1)[[1]]$name)
 which(keptVars%in%selectVar(res, comp=2)[[1]]$name) ``` 
 
 
-### Visualise variables Loadings ```{r fig.height=7} sapply(res$loadings, 
+## Visualise variables Loadings ```{r fig.height=7} sapply(res$loadings, 
 head, 30) #plotLoadings(res, comp = 1, method = 'median') #plotLoadings(res, 
 comp = 1, method = 'median', contrib="max") for( i in 1:ncomp) 
 plotLoadings(res, comp = i, method = 'median', contrib="max") 
@@ -252,7 +293,7 @@ plotLoadings(res, comp = i, method = 'median', contrib="max")
 ``` 
 
 
-Plot variables 
+## Plot variables 
 
 ```{r fig.width=8,fig.height=7} #plotVar(res, cutoff=0.5, legend = TRUE, 
 overlap=!FALSE, style='graphics') #plotVar(res, cutoff=0.5, legend = TRUE, 
@@ -261,7 +302,7 @@ comp=c(1,2), overlap=FALSE, style='ggplot2', col=cols) plotVar(res,
 cutoff=0.5, legend = TRUE, comp=c(2,3), overlap=FALSE, col=cols) ``` 
 
 
-## Differential networks Here we will show differential networks between 
+# Differential networks Here we will show differential networks between 
 treatments. ```{r eval=FALSE, results='asis'} cutoffs <- c(0.7) pairs <- 
 combn(1:length(names(res$X)),2) outn <- "" j <- 4 cutoff <- 0.5 for(j in 
 1:ncol(pairs) ){ 
@@ -278,37 +319,21 @@ combn(1:length(names(res$X)),2) outn <- "" j <- 4 cutoff <- 0.5 for(j in
 <-circosPlot(final.diablo.model, cutoff = 0.5, line = TRUE, 
            color.blocks= cols, color.cor = c(3,2), size.labels = 1 , 
            size.variables = size.variables , xpd=TRUE) 
-circosPlot(final.diablo.model, cutoff = 0.78, line = TRUE, color.blocks= 
+circosPlot(final.diablo.model, cutoff = 0.75, line = TRUE, color.blocks= 
            cols, color.cor = c(3,2), size.labels = 1 , size.variables = 
            size.variables , xpd=TRUE) 
 circosPlot(final.diablo.model, cutoff = 0.9, line = TRUE, color.blocks= cols, 
            color.cor = c(3,2), size.labels = 1 , size.variables = 
            size.variables , xpd=TRUE) 
-circosPlot(final.diablo.model, cutoff = 0.95, line = TRUE, color.blocks= 
-           cols, color.cor = c(3,2), size.labels = 1 , size.variables = 
-           size.variables , xpd=TRUE) 
 
 ``` 
 
 
-```{r, eval=FALSE, echo=FALSE} pdf("circosPlot.pdf") size.variables <- 1 
-circosPlot(final.diablo.model, cutoff = 0.9, line = TRUE, 
-           color.blocks= cols, color.cor = c(3,2), size.labels = 1 , 
-           size.variables = size.variables , xpd=TRUE) 
-dev.off() ``` 
+# Networks 
 
 
 
-
-
-
-# Export networks to file 
-
-
-
-Partial models for each treatment 
-
-
+We will prepare partial models for each treatment and treatment combination. 
 
 ## Network for `r .treat[1]`. 
 
@@ -381,6 +406,8 @@ ndatasets<- length(datasets) # N12 <- network(res
 # e <- extractEdges2(N12) colnames(e)[ncol(e)] <- paste(.treat, collapse=".") 
 head(e) tail(e) dim(e) ``` 
 
+
+
 ```{r} # treatment 1 e1 <- extractEdges2(N1) colnames(e1)[ncol(e1)] <- 
 .treat[1] head(e1) dim(e1) 
 
@@ -418,7 +445,7 @@ write(file, "bla.log", append=TRUE)
 ```{r} length(str(e)) ``` 
 
 
-Export edges table 
+## Export edges table 
 
 ```{r  } #e <- data.frame(x=1:10,y=1:10) #my.write.table(e, 
 file="network.txt",meta=FALSE) write.table(e, file = file, na="0") ``` 
@@ -426,4 +453,5 @@ file="network.txt",meta=FALSE) write.table(e, file = file, na="0") ```
 Table with edges for networks based on combined treatments (C, H) and single 
 treatments (C) and (H) is exported as a text file. This table can be used for 
 inspection and filtering out edges based on selected cutoff. Missing edges 
-are labeled as weight 0. This enables numeric filtration in Excel. 
+are labeled as weight 0. This enables numeric filtration in other 
+visualization or analysis files (e.g.  Excel). 
