@@ -61,10 +61,9 @@ nms <- names(data)
 outn <- ""
 j <- 1
 ncomp <- length(data)
-cols <- c('orange1', 'lightgreen', "red")
-if(length(data)==3) pick <- 1:3 else pick <- c(4,1:3)
-cols <- c('orange1', 'brown1', 'lightgreen',"lightblue")[pick]
-pchs <- c(16, 17, 15, 18)[pick]
+
+cols <- c('orange1', 'brown1', 'lightgreen','lightblue','pink')[1:length(data)]
+pchs <- c(16, 17, 15, 18,20)[1:length(data)]
 j <- 1
 cutoff <- 0.5
 for(j in 1:ncol(pairs) ){
@@ -232,15 +231,17 @@ We choose the optimal number of variables to select in each data set using the t
    $qPCR   
       [1] 10 10 5 
         
-We have decided to keep 10 variates for each component.
+Number of kept variates is limited with the minimal number of 
+variates in the datasets. We have decided to keep at most 10 variates for each component.  
 ```{r }
+min_variates <- min(sapply(data,ncol),10)
 if(FALSE) keepX <- list(
     metabolomics = rep(10, ncomp),
     hormonomics = rep(10, ncomp),
     qPCR = rep(10, ncomp)
     )
 list.keepX = list()
-for (i in 1:length(data)) list.keepX[[i]] <- rep(10, ncomp)
+for (i in 1:length(data)) list.keepX[[i]] <- rep(min_variates, ncomp)
 names(list.keepX) <- names(data)
 list.keepX
 ```
@@ -324,8 +325,8 @@ between variables is with the correlation circle plot. A majority of the qPCR va
 #if(length(data)==3) pick <- 1:3 else pick <- c(4,1:3)
 #cols <- c('orange1', 'brown1', 'lightgreen',"lightblue")[pick]
 #pchs <- c(16, 17, 15, 18)[pick]
-cols <- c('orange1', 'brown1', 'lightgreen','lightblue')[1:length(data)]
-pchs <- c(16, 17, 15, 14)[1:length(data)]
+cols <- c('orange1', 'brown1', 'lightgreen','lightblue','pink')[1:length(data)]
+pchs <- c(16, 17, 15, 18,20)[1:length(data)]
 plotVar(final.diablo.model, var.names = FALSE,
         style = 'graphics', legend = TRUE
         , pch = pchs, cex = rep(2,length(data))
@@ -340,11 +341,11 @@ the correlations between variables of different types, represented on the side q
 
 Plot variables
 
-```{r fig.width=8,fig.height=7}
+```{r fig.width=8,fig.height=c(7,10)[1+(length(data)>4)]}
 #plotVar(res, cutoff=0.5, legend = TRUE, overlap=!FALSE, style='graphics')
 #plotVar(res, cutoff=0.5, legend = TRUE, overlap=FALSE, style='graphics')
-plotVar(final.diablo.model, cutoff=0.5, legend = TRUE, comp=c(1,2), overlap=FALSE, style='ggplot2', col=cols)
-plotVar(final.diablo.model, cutoff=0.5, legend = TRUE, comp=c(2,3), overlap=FALSE, col=cols)
+plotVar(final.diablo.model, cutoff=0.5, legend = FALSE, comp=c(1,2), overlap=FALSE, col=rep(1,length(data)))
+plotVar(final.diablo.model, cutoff=0.5, legend = FALSE, comp=c(2,3), overlap=FALSE, col=rep(1,length(data)))
 ```
 
 ```{r fig.width=7, fig.height=7}
