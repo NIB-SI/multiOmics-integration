@@ -341,11 +341,11 @@ the correlations between variables of different types, represented on the side q
 
 Plot variables
 
-```{r fig.width=8,fig.height=c(7,10)[1+(length(data)>4)]}
+```{r fig.width=8,fig.height=c(7,13)[1+(length(data)>4)]}
 #plotVar(res, cutoff=0.5, legend = TRUE, overlap=!FALSE, style='graphics')
 #plotVar(res, cutoff=0.5, legend = TRUE, overlap=FALSE, style='graphics')
-plotVar(final.diablo.model, cutoff=0.5, legend = FALSE, comp=c(1,2), overlap=FALSE, col=rep(1,length(data)))
-plotVar(final.diablo.model, cutoff=0.5, legend = FALSE, comp=c(2,3), overlap=FALSE, col=rep(1,length(data)))
+plotVar(final.diablo.model, cutoff=0.5, legend = FALSE, comp=c(1,2), overlap=FALSE, col=cols,cex=rep(4,length(data)))
+plotVar(final.diablo.model, cutoff=0.5, legend = FALSE, comp=c(2,3), overlap=FALSE, col=cols,cex=rep(4,length(data)))
 ```
 
 ```{r fig.width=7, fig.height=7}
@@ -499,26 +499,15 @@ which(keptVars%in%selectVar(res, comp=2)[[1]]$name)
 ```
 
 
-## Visualise variables
-Loadings
-```{r fig.height=7}
-sapply(res$loadings, head, 30)
-#plotLoadings(res, comp = 1, method = 'median')
-#plotLoadings(res, comp = 1, method = 'median', contrib="max")
-for( i in 1:ncomp)
-plotLoadings(res, comp = i, method = 'median', contrib="max")
 
-```
-
-
-## Plot variables
-
-```{r fig.width=8,fig.height=7}
-#plotVar(res, cutoff=0.5, legend = TRUE, overlap=!FALSE, style='graphics')
-#plotVar(res, cutoff=0.5, legend = TRUE, overlap=FALSE, style='graphics')
-plotVar(res, cutoff=0.5, legend = TRUE, comp=c(1,2), overlap=FALSE, style='ggplot2', col=cols)
-plotVar(res, cutoff=0.5, legend = TRUE, comp=c(2,3), overlap=FALSE, col=cols)
-```
+%%## Plot variables
+%%
+%%```{r fig.width=8,fig.height=7}
+%%#plotVar(res, cutoff=0.5, legend = TRUE, overlap=!FALSE, style='graphics')
+%%#plotVar(res, cutoff=0.5, legend = TRUE, overlap=FALSE, style='graphics')
+%%plotVar(res, cutoff=0.5, legend = FALSE, comp=c(1,2), overlap=FALSE, style='ggplot2', col=cols)
+%%plotVar(res, cutoff=0.5, legend = FALSE, comp=c(2,3), overlap=FALSE, col=cols)
+%%```
 
 
 # Differential networks
@@ -567,106 +556,27 @@ circosPlot(final.diablo.model, cutoff = 0.9, line = TRUE,
 
 # Networks 
 
-
-
 We will prepare partial models for each treatment and treatment combination.
 
-## Network for `r .treat[1]`.
-
-```{r }
-filter <- pdata$Treatment %in% .treat[1]
-XX1 <- lapply(CCDATA, function(x) if(is.null(dim(x))) x[filter] else x[filter,])
-table(XX1$status)
-```
-
-```{r }
-res1 <- block.splsda(X = XX1[-1]
-    , Y = as.factor(XX1[[1]])
-    , ncomp = ncomp
-    , keepX = list.keepX
-    , design = design
-    )
-
-```
-
 ```{r results='asis'}
-cutoff <- 0.0
-x <- res1
+netlist <- list()
 layout.fun <- NULL
-label <-.treat[1]
-out23b <- ""
-  out23b <- paste( out23b, knit_child("035b-multipartite-network.Rmd", quiet=TRUE))
-N1 <- nw
-cat(out23b)
+for(i in 1:length(.treat)){
+thisTreat <-.treat[i]
+out037 <- ""
+  out037 <- paste( out037, knit_child("037-network.Rmd", 
+  quiet=TRUE))
+netlist[[thisTreat]] <- RETURN  # complete network
+
+cat(out037)
+}
 ```
 
-Save network layout for further plots, used by layout function `my.layout`.
-```{r }
-ly <- nw$layout
-```
-
-```{r results='asis'}
-cutoff <- 0.7
-x <- res1
-layout.fun <- my.layout
-label <- .treat[1]
-out23b <- ""
-  out23b <- paste( out23b, knit_child("035b-multipartite-network.Rmd", quiet=TRUE))
-cat(out23b)
-```
-
-## Network for `r .treat[2]`.
-
-```{r }
-filter <- pdata$Treatment %in% .treat[2]
-XX2 <- lapply(CCDATA, function(x) if(is.null(dim(x))) x[filter] else x[filter,])
-table(XX2$status)
-```
-
-```{r }
-res2 <- block.splsda(X = XX2[-1]
-    , Y = as.factor(XX2[[1]])
-    , ncomp = ncomp
-    , keepX = list.keepX
-    , design = design
-    )
-
+```{r}
+names(netlist)
 ```
 
 
-
-```{r results='asis'}
-cutoff <- 0.0
-x <- res2
-layout.fun <- NULL
-label <- .treat[2]
-out23b <- ""
-  out23b <- paste( out23b, knit_child("035b-multipartite-network.Rmd", quiet=TRUE))
-N2 <- nw
-cat(out23b)
-```
-
-Save layout for further plots, used by layout function `my.layout`.
-```{r }
-ly <- nw$layout
-```
-
-
-```{r results='asis'}
-cutoff <- 0.7
-x <- res2
-layout.fun <- my.layout
-label <- .treat[2]
-out23b <- ""
-  out23b <- paste( out23b, knit_child("035b-multipartite-network.Rmd", quiet=TRUE))
-cat(out23b)
-```
-
-
-
-
-Save network file for combined and single treatments.
-Networks are in objects `res`, `res1` and `res2`.
 
 
 
@@ -676,7 +586,7 @@ write("Mid diablo 5 41 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "bla.log", append=TRUE)
 ## Network for `r paste(.treat, collapse=" and ")`.
 
 ```{r}
-# Complete network, cutoff = 0, both
+# Complete network, cutoff = 0, all treatments
 datasets <- names(CCDATA[-1])
 ndatasets<- length(datasets)
 #
@@ -695,39 +605,53 @@ tail(e)
 dim(e)
 ```
 
-
+Save networks file for combined and single treatments, stored in `netlist`.
+Combine edges from all networks as columns in a data.frame.
 
 ```{r}
-# treatment 1
-e1 <- extractEdges2(N1)
-colnames(e1)[ncol(e1)] <- .treat[1]
-head(e1)
-dim(e1)
-
-```
-
-```{r }
+for (i in 1:length(netlist)) {
+e1 <- extractEdges2(netlist[[i]])
+colnames(e1)[ncol(e1)] <- names(netlist)[i]
 e <- merge(e,e1, sort=FALSE, all=TRUE)
-head(e)
-tail(e)
+}
 ```
 
-```{r }
-# treatment 2
-.treat[2]
-e2 <- extractEdges2(N2)
-colnames(e2)[ncol(e2)] <- .treat[2]
-head(e2)
-dim(e2)
-
+```{r}
+str(e)
 ```
 
-```{r }
-e <- merge(e,e2, sort=FALSE, all=TRUE)
-head(e)
-tail(e)
-#
-```
+
+%%```{r}
+%%# treatment 1
+%%e1 <- extractEdges2(N1)
+%%colnames(e1)[ncol(e1)] <- .treat[1]
+%%head(e1)
+%%dim(e1)
+%%
+%%```
+%%
+%%```{r }
+%%e <- merge(e,e1, sort=FALSE, all=TRUE)
+%%head(e)
+%%tail(e)
+%%```
+%%
+%%```{r }
+%%# treatment 2
+%%.treat[2]
+%%e2 <- extractEdges2(N2)
+%%colnames(e2)[ncol(e2)] <- .treat[2]
+%%head(e2)
+%%dim(e2)
+%%
+%%```
+%%
+%%```{r }
+%%e <- merge(e,e2, sort=FALSE, all=TRUE)
+%%head(e)
+%%tail(e)
+%%#
+%%```
 ```{r}
 write("Mid diablo 5 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "bla.log", append=TRUE)
 ```
@@ -736,7 +660,7 @@ write("Mid diablo 5 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "bla.log", append=TRUE)
 Compose file name and necessary information for network export file
 
 ```{r}
-file <- paste0("network-",paste(.treat, collapse="_"),"-",paste(datasets, collapse="_"),".txt")
+netfn <- paste0("network-",paste(.treat, collapse="_"),"-",paste(datasets, collapse="_"),".txt")
 label0 <- paste(paste(.treat, collapse=", "),"|",paste(datasets, collapse=", "),"; cutoff =",0)
 title <- label0
 sets <- 1:length(DATA)
@@ -745,16 +669,15 @@ suffix <- paste0(substr(names(DATA),1,2)[sets[-1]],collapse="-")
 ```
 
 
+
 ```{r}
 write("Mid diablo 6 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "bla.log", append=TRUE)
-write(file.path(suffix,file), "bla.log", append=TRUE)
-write(file, "bla.log", append=TRUE)
+write(file.path(suffix,netfn), "bla.log", append=TRUE)
+write(netfn, "bla.log", append=TRUE)
 
 ```
 
-```{r}
-length(str(e))
-```
+
 
 
 ## Export edges table
@@ -762,7 +685,12 @@ length(str(e))
 ```{r  }
 #e <- data.frame(x=1:10,y=1:10)
 #my.write.table(e, file="network.txt",meta=FALSE)
-write.table(e, file = file, na="0")
+write.table(e, file = netfn, na="0", sep="\t", col.names=NA, row.names=TRUE)
+```
+
+Network edges are exported into file
+```{r}
+netfn
 ```
 
 Table with edges for networks based on combined treatments (C, H) and single treatments (C) and (H) is exported as a text file. This table can be used for

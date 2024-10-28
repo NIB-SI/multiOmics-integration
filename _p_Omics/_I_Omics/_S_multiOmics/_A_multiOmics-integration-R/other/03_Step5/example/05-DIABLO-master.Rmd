@@ -103,18 +103,6 @@ files <- c(
 ```
 
 
-
-Phenodata file name:
-```{r}
-pfn
-```
-
-Data file names
-
-```{r }
-files 
-```
-
 For future use and labeling, we need text names of dataset objects.
 
 ```{r datanames}
@@ -123,7 +111,7 @@ datanames <- c(
     , "metabolomics"
     , "qPCR"
     , "phenomics"
-     , "proteomics"
+    , "proteomics"
 )
 datanames
 ```
@@ -131,7 +119,18 @@ datanames
 Define groups to consider. In a small example, we will pick two groups, based on treatment:
 
 ```{r}
-useTreatment <- c("C","H")
+useTreatment <- c("C","H", "D")
+```
+
+Just to check:
+Phenodata file name
+```{r}
+pfn
+```
+
+Data file names
+```{r }
+files 
 ```
 
 It is advisable to first read the phenodata, followed by actual data input. This enables smart selection of samples, based on the sample selection column with the assay name.
