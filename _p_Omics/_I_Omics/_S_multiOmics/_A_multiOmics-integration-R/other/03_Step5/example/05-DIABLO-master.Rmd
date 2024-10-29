@@ -1,7 +1,7 @@
 ---
 title: "Integration across different omics datasets"
 author: "Andrej Blejec"
-date: 28. 4. 2024
+date: 28. 9. 2024
 output:
   html_document:
     toc: true
@@ -61,7 +61,7 @@ library(pheatmap)
 
 Some original and adapted functions can be found in the file that is silently processed here.
 
-%% Additional functions
+
 ```{r result='hide'}
 out <- ""
 out <- paste(out,knit_child("005-Functions.Rmd", quiet=TRUE))
@@ -179,12 +179,6 @@ apply(pdata,2,function(x) summary(as.factor(x)))
 For this project we aim to integrate several multi-omics datasets.
 We have data on hormonomics, metabolomics, and qPCR:
 
-
-%% ```{r}
-%% hormonomics <- read.table(file1, header=TRUE, sep="\t")
-%% metabolomics <- read.table(file2, header=TRUE, sep="\t")
-%% qPCR <- read.table(file3, header=TRUE, sep="\t")
-%% ```
 
 Read all datafiles and assign them to named objects
 ```{r}

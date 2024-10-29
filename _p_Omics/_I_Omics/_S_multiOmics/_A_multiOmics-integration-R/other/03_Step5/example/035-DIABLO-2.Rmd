@@ -127,34 +127,7 @@ http://mixomics.org/mixdiablo/diablo-tcga-case-study/.
 The process can be computer time consuming and was performed separately. 
 
 
-%% To choose the number of components for the final DIABLO model, the function `perf()` is run with 3-fold cross-validation repeated 10 times. Fold number should be smaller than minimal number of samples in groups.
-%% 
-%% 
-%% ```{r eval=FALSE}
-%% # Tuning of features can take a substantial amount of time.
-%% # Chunk not evaluated for this document.
-%% #
-%% # run component number tuning with repeated CV
-%% system.time(perf.diablo = perf(basic.diablo.model, validation = 'Mfold',
-%%                    folds = 3, nrepeat = 10))
-%% 
-%% plot(perf.diablo) # plot output of tuning
-%% ```
-%% 
-%% 
-%% 
-%% ```{r eval=FALSE}
-%% # Tuning of features can take a substantial amount of time.
-%% # Chunk not evaluated for this document.
-%% #
-%% # set the optimal ncomp value
-%% ncomp  <-  perf.diablo$choice.ncomp$WeightedVote["Overall.BER", "centroids.dist"]
-%% # show the optimal choice for ncomp for each dist metric
-%% perf.diablo$choice.ncomp$WeightedVote
-%% ```
-%% 
-%% For classification, the analysis suggests
-%% the number of  components.
+
 
  From previous tuning sessions one can conclude, that the classification rate stays roughly unchanged after two to four components, so we will set the number of components to the number of data sets:
 
@@ -171,56 +144,6 @@ ncomp
 
 We choose the optimal number of variables to select in each data set using the tune.block.splsda() function, for a grid of keepX values for each type of omics. Note that the function has been set to favour a relatively small signature while allowing us to obtain a sufficient number of variables for downstream validation and/or interpretation. See ?tune.block.splsda.
 
-%% The function tune is run with 10-fold cross validation, but repeated only once. Note that for a more thorough tuning process, provided sufficient computational time, we could increase the nrepeat argument. Here we have saved the results into an RData object that is available for download as the tuning can take a very long time, especially on lower end machines.
-%% 
-%% 
-%% ```{r }
-%% x <- list()
-%% for (i in 1:length(data)){
-%% x[[i]] <- c( seq(5,min(30, ncol(data[[i]])) ,5))
-%% }
-%% names(x) <- names(data)
-%% test.keepX  <-  x
-%% test.keepX
-%% #list (c(5:9, seq(10, 18, 2), seq(20,30,5)),
-%% #                   c(5:9, seq(10, 18, 2), seq(20,30,5)),
-%% #                   c(5:9, seq(10, 18, 2), seq(20,30,5)))
-%% ```
-%% 
-%% 
-%% 
-%% ```{r eval=FALSE}
-%% # Tuning of features can take a substantial amount of time.
-%% # Chunk not evaluated for this document.
-%% #
-%% # run the feature selection tuning
-%% system.time(tune.model  <-  tune.block.splsda(X = data, Y = Y, ncomp = ncomp, cpus=4,
-%%                               test.keepX = test.keepX, design = design,
-%%                               validation = 'Mfold', folds = 3, nrepeat = 1,
-%%                               dist = "centroids.dist")
-%%                               )
-%% ```
-%% 
-%% ```{r eval=FALSE}
-%% # Tuning of features can take a substantial amount of time.
-%% # Chunk not evaluated for this document.
-%% #
-%% # run the feature selection tuning
-%% system.time(tune.model  <-  tune.block.splsda(X = data, Y = Y, ncomp = ncomp, cpus=4,
-%%                               test.keepX = test.keepX, design = design,
-%%                               validation = 'loo', folds = 3, nrepeat = 1,
-%%                               dist = "centroids.dist")
-%%                               )
-%% ```
-%% 
-%% The number of features to select on each component is returned in
-%% ```{r eval=FALSE}
-%% # Tuning of features can take a substantial amount of time.
-%% # Chunk not evaluated for this document.
-%% #
-%% list.keepX = tune.model$choice.keepX # set the optimal values of features to retain
-%% list.keepX
-%% ```
 
  Previous analyses suggest the following list:
  
@@ -500,14 +423,6 @@ which(keptVars%in%selectVar(res, comp=2)[[1]]$name)
 
 
 
-%%## Plot variables
-%%
-%%```{r fig.width=8,fig.height=7}
-%%#plotVar(res, cutoff=0.5, legend = TRUE, overlap=!FALSE, style='graphics')
-%%#plotVar(res, cutoff=0.5, legend = TRUE, overlap=FALSE, style='graphics')
-%%plotVar(res, cutoff=0.5, legend = FALSE, comp=c(1,2), overlap=FALSE, style='ggplot2', col=cols)
-%%plotVar(res, cutoff=0.5, legend = FALSE, comp=c(2,3), overlap=FALSE, col=cols)
-%%```
 
 
 # Differential networks
@@ -621,37 +536,7 @@ str(e)
 ```
 
 
-%%```{r}
-%%# treatment 1
-%%e1 <- extractEdges2(N1)
-%%colnames(e1)[ncol(e1)] <- .treat[1]
-%%head(e1)
-%%dim(e1)
-%%
-%%```
-%%
-%%```{r }
-%%e <- merge(e,e1, sort=FALSE, all=TRUE)
-%%head(e)
-%%tail(e)
-%%```
-%%
-%%```{r }
-%%# treatment 2
-%%.treat[2]
-%%e2 <- extractEdges2(N2)
-%%colnames(e2)[ncol(e2)] <- .treat[2]
-%%head(e2)
-%%dim(e2)
-%%
-%%```
-%%
-%%```{r }
-%%e <- merge(e,e2, sort=FALSE, all=TRUE)
-%%head(e)
-%%tail(e)
-%%#
-%%```
+
 ```{r}
 write("Mid diablo 5 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "bla.log", append=TRUE)
 ```
