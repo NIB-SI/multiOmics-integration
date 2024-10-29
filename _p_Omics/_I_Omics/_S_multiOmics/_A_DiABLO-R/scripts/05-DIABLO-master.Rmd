@@ -1,0 +1,273 @@
+---
+title: "Integration across different omics datasets"
+author: "Andrej Blejec"
+date: 28. 9. 2024
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: true
+    code_folding: show
+---
+
+```{r Author:,echo=FALSE}
+###############################################
+##                                           ##
+## (c) Andrej Blejec (andrej.blejec@nib.si)  ##
+##                                           ##
+###############################################
+```
+
+```{r include=FALSE, message=FALSE, warnings=FALSE, cache=FALSE}
+require(knitr)
+render_markdown()
+opts_chunk$set( fig.path='./figs/'
+    , tidy=FALSE)
+opts_knit$set( concordance=TRUE
+    , root.dir = getwd() # working directory for all chunks
+    , unnamed.chunk.label = "ch"
+    , width = 70
+)
+opts_knit$get("root.dir")
+```
+
+# Introduction
+
+[Needs more text]
+
+In this document we present a work-flow for integration across different omics datasets.
+
+[Note] This is not the final version of the document.
+
+# Packages and files
+
+
+A package with regularized CCA and multiomics DIABLO method is *mixOmics*. Package *igraph* is needed for network analysis.
+
+```{r message=FALSE,warning=FALSE}
+library(mixOmics)
+library(igraph)
+```
+
+Package for complex heatmaps.
+```{r message=FALSE,warning=FALSE}
+#BiocManager::install("ComplexHeatmap")
+library(ComplexHeatmap)
+# https://www.rdocumentation.org/packages/pheatmap/versions/1.0.12/topics/pheatmap
+library(pheatmap)
+```
+
+## Functions
+
+Some original and adapted functions can be found in the file that is silently processed here.
+
+
+```{r result='hide'}
+out <- ""
+out <- paste(out,knit_child("005-Functions.Rmd", quiet=TRUE))
+```
+
+## File names
+
+Usually we use a file management system under the pISA-tree framework. 
+For simplicity, all files ( scripts, data ,... ) are in one directory.
+
+
+Sample description file (aka phenodata)
+
+
+
+```{r }
+
+pfn <- "../input/phenodata_subset_2023-03-08.txt"
+files <- c(
+   "../input/data_hormonomics.txt"
+ , "../input/data_metabolomics.txt"
+ , "../input/data_qPCR.txt"
+ , "../input/data_Phenomics.txt"
+  , "../input/data_Proteomics.txt"
+ )
+
+```
+
+
+For future use and labeling, we need text names of dataset objects.
+
+```{r datanames}
+datanames <- c(
+      "hormonomics"
+    , "metabolomics"
+    , "qPCR"
+    , "phenomics"
+    , "proteomics"
+)
+datanames
+```
+
+Define groups to consider. In a small example, we will pick two groups, based on treatment:
+
+```{r}
+useTreatment <- c("C","H", "D")
+```
+
+Just to check:
+Phenodata file name
+```{r}
+pfn
+```
+
+Data file names
+```{r }
+files 
+```
+
+It is advisable to first read the phenodata, followed by actual data input. This enables smart selection of samples, based on the sample selection column with the assay name.
+
+## Phenodata
+
+```{r }
+pfn
+#
+phdata <- read.table(pfn
+  , header = TRUE
+  ,  sep = "\t"
+  , stringsAsFactors = FALSE
+  , row.names=1
+  )
+dim(phdata)
+names(phdata)
+pdata <- phdata
+```
+
+Filter out groups
+```{r}
+pdata$Treatment
+pdata <- pdata[pdata$Treatment %in% useTreatment,]
+pdata$Treatment
+dim(pdata)
+```
+
+Overview of selected samples:
+
+```{r }
+addmargins(table(pdata$Treatment, pdata$SamplingDay))
+.treat <- unique(pdata$Treatment)
+.days <- unique(pdata$SamplingDay)
+.entry <- 0.5
+
+```
+
+```{r }
+summary(pdata)
+apply(pdata,2,function(x) summary(as.factor(x)))
+```
+
+## Process data files
+
+For this project we aim to integrate several multi-omics datasets.
+We have data on hormonomics, metabolomics, and qPCR:
+
+
+Read all datafiles and assign them to named objects
+```{r}
+for (i in 1:length(files)){
+  print(datanames[i])
+  assign(datanames[i], read.table(files[i], header=TRUE, sep="\t"))
+  print(head(get(datanames[i])))
+}
+
+```
+
+
+Check if all `r length(datanames)` objects are created
+```{r}
+datanames
+datanames %in% ls()
+```
+
+## Combine datasets
+
+Datasets for DIABLO need to be collected in a list, with rows corresponding to the same samples. The order of samples from shrinked phenodata will be enforced.
+
+The first component of the list will be a grouping variable, indicating the conditions. We will create reasonable names for groups.
+
+```{r}
+sday <- paste0(0,pdata$SamplingDay)
+len <- nchar(sday)
+sday <- substr(sday,len-1,len)
+trt <- pdata$Treatment
+what <- paste(trt,sday,sep="")
+what
+X <- list(status= what)
+names(X[[1]]) <- rownames(pdata)
+X
+```
+
+
+
+```{r}
+print(addmargins(table(pdata$SamplingDay, what)), zero.print=".")
+print(addmargins(table(pdata$Treatment, what)), zero.print=".")
+```
+Put datasets into the list X and ensure that they all have same order of samples as in phenodata.
+```{r}
+datanames
+i <- 1
+for(i in 1:length(datanames)){
+x <- get(datanames[i])
+rownames(x) <- x[,1]
+x <- x[,-1]
+X[[i+1]] <- x[rownames(pdata),]
+names(X)[i+1] <- datanames[i]
+}
+str(X)
+names(X)
+```
+
+Check if sample names in all datasets match.
+```{r}
+OK <- TRUE
+for(i in 2:length(X)) {
+print(ok <- all(names(X[[1]])==rownames(X[[i]])))
+OK <- OK&ok
+}
+```
+
+```{r, echo=FALSE, results='asis'}
+if(OK) catln("Sample names in datasets match.") else catln("ERROR: Sample names in datasets do not match!!")
+```
+
+Put data into safe object `DATA`. 
+
+```{r}
+DATA <- X
+```
+
+We will also need the names of treatment groups.
+
+```{r}
+groups <- unique(pdata$Treatment)
+groups
+```
+
+# Multiomics data integration with DIABLO
+
+```{r}
+CCDATA <- DATA
+names(CCDATA)
+```
+
+
+```{r diablo, results='asis'}
+out <- ""
+out <- paste(out,knit_child("035-DIABLO-2.Rmd", quiet=TRUE))
+cat(out)
+```
+
+
+# SessionInfo
+
+```{r sessionInfo,results='asis',echo=FALSE}
+cat(win.version(),"<br>")
+sessionInfo()
+```
