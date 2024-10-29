@@ -7,15 +7,13 @@
 ```
 ```{r echo=FALSE,results='hide'}
 options(width=70)
-write("Entered 035a !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "bla.log", append=TRUE)
 ```
 ### `r  paste(names(data)[blocks[,j]],  collapse=" and ")`
 
 ```{r}
 nfn <- paste0("network-035a-",paste(names(data)[blocks[,j]], collapse="-"),"-",cutoff*10)
-#nfn <- paste0("network-035a-",j,"-",cutoff*10)
 nfn
-write(nfn, "bla.log", append=TRUE)
+
 ```
 
 
@@ -29,10 +27,6 @@ nw <- network(final.diablo.model
         , save = "png"
        , name.save = nfn
         )
-#title(main=paste(names(data)[blocks[,j]], sep=", "),
-#sub=paste("Cutoff = ",cutoff))
-#        
-#dev.off()
 ```
 
 

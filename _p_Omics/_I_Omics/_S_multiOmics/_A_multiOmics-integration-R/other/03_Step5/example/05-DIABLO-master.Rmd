@@ -270,23 +270,10 @@ names(CCDATA)
 ```
 
 
-
-```{r }
-write("Entering 035-DIABLO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "bla.log", append=!TRUE)
-write("commandArgs:", "bla.log", append=TRUE)
-write(commandArgs(trailingOnly = TRUE), "bla.log",append=TRUE)
-write("End commandArgs", "bla.log", append=TRUE)
-```
-
-
 ```{r diablo, results='asis'}
 out <- ""
 out <- paste(out,knit_child("035-DIABLO-2.Rmd", quiet=TRUE))
 cat(out)
-```
-
-```{r}
-write("From 035-DIABLO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "bla.log", append=TRUE)
 ```
 
 
