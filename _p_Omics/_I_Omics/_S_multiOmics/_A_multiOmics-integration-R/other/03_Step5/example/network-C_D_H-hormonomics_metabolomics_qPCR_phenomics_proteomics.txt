@@ -1,4 +1,4 @@
-"edge"	"group1"	"from"	"group2"	"to"	"C.D.H"	"C"	"D"	"H"
+""	"edge"	"group1"	"from"	"group2"	"to"	"C.D.H"	"C"	"D"	"H"
 "1"	"ho.IAA_me.Glukose"	"hormonomics"	"IAA"	"metabolomics"	"Glukose"	-0.183733416666981	0.120210527199578	0.0890454400039298	0.00957546447600945
 "2"	"ho.oxIAA_me.Glukose"	"hormonomics"	"oxIAA"	"metabolomics"	"Glukose"	0.698851940266244	0.486356452093681	0.881875315758767	0.285077914084098
 "3"	"ho.IAA.Asp_me.Glukose"	"hormonomics"	"IAA.Asp"	"metabolomics"	"Glukose"	-0.325900100038379	-0.294367011750152	0.286245287530604	-0.283772488321501
