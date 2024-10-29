@@ -72,34 +72,22 @@ out <- paste(out,knit_child("005-Functions.Rmd", quiet=TRUE))
 Usually we use a file management system under the pISA-tree framework. 
 For simplicity, all files ( scripts, data ,... ) are in one directory.
 
-Control of file source
-```{r}
-usetest <- !TRUE
-```
 
 Sample description file (aka phenodata)
 
-```{r eval=usetest, echo=usetest}
-if(usetest) {
-pfn <- "phenodata_20221001.txt"
-files <- c(
-   "data_hormonomics.txt"
- , "data_metabolomics.txt"
- , "data_qPCR.txt"
-)
-```
 
-```{r eval=!usetest, echo=!usetest}
-if(!usetest){
-pfn <- "./input/phenodata_subset_2023-03-08.txt"
+
+```{r }
+
+pfn <- "../input/phenodata_subset_2023-03-08.txt"
 files <- c(
-   "./input/data_hormonomics.txt"
- , "./input/data_metabolomics.txt"
- , "./input/data_qPCR.txt"
- , "./input/data_Phenomics.txt"
-  , "./input/data_Proteomics.txt"
+   "../input/data_hormonomics.txt"
+ , "../input/data_metabolomics.txt"
+ , "../input/data_qPCR.txt"
+ , "../input/data_Phenomics.txt"
+  , "../input/data_Proteomics.txt"
  )
- }
+
 ```
 
 
