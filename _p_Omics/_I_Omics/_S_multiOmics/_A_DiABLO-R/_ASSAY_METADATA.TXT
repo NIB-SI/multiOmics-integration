@@ -19,6 +19,6 @@ Names proteomics:	./input/Proteomics-subset-annotation.txt
 Principal investigator:	Kristina Gruden
 License:	CC BY 4.0, MIT
 Sharing permission:	Private
-Upload to FAIRDOMHub:	Yes
+Upload to FAIRDOMHub:	No
 GitHub:	https://github.com/NIB-SI/multiOmics-integration/_p_Omics/_I_Omics/_S_multiOmics/_A_DiABLO-R
 Notes:	details in README.MD

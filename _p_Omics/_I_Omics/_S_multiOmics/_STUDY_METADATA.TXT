@@ -1,10 +1,9 @@
 Study:	_S_multiOmics
 Title:	multiOmics
 Description:	Minimal, reproducible example for multi-Omics integration pipeline Study
-Raw Data:	
 pISA Study creation date:	2022-10-01
 pISA Study creator:	MZ
 Principal investigator:	Kristina Gruden
-License:	CC BY 4.0
+License:	CC BY 4.0, MIT
 Sharing permission:	Public
-Upload to FAIRDOMHub:	Yes
+Upload to FAIRDOMHub:	No

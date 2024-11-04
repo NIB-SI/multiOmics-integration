@@ -1,0 +1,14 @@
+Assay:	_A_multiOmics-FS-Py
+Assay Class:	DRY
+Assay Type:	R
+Title:	multiOmics-FS-Py
+Description:	Minimal, reproducible example for multi-Omics integration pipeline -  Assay Feature selection
+pISA Assay creation date:	2022-10-01
+pISA Assay creator:	MZ
+Analyst:	JZ, MZ
+Phenodata:	
+Featuredata:	
+Principal investigator:	Kristina Gruden
+License:	CC BY 4.0, MIT
+Sharing permission:	Public
+Upload to FAIRDOMHub:	No

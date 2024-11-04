@@ -1,6 +1,6 @@
 project:	_p_multiOmics-integration 
 Short Name:	multiOmics-integration
 Title:	Omics data analysis pipeline
-Description:	
+Description:	multi-omics data integration
 Keywords:	Genomics, comparative genomics, functional genomics, potato, stress tolerance, abiotic stress, molecular mechanisms, modelling
 GitHub:	https://github.com/NIB-SI/multiOmics-integration
