@@ -321,7 +321,9 @@ featurePlot(x = subset.rescaled[, ind],
             plot = "ellipse", jitter = TRUE,
             strip=strip.custom(par.strip.text=list(cex=.7)),
             scales = list(x = list(relation="free"),
-                          y = list(relation="free")))
+                          y = list(relation="free")),
+            ## Add a key at the top
+            auto.key = list(columns = 5))
 
 
 mytree = rpart(treatment~waterconsumption+delta_temp+toparea+q_l+compactness, data=subset.rescaled)
