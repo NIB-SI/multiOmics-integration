@@ -1,0 +1,396 @@
+---
+title: "03.1_FS-Phenomics-noninvasive"
+author: "zagor"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    fig_caption: yes
+    self_contained: yes
+    fig_width: 8
+    fig_height: 9
+    toc: yes
+    toc_float: true
+    code_folding: show
+    toc_depth: 5
+    number_sections: yes
+    theme: flatly
+    highlight: tango
+editor_options:
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE, echo=FALSE, warning=FALSE}
+knitr::opts_chunk$set(#dev = c('pdf', 'png'),  # this embeds pdf and crates scrolable blocks
+                      dev = c('png'), 
+                      fig.align = 'center', 
+                      fig.height = 9, 
+                      fig.width = 8 ,
+                      warning = FALSE, message = FALSE
+                      )
+# options(knitr.table.format = "html")
+
+```
+
+
+
+```{r, echo=TRUE, warning=FALSE}
+
+rm(list = ls(all = TRUE))
+gc()
+
+
+set.seed(123456)
+
+```
+
+# libraries
+
+```{r, libraries, echo=TRUE, warning=FALSE}
+
+library(mlbench)
+library(caret)
+library(pheatmap)
+library(gridGraphics)
+library(grid)
+library(gridExtra)
+library(rpart)
+library(rpart.plot)
+
+library(missForest)
+library(doParallel)
+
+
+
+```
+
+
+# data
+
+```{r, data, echo=TRUE, warning=FALSE}
+
+fp = file.path('..', 'input')
+
+fn = 'data_targeted.xlsx'
+
+
+pheno = openxlsx::read.xlsx(xlsxFile = file.path(fp, fn),
+                            sheet = 'phenomics-noninvasive',
+                            startRow = 2,
+                            colNames = TRUE,
+                            rowNames = FALSE,
+                            detectDates = FALSE,
+                            skipEmptyRows = TRUE,
+                            skipEmptyCols = TRUE,
+                            rows = NULL,
+                            cols = NULL,
+                            check.names = FALSE,
+                            sep.names = ".",
+                            namedRegion = NULL,
+                            na.strings = "NA",
+                            fillMergedCells = FALSE)
+colnames(pheno) = gsub('\\´', '', colnames(pheno))
+colnames(pheno) = gsub('Day.after.Stress.Induction/', '', colnames(pheno))
+colnames(pheno) = gsub('ɸ|Δ', '', colnames(pheno))
+table(pheno$Treatment)
+
+pheno$Treatment = gsub('Waterlogging', 'W', pheno$Treatment)
+pheno$Treatment = gsub('Drought', 'D', pheno$Treatment)
+pheno$Treatment = gsub('Heat', 'H', pheno$Treatment)
+pheno$Treatment = gsub('Control', 'C', pheno$Treatment)
+pheno$Treatment = gsub(' \\+ ', '', pheno$Treatment)
+table(pheno$Treatment)
+table(pheno$DAS)
+
+pheno$SampleID = paste0(pheno$Treatment, '_S', pheno$DAS, '_', pheno$Replica)
+pheno$SampleID = gsub('S28', 'P28', pheno$SampleID)
+
+pheno = pheno[, c(ncol(pheno), 1:(ncol(pheno) - 1))]
+
+
+
+```
+
+
+# imputation
+
+
+```{r, Imputation, echo=TRUE, warning=FALSE, message=FALSE}
+
+
+registerDoParallel(cores=4)
+
+group = data.frame(group = paste(pheno$Treatment, pheno$DAS, sep = '_'))
+pheno = cbind(group, pheno)
+
+
+(n = max(grep("SampleID|DAS|Plant.ID|Replica|Treatment|group", colnames(pheno))) + 1)
+
+
+imputed = as.data.frame(matrix(NA, nrow(pheno), ncol(pheno)))
+colnames(imputed) = colnames(pheno)
+imputed[, 1:(n-1)] = pheno[, 1:(n-1)]
+
+
+
+
+for (i in unique(pheno$group)){
+  # print(i)
+  missing = pheno[pheno$group == i, n:ncol(pheno)]
+  data.imp = missForest(missing, variablewise = TRUE, parallelize = 'variables')
+  col = match(colnames(data.imp$ximp), colnames(imputed))
+  row = unlist(purrr::map(i, ~which(imputed$group==.)))
+  imputed[row, col] = data.imp$ximp
+}
+
+
+
+```
+
+
+
+
+# correlation
+
+
+
+```{r, cor, echo=TRUE, warning=FALSE}
+
+
+subset = imputed[imputed$DAS %in% 2:14, ]
+ind = grep('PRI|NDVI|SIPI|MCARI|OSAVI|WATER1', colnames(subset))
+subset = subset[, -ind]
+subset[subset$DAS %in% 1:7 & subset$Treatment == 'D', ]$Treatment = 'C'
+subset[subset$DAS %in% 1:7 & subset$Treatment == 'HD', ]$Treatment = 'H'
+subset[subset$DAS %in% 1:7 & subset$Treatment == 'HDW', ]$Treatment = 'H'
+subset[subset$DAS %in% 8:14 & subset$Treatment == 'HDW', ]$Treatment = 'HD'
+ind = which(subset$DAS %in% 8:14 & subset$Treatment == 'W')
+subset = subset[-ind, ]
+table(subset$Treatment, subset$DAS)
+
+subset.rescaled = subset
+subset.rescaled[,n:ncol(subset.rescaled)] = apply(subset[,n:ncol(subset)], MARGIN = 2, FUN = function(X) (X - min(X))/diff(range(X)))
+
+
+colnames(subset.rescaled)  = gsub('^T$', 'deltaTemp', colnames(subset.rescaled) )
+colnames(subset.rescaled)  = gsub('-|/|\\^|_|\\.', '', colnames(subset.rescaled) )
+subset.rescaled = janitor::clean_names(subset.rescaled)
+colnames(subset.rescaled) = make.names(colnames(subset.rescaled))
+
+
+correlationMatrix = cor(subset[,n:ncol(subset)], use = 'pairwise.complete.obs')
+# summarize the correlation matrix
+# print(correlationMatrix)
+pheatmap(correlationMatrix, display_numbers = T, kmeans_k = NA,
+         cluster_cols = TRUE, cluster_rows = TRUE, main = 'variables', 
+         breaks = seq(-1, 1, 0.1), 
+         color = colorRampPalette(c("deepskyblue4", "cornflowerblue", 
+                                    "white",  "white",  "white", 
+                                    "darkgoldenrod1", "brown3"))(n = 21))
+
+# find attributes that are highly corrected (ideally >0.75)
+findCorrelation(abs(correlationMatrix), cutoff=0.75, verbose = TRUE, names = TRUE, exact = TRUE)
+
+
+```
+
+
+
+# feature selection using recursive feature elimination
+
+Random forest selection function
+
+Cross-Validated (10 fold, repeated 10 times) 
+
+
+
+```{r, subsets, echo=TRUE, warning=FALSE}
+
+
+cn = grep('treatment', colnames(subset.rescaled)) + 1
+nc = ncol(subset.rescaled[, cn:ncol(subset.rescaled)])
+subsets = seq(1, nc, 1) # a numeric vector of integers corresponding to the number of features that should be retained
+
+
+
+```
+
+
+## model
+
+```{r, rf-rfe, echo=TRUE, warning=FALSE}
+
+
+df = subset.rescaled[, cn:ncol(subset.rescaled)]
+df$response = subset.rescaled$treatment
+
+# Define the control using a random forest selection function
+control = caret::rfeControl(functions = rfFuncs, # random forest
+                      method = "repeatedcv", # repeated cv
+                      repeats = 10, # number of repeats
+                      number = 10) # number of folds
+# Features
+x = df[, -ncol(df)]
+
+# Target variable
+y = as.factor(df$response)
+
+inTrain = caret::createDataPartition(y, p = .80, list = FALSE)[,1]
+
+x_train = x[ inTrain, ]
+x_test  = x[-inTrain, ]
+
+y_train = y[ inTrain]
+y_test  = y[-inTrain]
+
+
+# Run RFE
+results = caret::rfe(x = x_train,
+                   y = y_train,
+                   sizes = c(1:(ncol(x))),
+                   rfeControl = control)
+
+# summarize the results
+print(results)
+# list the chosen features
+# predictors(results)
+
+
+confusionMatrix(results)
+
+
+
+# Print the selected features
+# predictors(results)
+
+# Print the results visually
+ggplot(data = results, metric = "Accuracy") + theme_bw()
+ggplot(data = results, metric = "Kappa") + theme_bw()
+
+
+```
+
+
+## variable importance
+
+- varImp.randomForest and varImp.RandomForest are wrappers around the importance functions
+
+- randomForest::importance() aggregates the class-specific importance scores using a weighted mean before it rescales them using their "standard error" and reports it as meanDecreaseAccuracy
+
+- varImp() takes the scaled class-specific scores and averages them without weighting
+
+
+```{r, importance, echo=TRUE, warning=FALSE}
+
+
+# plot the results
+# plot(results, type=c("g", "o"))
+k = results$bestSubset
+
+# estimate variable importance
+# summarize importance
+results$optVariables
+vi = varImp(results)
+varimp_data = data.frame(feature = row.names(vi),
+                          importance = vi$Overall)
+
+ggplot(data = varimp_data,
+       aes(x = reorder(feature, -importance), y = importance, fill = feature)) +
+  geom_bar(stat="identity") + labs(x = "Features", y = "Variable Importance") +
+  geom_text(aes(label = round(importance, 2)), vjust=1.6, color="white", size=3) +
+  theme_bw() + theme(legend.position = "none") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+  ggtitle('Recursive feature elimination')
+
+
+# Post prediction
+postResample(predict(results, x_test), y_test)
+
+
+
+ind = grep(paste(results$optVariables, collapse = '|'), 
+           colnames(subset.rescaled))
+
+featurePlot(x = subset.rescaled[, ind],
+            y = as.factor(subset.rescaled$treatment),
+            plot = "box",
+            strip=strip.custom(par.strip.text=list(cex=.7)),
+            scales = list(x = list(relation="free"),
+                          y = list(relation="free")))
+featurePlot(x = subset.rescaled[, ind],
+            y =as.factor(subset.rescaled$treatment),
+            plot = "ellipse", jitter = TRUE,
+            strip=strip.custom(par.strip.text=list(cex=.7)),
+            scales = list(x = list(relation="free"),
+                          y = list(relation="free")))
+
+
+mytree = rpart(treatment~waterconsumption+delta_temp+toparea+q_l+compactness, data=subset.rescaled)
+prp(mytree)
+
+
+```
+
+
+## heatmaps
+
+```{r, heatmaps, echo=TRUE, warning=FALSE}
+
+ind = grep(paste(results$optVariables[1:5], collapse = '|'), 
+           colnames(subset.rescaled))
+
+myC = colorRampPalette(c("deepskyblue4", "cornflowerblue", 
+                         "white",   
+                         "darkgoldenrod1", "brown3"))(n = 20)
+
+hm = pheatmap(cor(subset.rescaled[, ind], 
+                   use = 'pairwise.complete.obs'),
+               display_numbers = F, kmeans_k = NA,
+               cluster_cols = TRUE, cluster_rows = TRUE, main = 'FS', 
+               breaks = seq(-1, 1, 0.1), 
+               color = myC, silent = TRUE)$gtable
+hmC = pheatmap(cor(subset.rescaled[subset.rescaled$treatment == 'C', ind], 
+                   use = 'pairwise.complete.obs'),
+               display_numbers = F, kmeans_k = NA,
+               cluster_cols = TRUE, cluster_rows = TRUE, main = 'C', 
+               breaks = seq(-1, 1, 0.1), 
+               color = myC, silent = TRUE, legend = TRUE)$gtable
+
+
+hmH = pheatmap(cor(subset.rescaled[subset.rescaled$treatment == 'H', ind], 
+                   use = 'pairwise.complete.obs'),
+               display_numbers = F, kmeans_k = NA,
+               cluster_cols = FALSE, cluster_rows = FALSE, main = 'H', 
+               breaks = seq(-1, 1, 0.1), 
+               color = myC, silent = TRUE, legend = FALSE)$gtable
+hmHD = pheatmap(cor(subset.rescaled[subset.rescaled$treatment == 'HD', ind], 
+                   use = 'pairwise.complete.obs'),
+               display_numbers = F, kmeans_k = NA,
+               cluster_cols = FALSE, cluster_rows = FALSE, main = 'HD', 
+               breaks = seq(-1, 1, 0.1), 
+               color = myC, silent = TRUE, legend = FALSE)$gtable
+hmW = pheatmap(cor(subset.rescaled[subset.rescaled$treatment == 'W', ind], 
+                   use = 'pairwise.complete.obs'),
+               display_numbers = F, kmeans_k = NA,
+               cluster_cols = FALSE, cluster_rows = FALSE, main = 'W', 
+               breaks = seq(-1, 1, 0.1), 
+               color = myC, silent = TRUE, legend = FALSE)$gtable
+hmD = pheatmap(cor(subset.rescaled[subset.rescaled$treatment == 'D', ind], 
+                   use = 'pairwise.complete.obs'),
+               display_numbers = F, kmeans_k = NA,
+               cluster_cols = FALSE, cluster_rows = FALSE, main = 'D', 
+               breaks = seq(-1, 1, 0.1), 
+               color = myC, silent = TRUE, legend = FALSE)$gtable
+
+grid.arrange(grobs = list(hm, hmC,
+                          hmD, hmW,
+                          hmHD, hmH), ncol = 2, nrow = 3)
+```
+
+# session info
+
+```{r, sessionInfo, echo=TRUE, warning=FALSE}
+
+sessionInfo()
+
+```
+

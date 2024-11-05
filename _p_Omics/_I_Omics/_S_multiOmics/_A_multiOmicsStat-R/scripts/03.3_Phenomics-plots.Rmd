@@ -1,0 +1,336 @@
+---
+title: "03.3_Phenomics-plots"
+author: "zagor"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    fig_caption: yes
+    self_contained: yes
+    fig_width: 12
+    fig_height: 9
+    toc: true
+    toc_float:
+      toc_collapsed: false
+    toc_depth: 5
+    number_sections: yes
+    theme: flatly
+    highlight: tango
+  pdf_document:
+    toc: yes
+    toc_depth: '5'
+  word_document:
+    toc: yes
+    toc_depth: '5'
+editor_options:
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(#dev = c('pdf', 'png'),  # this embeds pdf and crates scrolable blocks
+                      dev = c('png'), 
+                      fig.align = 'center', 
+                      fig.height = 9, 
+                      fig.width = 12 ,
+                      warning = FALSE, message = FALSE
+                      )
+
+```
+
+
+
+```{r, rm, echo=TRUE, results='hide', warning=FALSE, message=FALSE}
+
+rm(list = ls(all = TRUE))
+
+gc()
+gc()
+
+set.seed(123456)
+
+```
+
+
+# libraries
+
+
+```{r, echo=TRUE, warning=FALSE, message=FALSE}
+
+
+
+`%!in%` = Negate(`%in%`)
+
+library(magrittr)
+library(ggplot2)
+library(multcompView)
+library(gridExtra)
+
+library(grid)
+library(RColorBrewer)
+
+require(scales)
+
+library(crayon)
+
+`%nin%` = Negate(`%in%`)
+
+
+
+```
+
+
+
+```{r, echo=FALSE, results='hide', warning=FALSE, message=FALSE}
+
+# adapted from <https://www.cookbook-r.com/Graphs/Plotting_means_and_error_bars_(ggplot2)/>
+
+## Gives count, mean, standard deviation, standard error of the mean, and confidence interval (default 95%).
+##   data: a data frame.
+##   measurevar: the name of a column that contains the variable to be summariezed
+##   groupvars: a vector containing names of columns that contain grouping variables
+##   na.rm: a boolean that indicates whether to ignore NA's
+##   conf.interval: the percent range of the confidence interval (default is 95%)
+summarySE =function(data=NULL, measurevar, groupvars=NULL, na.rm=TRUE,
+                      conf.interval=.95, .drop=TRUE) {
+    library(plyr)
+
+    # New version of length which can handle NA's: if na.rm==T, don't count them
+    length2 =function (x, na.rm=FALSE) {
+        if (na.rm) sum(!is.na(x))
+        else       length(x)
+    }
+
+    # This does the summary. For each group's data frame, return a vector with
+    # N, mean, and sd
+    datac =ddply(data, groupvars, .drop=.drop,
+      .fun = function(xx, col) {
+        c(N    = length2(xx[[col]], na.rm=na.rm),
+          mean = mean   (xx[[col]], na.rm=na.rm),
+          sd   = sd     (xx[[col]], na.rm=na.rm)
+        )
+      },
+      measurevar
+    )
+
+    # Rename the "mean" column    
+    # datac =rename(datac, c("mean" = measurevar))
+
+    datac$se =datac$sd / sqrt(datac$N)  # Calculate standard error of the mean
+
+    # Confidence interval multiplier for standard error
+    # Calculate t-statistic for confidence interval: 
+    # e.g., if conf.interval is .95, use .975 (above/below), and use df=N-1
+    ciMult =qt(conf.interval/2 + .5, datac$N-1)
+    datac$ci =datac$se * ciMult
+    
+    datac$cv = datac$sd/datac$mean
+    
+
+    return(datac)
+}
+
+
+
+
+
+```
+
+# palette
+
+```{r, echo=TRUE, warning=FALSE, message=FALSE}
+
+# C #7F7F7F
+# D #FFC000
+# H #C00000
+# HD #ED7D31
+# W #4472C4
+
+mypallette = c('#7F7F7F', '#FFC000', '#C00000', '#ED7D31', '#4472C4')
+# pie(rep(1, length(mypallette)), col = mypallette, labels = c('C', 'D', 'H', 'HD', 'W'))
+
+```
+
+
+
+# data
+
+
+```{r, echo=TRUE, warning=FALSE, message=FALSE}
+
+
+fp = file.path('..', 'input')
+
+fn = 'data_targeted.xlsx'
+
+
+pheno = openxlsx::read.xlsx(xlsxFile = file.path(fp, fn),
+                            sheet = 'phenomics-noninvasive',
+                            startRow = 2,
+                            colNames = TRUE,
+                            rowNames = FALSE,
+                            detectDates = FALSE,
+                            skipEmptyRows = TRUE,
+                            skipEmptyCols = TRUE,
+                            rows = NULL,
+                            cols = NULL,
+                            check.names = FALSE,
+                            sep.names = ".",
+                            namedRegion = NULL,
+                            na.strings = "NA",
+                            fillMergedCells = FALSE)
+
+colnames(pheno) = gsub('Day\\.after\\.Stress\\.Induction\\/', '', colnames(pheno))
+colnames(pheno) = gsub('ɸ|Δ', '', colnames(pheno))
+colnames(pheno) = gsub('\\´', '', colnames(pheno))
+table(pheno$Treatment )
+
+
+pheno$Treatment  = gsub('Waterlogging', 'W', pheno$Treatment )
+pheno$Treatment  = gsub('Drought', 'D', pheno$Treatment )
+pheno$Treatment  = gsub('Heat', 'H', pheno$Treatment )
+pheno$Treatment  = gsub('Control', 'C', pheno$Treatment )
+pheno$Treatment  = gsub(' \\+ ', '', pheno$Treatment )
+table(pheno$Treatment )
+table(pheno$DAS)
+
+pheno$SampleID = paste0(pheno$Treatment , '_S', pheno$DAS, '_', pheno$Replica)
+pheno$SampleID = gsub('S28', 'P28', pheno$SampleID)
+
+# pheno = pheno[, c(ncol(pheno), 1:(ncol(pheno) - 1))]
+
+colnames(pheno)[1] = 'DAS'
+colnames(pheno)[4] = 'Condition'
+
+
+
+```
+
+
+non-hyperspectral 
+
+```{r, echo=TRUE, warning=FALSE, message=FALSE}
+
+
+
+pheno = pheno[pheno$DAS %in% 1:14, ]
+pheno = pheno[pheno$Condition != 'HDW', ]
+table(pheno$Condition)
+
+pheno = pheno[, -grep('Plant\\.ID|Replica|SampleID', colnames(pheno))]
+pheno = pheno[, -grep("^PRI$|^NDVI$|^SIPI$|^MCARI$|^OSAVI$|^WATER1", colnames(pheno))]
+
+pheno$Condition.col = pheno$Condition
+pheno$Condition.col[pheno$Condition.col %in% c('D') & pheno$DAS %in% 1:7] = 'DC'
+pheno$Condition.col[pheno$Condition.col %in% c('HD') & pheno$DAS %in% 1:7] = 'HDC'
+pheno$DAS.col = pheno$DAS
+pheno$DAS.col[pheno$DAS.col == 7] = 7.5
+pheno$DAS.col[pheno$DAS.col == 8] = 7.5
+
+
+mypallette.col = c(mypallette, mypallette[1], mypallette[3])
+pheno = pheno[, c(1:2, (ncol(pheno)-1):ncol(pheno), 3:(ncol(pheno)-2))]
+
+ph.l = tidyr::gather(pheno, variable, measurement, colnames(pheno)[5]:colnames(pheno)[ncol(pheno)], factor_key=FALSE)
+
+
+ph.SE =summarySE(data = ph.l, 
+                   measurevar="measurement", 
+                   groupvars=c("Condition", "DAS", "variable", "Condition.col", "DAS.col"), 
+                   na.rm = TRUE)
+  
+  
+
+
+```
+
+# plots
+
+```{r, phenomics_1-14, echo=TRUE, warning=FALSE, message=FALSE}
+
+jitter = position_jitter(width = 0.1, height = 0.0)
+dodge = position_dodge(width=0.5)
+ncol = 5
+omicsLevel = 'Phenomics'
+string = ''
+
+ph.SE$Condition.col = factor(ph.SE$Condition.col, levels = c('C', 'D', 'H', 'HD', 'W', 'DC', 'HDC'))  
+
+myplot = ggplot(ph.SE, aes(x = DAS, y = mean, colour = Condition, group = interaction(Condition, DAS))) + #, pch = DAS)) +
+
+    geom_jitter(position=dodge, size=1.5, shape=16) + 
+      geom_point(data = ph.SE,
+                 aes(x = DAS, y = mean, colour = Condition, pch = Condition),
+                 size = 1.5, position=dodge ) + 
+      geom_line(data = ph.SE,
+                aes(linetype = Condition, color = Condition, group = Condition), size = 1) +
+      geom_ribbon(data = ph.SE, aes(ymin=mean-se, ymax=mean+se,
+                                    x = DAS.col,
+                                    group = Condition.col,
+                                    fill = Condition.col), alpha=0.2) +
+      facet_wrap( ~ variable, ncol = ncol, drop = FALSE, scales="free_y") +
+      ggtitle(paste0(omicsLevel))  +
+     scale_x_continuous(breaks = c(1, 7, 8, 14)) + 
+      # theme_bw() +
+    theme_classic() +
+      theme(legend.position = "right",
+            legend.title = element_text(color = "black",
+                                        size = 10,
+                                        face = 2),
+            legend.background = element_rect(fill = "grey90", # Background
+                                           colour = 1)) +
+      scale_colour_manual(name = "Condition",
+                          values = mypallette.col) +
+      scale_fill_manual(values = mypallette.col) + 
+    guides(fill="none") +
+        labs(x = 'DAS', 
+             y = paste0(string, 'measurement (+/- SE)')) +
+        scale_y_continuous(# trans = log2_trans(), 
+                           labels = scales::comma#,
+                           ) +
+      theme(axis.text.y = element_text(size = 7.5))  +
+  geom_vline(xintercept=7.5, linetype='twodash', col = '#EEE8CD', lwd = 2) +
+  theme(legend.key=element_blank(), legend.background=element_blank())
+  
+
+print(myplot)
+
+
+
+```
+
+# Wilcox
+
+```{r, echo=TRUE, warning=FALSE, message=FALSE}
+
+wilcoxTest = NULL
+
+for (i in unique(ph.l$variable)) {
+  
+  # print(i)
+  
+  subset = ph.l[ph.l$variable == i, ]
+  subset = subset[!is.na(subset$measurement), ]
+  
+  s.t. = subset %>% 
+    dplyr::group_by(DAS) %>% 
+    rstatix::wilcox_test(measurement ~ Condition, p.adjust.method = "holm", ref.group = 'C', data = .)
+  
+  s.t.$variable = i
+  
+  wilcoxTest = rbind(wilcoxTest, s.t.)
+  
+}
+
+
+openxlsx::write.xlsx(wilcoxTest, '../reports/Desiree.Phenomics_wilcox-with-Holm.xlsx', asTable = TRUE)
+
+```
+
+
+# sessionInfo
+
+```{r, echo=TRUE, warning=FALSE, message=FALSE}
+
+sessionInfo()
+
+```
+
