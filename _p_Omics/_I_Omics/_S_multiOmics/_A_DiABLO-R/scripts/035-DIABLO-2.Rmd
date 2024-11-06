@@ -487,7 +487,7 @@ str(e)
 Compose file name and necessary information for network export file
 
 ```{r}
-netfn <- paste0("../results/network-",paste(.treat, collapse="_"),"-",paste(datasets, collapse="_"),".txt")
+netfn <- paste0("../output/network-",paste(.treat, collapse="_"),"-",paste(datasets, collapse="_"),".txt")
 label0 <- paste(paste(.treat, collapse=", "),"|",paste(datasets, collapse=", "),"; cutoff =",0)
 title <- label0
 sets <- 1:length(DATA)

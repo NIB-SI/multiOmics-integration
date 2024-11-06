@@ -14,7 +14,7 @@ options(width=70)
 ```{r }
 ndata <- length(data)
 lbl <- gsub(", ","-",label)
-nfn <- paste("network-035b",lbl,cutoff*10,sep="-")
+nfn <- paste("../output/figs/network-035b",lbl,cutoff*10,sep="-")
 ```
 
 ```{r }
