@@ -24,9 +24,6 @@ str(data)
 length(data)
 ```
 
-```{r}
-cimfn <- "cim.png"
-```
 
 In addition, outcome, phenotypic state or in our case treatment can also be determined. We have combination of two treatments and four time points.
 
@@ -320,7 +317,7 @@ The cimDIABLO() function is a clustered image map specifically implemented
 to represent the multi-omics molecular signature expression for each sample. From figure below the areas of homogeneous expression levels for a set of samples across a set of features can be determined. For instance, the H14 samples were the only group to show extremely high levels of expression for a specific set of genes and metabolites. This indicates these features are fairly discriminating for this subtype.
 
 ```{r}
-cimfn <- "cim.png"
+cimfn <- "../output/figs/cim.png"
 ```
 
 ```{r cim1}
@@ -456,6 +453,7 @@ names(netlist)
 datasets <- names(CCDATA[-1])
 ndatasets<- length(datasets)
 #
+nname <- paste("../ouptut/figs/network-",paste(useTreatment,collapse=""),sep="")
 N12 <- network(res
     , cutoff = 0
     , blocks = 1:ndatasets
@@ -489,7 +487,7 @@ str(e)
 Compose file name and necessary information for network export file
 
 ```{r}
-netfn <- paste0("network-",paste(.treat, collapse="_"),"-",paste(datasets, collapse="_"),".txt")
+netfn <- paste0("../results/network-",paste(.treat, collapse="_"),"-",paste(datasets, collapse="_"),".txt")
 label0 <- paste(paste(.treat, collapse=", "),"|",paste(datasets, collapse=", "),"; cutoff =",0)
 title <- label0
 sets <- 1:length(DATA)

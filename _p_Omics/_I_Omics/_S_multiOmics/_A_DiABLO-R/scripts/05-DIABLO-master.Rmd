@@ -1,7 +1,7 @@
 ---
 title: "Integration across different omics datasets"
 author: "Andrej Blejec"
-date: 28. 9. 2024
+date: "`r Sys.Date()`"
 output:
   html_document:
     toc: true
@@ -21,8 +21,8 @@ output:
 ```{r include=FALSE, message=FALSE, warnings=FALSE, cache=FALSE}
 require(knitr)
 render_markdown()
-opts_chunk$set( fig.path='./figs/'
-    , tidy=FALSE)
+opts_chunk$set( fig.path='../output/figs/'
+    , tidy=TRUE)
 opts_knit$set( concordance=TRUE
     , root.dir = getwd() # working directory for all chunks
     , unnamed.chunk.label = "ch"
@@ -107,7 +107,7 @@ datanames
 Define groups to consider. In a small example, we will pick two groups, based on treatment:
 
 ```{r}
-useTreatment <- c("C","H", "D")
+useTreatment <- c("C","H")
 ```
 
 Just to check:
