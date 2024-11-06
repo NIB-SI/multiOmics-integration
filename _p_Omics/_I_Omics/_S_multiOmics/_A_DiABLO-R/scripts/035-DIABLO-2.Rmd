@@ -383,26 +383,8 @@ which(keptVars%in%selectVar(res, comp=1)[[1]]$name)
 which(keptVars%in%selectVar(res, comp=2)[[1]]$name)
 ```
 
-# Differential networks
-Here we will show differential networks between treatments.
-```{r eval=FALSE, results='asis'}
-cutoffs <- c(0.7)
-pairs <- combn(1:length(names(res$X)),2)
-outn <- ""
-j <- 4
-cutoff <- 0.5
-for(j in 1:ncol(pairs) ){
-    pair <- pairs[,j]
-    X <- data[[pair[1]]]
-    Y <- data[[pair[2]]]
-    datasets <- names(data)[pair]
-    outn <- paste( outn, knit_child("023-prepare-networkdiff.Rmd", quiet=TRUE))
-   for(cutoff in cutoffs){
-   outn <- paste( outn, knit_child("035-Network.Rmd", quiet=TRUE))
-   }
-}
-cat(outn)
-```
+## Networks circos plots
+
 
 ```{r fig.width=8, fig.height=8}
 size.variables <- 1
