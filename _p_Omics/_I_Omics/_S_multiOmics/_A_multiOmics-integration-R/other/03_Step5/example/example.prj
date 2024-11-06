@@ -1,0 +1,161 @@
+45 Patch Control
+
+0
+0
+1
+C:\__D\_Y\R\I2R\rmd\I2R-data-knitr.Rmd
+50
+6
+1
+
+05-DIABLO-master.Rmd
+TeX:RMD
+17837307 0 -1 5754 -1 57 26 26 712 512 1 1 629 21 -1 -1 0 0 3 -1 -1 3 1 0 57 -1  0 -1 0
+035-DIABLO-2.Rmd
+TeX:RMD
+286272763 0 -1 0 -1 508 78 78 864 396 1 1 269 336 -1 -1 0 0 -1 -1 -1 -1 1 0 508 -1  0 -1 0
+005-Functions.Rmd
+TeX:RMD
+17837307 0 -1 0 -1 112798 130 130 812 612 1 1 159 273 -1 -1 0 0 17 -1 -1 17 1 0 112798 -1  0 -1 0
+037-network.Rmd
+TeX:RMD
+17837307 0 -1 1121 -1 66 130 130 838 618 1 1 579 21 -1 -1 0 0 -1 -1 -1 -1 1 0 66 -1  0 -1 0
+035b-multipartite-network.Rmd
+TeX:RMD
+17837307 0 -1 469 -1 469 26 26 708 508 1 1 109 105 -1 -1 0 0 -1 -1 -1 -1 1 0 469 -1  0 -1 0
+035a-DIABLO-network.Rmd
+TeX:RMD
+17837307 0 -1 827 -1 808 0 0 682 482 1 1 109 609 -1 -1 0 0 -1 -1 -1 -1 1 0 808 -1  0 -1 0
+035-DIABLO-2-bkp.Rmd
+TeX:RMD
+286272763 0 -1 1176 -1 1269 104 104 790 590 1 1 439 273 -1 -1 0 0 23253 -1 -1 23253 1 0 1269 -1  0 -1 0
+035-DIABLO-2-test.Rmd
+TeX:RMD
+286272763 1 -1 0 -1 325 104 104 790 590 1 1 139 189 -1 -1 0 0 -1 -1 -1 -1 1 0 325 -1  0 -1 0
+data_hormonomics.txt
+TEXT
+1066227 0 0 1 0 1 104 104 812 592 1 0 94 0 -1 -1 0 0 -1 -1 -1 -1 1 0 1 0  0 0 0
+phenodata_20221001.txt
+TEXT
+269501683 0 0 1 0 1 78 78 786 566 1 0 94 0 -1 -1 0 0 -1 -1 -1 -1 1 0 1 0  0 0 0
+035-DIABLO-2-kosi.Rmd
+TEXT:RMD
+269501683 0 0 1 99 40 156 156 564 638 1 0 484 -336 -1 -1 0 0 -1 -1 -1 -1 1 0 40 99  0 0 0
+C:\Users\ablejec\AppData\Roaming\WInEdt Team\WinEdt 11\Macros\Sweave\Sweave.edt
+ASCII:EDT
+269494266 0 0 1 0 1 0 0 870 381 1 0 71 0 -1 -1 0 0 21 0 0 21 1 0 1 0  0 0 0
+C:\Users\ablejec\AppData\Roaming\WInEdt Team\WinEdt 11\ConfigEx\Private.ini
+DATA:INI:EDT
+269485050 0 1052 34 1036 91 130 130 678 726 1 1 912 105 -1 -1 0 0 83 0 0 83 1 0 91 1036  0 0 0
+C:\Users\ablejec\AppData\Roaming\WInEdt Team\WinEdt 11\Macros\Sweave\bla.tex
+TeX
+269496315 0 -1 42 -1 5 208 208 756 804 1 1 159 0 -1 -1 0 0 51 -1 -1 51 1 0 5 -1  0 0 0
+C:\__D\Dropbox\__Fito\Tecaj\Materiali\Opisna\Opisna.Rnw
+TeX:Rnw:UTF-8
+17838075 0 -1 0 -1 272 234 234 782 830 1 1 309 126 -1 -1 0 0 17 -1 -1 17 1 0 272 -1  0 -1 0
+C:\__D\_Y\R\I2R\doc\I2R-functions.Rnw
+TeX:Rnw
+286273531 0 -1 0 -1 377 130 130 756 545 1 1 109 231 -1 -1 0 0 17 -1 -1 17 1 0 377 -1  0 -1 0
+C:\__D\_Y\R\I2R\md\I2R-functions.R
+R
+1049586 0 0 1 11 1 104 104 730 539 1 0 94 231 -1 -1 0 0 52 0 0 52 1 0 1 11  0 0 0
+C:\__D\Dropbox\SDS\2024-skupscina\SDS2024S.vrb
+DATA:UNIX
+273776882 0 2 1 6 1 0 0 835 431 1 0 94 126 -1 -1 0 0 14 0 0 14 1 0 1 6  0 0 0
+C:\__D\Dropbox\SDS\2024-skupscina\SDS2024-knitr.Rnw
+TeX:Rnw
+286273531 0 -1 0 -1 0 104 104 1189 685 1 1 109 0 -1 -1 0 0 17 -1 -1 17 1 0 0 -1  0 -1 0
+C:\__D\_Y\R\I2R\rmd\I2R-data-knitr.Rmd
+TeX:RMD
+286273531 0 -1 144 -1 376 104 104 760 700 1 1 109 357 -1 -1 0 0 2 -1 -1 2 1 0 376 -1  0 -1 0
+C:\__D\_Y\R\I2R\rmd\I2R-data-knitr.rnw
+TeX:Rnw
+17838075 0 -1 2927 -1 242 78 78 734 674 1 1 119 189 -1 -1 0 0 17 -1 -1 17 1 0 242 -1  0 -1 0
+C:\__D\_Y\R\I2R\rmd\I2R-init.Rnw
+TeX:Rnw
+286273531 0 -1 598 -1 596 52 52 600 648 1 1 119 315 -1 -1 0 0 17 -1 -1 17 1 0 596 -1  0 -1 0
+:\_Y\R\I2R-rmd\doc\I2R-intro.tex
+TeX:Rnw
+286273531 0 -1 2367 -1 852 52 52 678 487 1 1 359 294 -1 -1 0 0 17 -1 -1 17 1 0 852 -1  0 -1 0
+:\_Y\R\I2R-rmd\doc\I2R.tex
+TeX:Rnw
+286273531 0 -1 0 -1 1014 234 234 782 830 1 1 209 546 -1 -1 0 0 17 -1 -1 17 1 0 1014 -1  0 -1 0
+C:\__D\_Y\R\I2R\rmd\I2R.Rnw
+TeX:Rnw
+286273531 0 -1 2376 -1 2512 26 26 574 602 1 1 279 462 -1 -1 0 0 17 -1 -1 17 1 0 2512 -1  0 -1 0
+C:\__D\_Y\R\I2R\rmd\I2R-data.rnw
+TeX:Rnw
+286273531 0 -1 0 -1 739 52 52 708 648 1 1 559 378 -1 -1 0 0 17 -1 -1 17 1 0 739 -1  0 -1 0
+C:\__D\Dropbox\__Fito\Tecaj\Materiali\Opisna\Opisna-knitr.Rmd
+TeX:rmd:UTF-8
+286273531 0 -1 509 -1 139 0 0 548 576 1 1 109 294 -1 -1 0 0 0 -1 -1 0 1 0 139 -1  0 -1 0
+C:\__D\Dropbox\__Fito\Tecaj\Materiali\Opisna\Opisna-knitr.Rnw
+TeX:Rnw:UTF-8
+286273531 1 -1 2290 -1 2435 260 260 808 856 1 1 119 567 -1 -1 0 0 17 -1 -1 17 1 0 2435 -1  0 -1 0
+C:\__D\Dropbox\SDS\2024-skupscina\SDS2024.Rnw
+TeX:Rnw
+286273531 0 -1 5159 -1 1282 104 104 939 555 1 1 209 42 -1 -1 0 0 17 -1 -1 17 1 0 1282 -1  0 -1 0
+C:\__D\Dropbox\SDS\2024-skupscina\SDS2024S.tex
+TeX
+269496315 0 -1 0 -1 377 130 130 965 561 1 1 189 252 -1 -1 0 0 42 -1 -1 42 1 0 377 -1  0 -1 0
+C:\Users\ablejec\AppData\Roaming\WInEdt Team\WinEdt 11\Macros\Sweave\R-esc.edt
+ASCII:EDT
+269494266 0 18 1 5 99 234 234 1319 815 1 0 969 105 -1 -1 0 0 -1 -1 -1 -1 1 0 99 5  0 0 0
+C:\__D\Dropbox\SDS\2023-skupscina\SDS2023.Rnw
+TeX:Rnw
+286273531 0 -1 5322 -1 5248 26 26 682 622 1 1 109 189 -1 -1 0 0 17 -1 -1 17 1 0 5248 -1  0 -1 0
+C:\__D\Dropbox\SDS\2024-skupscina\SDS2024.tex
+TeX
+269496315 0 -1 0 -1 377 130 130 965 561 1 1 189 252 -1 -1 0 0 42 -1 -1 42 1 0 377 -1  0 -1 0
+C:\__D\_Y\R\I2R\doc\I2R-functions.R
+R
+269485042 0 0 1 0 1 104 104 730 539 1 0 94 0 -1 -1 0 0 -1 -1 -1 -1 1 0 1 0  0 0 0
+C:\Users\ablejec\AppData\Roaming\WInEdt Team\WinEdt 11\Macros\Sweave\bla.Rmd
+TEXT:RMD
+269502451 0 3 30 3 31 156 156 782 591 1 0 394 63 -1 -1 0 0 1 1 1 1 1 0 31 3  0 0 0
+C:\Users\ablejec\AppData\Roaming\WInEdt Team\WinEdt 11\Macros\Sweave\repprocent.edt
+ASCII:EDT
+269494266 1 0 1 21 21 182 182 730 778 1 0 267 441 -1 -1 0 0 16 0 0 16 1 0 21 21  0 0 0
+C:\Users\ablejec\AppData\Roaming\WInEdt Team\WinEdt 11\Macros\Sweave\TeX2Rmd.edt
+ASCII:EDT
+269494266 0 47 18 47 16 156 156 704 752 1 0 222 168 -1 -1 0 0 37 0 0 37 1 0 16 47  0 0 0
+C:\Users\ablejec\AppData\Roaming\WInEdt Team\WinEdt 11\Macros\Recorder\Recorded Macro.edt
+ASCII:EDT
+269494266 1 0 1 14 14 26 26 652 461 1 0 204 294 -1 -1 0 0 20 0 0 20 1 0 14 14  0 0 0
+C:\__D\Dropbox\SDS\2023-skupscina\SDS2023S.vrb
+DATA:UNIX
+5341426 0 5 1 7 1 0 0 734 435 1 0 94 147 -1 -1 0 0 14 0 0 14 1 0 1 7  0 0 0
+C:\__D\Dropbox\SDS\2023-skupscina\SDS2023S.tex
+TeX
+269496315 0 -1 0 -1 0 52 52 708 648 1 1 109 0 -1 -1 0 0 42 -1 -1 42 1 0 0 -1  0 -1 0
+:\DEJAVNOSTI\OMIKE\pISA-projects\_p_ADAPT\_I_WP5_DI-Modelling\_S_05_IntegPilot\_A_010_Data_preparation-R\other\10_read_data\doc\02_readPartnerData.Rnw
+TeX:Rnw:UTF-8
+286273531 0 -1 16933 -1 8444 0 0 773 416 0 1 169 126 -1 -1 0 0 23 -1 -1 23 2 0 8444 -1 1 15111 -1  0 -1 0
+:\DEJAVNOSTI\OMIKE\pISA-projects\_p_ADAPT\_I_WP5_DI-Modelling\_S_05_IntegPilot\_A_010_Data_preparation-R\other\10_read_data\doc\02_readPartnerData.tex
+TeX:Rnw:UTF-8
+286273531 0 -1 0 -1 0 0 0 711 579 1 1 109 0 -1 -1 0 0 23 -1 -1 23 1 0 0 -1  0 -1 0
+:\DEJAVNOSTI\OMIKE\pISA-projects\_p_ADAPT\_I_WP5_DI-Modelling\_S_05_IntegPilot\_A_010_Data_preparation-R\other\10_read_data\doc\01_phenomics-01.tex
+TeX:Rnw:UTF-8
+286273531 8 -1 2074 -1 2017 130 130 796 647 1 1 86 0 -1 -1 0 0 23 -1 -1 23 1 0 2017 -1  0 -1 0
+:\DEJAVNOSTI\OMIKE\pISA-projects\_p_ADAPT\_I_WP5_DI-Modelling\_S_05_IntegPilot\_A_010_Data_preparation-R\other\10_read_data\doc\01_phenomics-01.Rnw
+TeX:Rnw:UTF-8
+286273531 0 -1 14292 -1 4783 0 0 773 416 0 1 304 88 -1 -1 0 0 23 -1 -1 23 1 0 4783 -1  0 -1 0
+:\DEJAVNOSTI\OMIKE\pISA-projects\_p_ADAPT\_I_WP5_DI-Modelling\_S_05_IntegPilot\_A_010_Data_preparation-R\other\10_read_data\doc\01_phenomics.Rnw
+TeX:Rnw:UTF-8
+286273531 0 -1 10207 -1 10640 0 0 773 416 0 1 40 9856 -1 -1 0 0 23 -1 -1 23 1 0 10640 -1  0 -1 0
+:\DEJAVNOSTI\OMIKE\pISA-projects\_p_VinskaTrta\_I_EnViRoS\_S_01_Integ\_A_01_Desc-R\other\doc\10_DataPreparation.Rnw
+TeX:Rnw:UTF-8
+286273531 2 -1 4394 -1 4399 26 26 799 423 0 1 194 704 -1 -1 0 0 23 -1 -1 23 1 0 4399 -1  0 -1 0
+:\_Y\localtexmf\tex\abpkg.tex
+TeX
+1060859 0 -1 491 -1 666 156 156 924 572 0 1 656 440 -1 -1 0 0 2 -1 -1 2 1 0 666 -1  0 0 0
+:\DEJAVNOSTI\OMIKE\pISA-projects\_p_ADAPT\_I_WP5_DI-Modelling\_S_05_IntegPilot\_A_010_Data_preparation-R\other\10_read_data\doc\tabularx.tex
+TeX
+1060859 1 -1 66 -1 238 78 78 768 635 0 1 656 110 -1 -1 0 0 23 -1 -1 23 1 0 238 -1  0 -1 0
+:\DEJAVNOSTI\OMIKE\pISA-projects\_p_ADAPT\_I_WP5_DI-Modelling\_S_05_IntegPilot\_A_010_Data_preparation-R\other\10_read_data\doc\01_phenomics.tex
+TeX:Rnw:UTF-8
+286273531 2 -1 92649 -1 92654 78 78 851 475 0 1 70 550 -1 -1 0 0 23 -1 -1 23 1 0 92654 -1  0 -1 0
+:\DEJAVNOSTI\OMIKE\pISA-projects\pISA-initialize.Rnw
+TeX:Rnw:UTF-8
+286273531 0 -1 0 -1 0 52 52 825 449 0 1 48 -4950 -1 -1 0 0 -1 -1 -1 -1 1 0 0 -1  0 -1 0
+
