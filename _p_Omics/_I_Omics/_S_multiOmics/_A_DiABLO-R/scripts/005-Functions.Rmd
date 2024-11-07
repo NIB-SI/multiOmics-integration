@@ -1920,6 +1920,11 @@ function (mat, comp = NULL, blocks = c(1, 2), cutoff = 0, row.names = TRUE,
     keysize = c(1, 1), keysize.label = 1, breaks, interactive = FALSE,
     layout.fun = NULL, save = NULL, name.save = NULL)
 {
+#
+# Adaptation of original function mixOmics:::network
+#
+# Only edges with weights above cutoff value will be kept in the final, returned network.
+# 
     arg.call = match.call()
     user.arg = names(arg.call)[-1]
     err = tryCatch(mget(names(formals()), sys.frame(sys.nframe())),
