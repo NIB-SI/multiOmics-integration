@@ -11,7 +11,7 @@ options(width=70)
 ### `r  paste(names(data)[blocks[,j]],  collapse=" and ")`
 
 ```{r}
-nfn <- paste0("../output/figs/network-035a-",paste(names(data)[blocks[,j]], collapse="-"),"-",cutoff*10)
+nfn <- paste0("../reports/figs/network-035a-",paste(names(data)[blocks[,j]], collapse="-"),"-",cutoff*10)
 nfn
 
 ```

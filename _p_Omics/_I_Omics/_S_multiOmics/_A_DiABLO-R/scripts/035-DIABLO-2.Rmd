@@ -317,7 +317,7 @@ The cimDIABLO() function is a clustered image map specifically implemented
 to represent the multi-omics molecular signature expression for each sample. From figure below the areas of homogeneous expression levels for a set of samples across a set of features can be determined. For instance, the H14 samples were the only group to show extremely high levels of expression for a specific set of genes and metabolites. This indicates these features are fairly discriminating for this subtype.
 
 ```{r}
-cimfn <- "../output/figs/cim.png"
+cimfn <- "../reports/figs/cim.png"
 ```
 
 ```{r cim1}

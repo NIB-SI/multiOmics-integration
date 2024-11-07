@@ -21,7 +21,7 @@ output:
 ```{r include=FALSE, message=FALSE, warnings=FALSE, cache=FALSE}
 require(knitr)
 render_markdown()
-opts_chunk$set( fig.path='../output/figs/'
+opts_chunk$set( fig.path='../reports/figs/'
     , tidy=TRUE)
 opts_knit$set( concordance=TRUE
     , root.dir = getwd() # working directory for all chunks
