@@ -1235,9 +1235,18 @@ Desiree.stat = merge(De.log2FC, De.p,
                      by.y = c("Genotype", "molecule", "group2", "group1"),
                      by.x = c("Genotype", "molecule", "stressGroup", "controlGroup"),
                      all = TRUE)
-
-
-openxlsx::write.xlsx(Desiree.stat, '../reports/Desiree.logFC-metabolomics_leaves.xlsx', asTable = TRUE)
+Desiree.stat$stressGroup = paste(gsub('_.*', '', Desiree.stat$stressGroup),
+                                  stringr::str_pad(gsub('.*_', '', Desiree.stat$stressGroup), 2, pad = "0"),
+                                  sep = '_')
+logFC = tidyr::spread(Desiree.stat[, c(2:3, 7)], stressGroup, log2FC)
+p = tidyr::spread(Desiree.stat[, c(2:3, 13)], stressGroup, p)
+colnames(logFC)[2:ncol(logFC)] = paste(colnames(logFC)[2:ncol(logFC)], 'logFC', sep = ' | ')
+colnames(p)[2:ncol(p)] = paste(colnames(p)[2:ncol(p)], 'p', sep = ' | ')
+stat = merge(logFC, p, by = 'molecule')
+ind = match(sort(colnames(stat)[2:ncol(stat)]), colnames(stat)[2:ncol(stat)])
+stat = stat[, c(1, ind+1)]
+stat[2:ncol(stat)] = format(round(as.data.frame(stat[2:ncol(stat)]), 3), nsmall = 3)
+openxlsx::write.xlsx(stat, '../reports/Desiree.logFC-metabolomics_leaves.xlsx', asTable = TRUE)
 
 ```
 
@@ -1610,9 +1619,18 @@ Desiree.stat = merge(De.log2FC, De.p,
                      by.y = c("Genotype", "molecule", "group2", "group1"),
                      by.x = c("Genotype", "molecule", "stressGroup", "controlGroup"),
                      all = TRUE)
-
-
-openxlsx::write.xlsx(Desiree.stat, '../reports/Desiree.logFC-hormonomics_leaves.xlsx', asTable = TRUE)
+Desiree.stat$stressGroup = paste(gsub('_.*', '', Desiree.stat$stressGroup),
+                                  stringr::str_pad(gsub('.*_', '', Desiree.stat$stressGroup), 2, pad = "0"),
+                                  sep = '_')
+logFC = tidyr::spread(Desiree.stat[, c(2:3, 7)], stressGroup, log2FC)
+p = tidyr::spread(Desiree.stat[, c(2:3, 13)], stressGroup, p)
+colnames(logFC)[2:ncol(logFC)] = paste(colnames(logFC)[2:ncol(logFC)], 'logFC', sep = ' | ')
+colnames(p)[2:ncol(p)] = paste(colnames(p)[2:ncol(p)], 'p', sep = ' | ')
+stat = merge(logFC, p, by = 'molecule')
+ind = match(sort(colnames(stat)[2:ncol(stat)]), colnames(stat)[2:ncol(stat)])
+stat = stat[, c(1, ind+1)]
+stat[2:ncol(stat)] = format(round(as.data.frame(stat[2:ncol(stat)]), 3), nsmall = 3)
+openxlsx::write.xlsx(stat, '../reports/Desiree.logFC-hormonomics_leaves.xlsx', asTable = TRUE)
 
 ```
 
@@ -1974,9 +1992,18 @@ Desiree.stat = merge(De.log2FC, De.p,
                      by.y = c("Genotype", "molecule", "group2", "group1"),
                      by.x = c("Genotype", "molecule", "stressGroup", "controlGroup"),
                      all = TRUE)
-
-
-openxlsx::write.xlsx(Desiree.stat, '../reports/Desiree.logFC-transcriptomics_leaves.xlsx', asTable = TRUE)
+Desiree.stat$stressGroup = paste(gsub('_.*', '', Desiree.stat$stressGroup),
+                                  stringr::str_pad(gsub('.*_', '', Desiree.stat$stressGroup), 2, pad = "0"),
+                                  sep = '_')
+logFC = tidyr::spread(Desiree.stat[, c(2:3, 7)], stressGroup, log2FC)
+p = tidyr::spread(Desiree.stat[, c(2:3, 13)], stressGroup, p)
+colnames(logFC)[2:ncol(logFC)] = paste(colnames(logFC)[2:ncol(logFC)], 'logFC', sep = ' | ')
+colnames(p)[2:ncol(p)] = paste(colnames(p)[2:ncol(p)], 'p', sep = ' | ')
+stat = merge(logFC, p, by = 'molecule')
+ind = match(sort(colnames(stat)[2:ncol(stat)]), colnames(stat)[2:ncol(stat)])
+stat = stat[, c(1, ind+1)]
+stat[2:ncol(stat)] = format(round(as.data.frame(stat[2:ncol(stat)]), 3), nsmall = 3)
+openxlsx::write.xlsx(stat, '../reports/Desiree.logFC-transcriptomics_leaves.xlsx', asTable = TRUE)
 
 ```
 
@@ -2406,9 +2433,18 @@ Desiree.stat = merge(De.log2FC, De.p,
                      by.y = c("Genotype", "molecule", "group2", "group1"),
                      by.x = c("Genotype", "molecule", "stressGroup", "controlGroup"),
                      all = TRUE)
-
-
-openxlsx::write.xlsx(Desiree.stat, '../reports/Desiree.logFC-metabolomics_tubers.xlsx', asTable = TRUE)
+Desiree.stat$stressGroup = paste(gsub('_.*', '', Desiree.stat$stressGroup),
+                                  stringr::str_pad(gsub('.*_', '', Desiree.stat$stressGroup), 2, pad = "0"),
+                                  sep = '_')
+logFC = tidyr::spread(Desiree.stat[, c(2:3, 7)], stressGroup, log2FC)
+p = tidyr::spread(Desiree.stat[, c(2:3, 13)], stressGroup, p)
+colnames(logFC)[2:ncol(logFC)] = paste(colnames(logFC)[2:ncol(logFC)], 'logFC', sep = ' | ')
+colnames(p)[2:ncol(p)] = paste(colnames(p)[2:ncol(p)], 'p', sep = ' | ')
+stat = merge(logFC, p, by = 'molecule')
+ind = match(sort(colnames(stat)[2:ncol(stat)]), colnames(stat)[2:ncol(stat)])
+stat = stat[, c(1, ind+1)]
+stat[2:ncol(stat)] = format(round(as.data.frame(stat[2:ncol(stat)]), 3), nsmall = 3)
+openxlsx::write.xlsx(stat, '../reports/Desiree.logFC-metabolomics_tubers.xlsx', asTable = TRUE)
 
 ```
 

@@ -145,7 +145,7 @@ ggviolin(data, x = "Treatment", y = "Total_Tubers_Weight", fill = "Treatment",
          palette = mypallette,
          add = # "boxplot", add.params = list(fill = "white"),  # 
          "mean_sd",
-         ylab = 'Harvest Index',
+         ylab = 'Total Tubers Weight',
         xlab = 'Treatment'
         ) +
   stat_compare_means(comparisons = my_comparisons, 
