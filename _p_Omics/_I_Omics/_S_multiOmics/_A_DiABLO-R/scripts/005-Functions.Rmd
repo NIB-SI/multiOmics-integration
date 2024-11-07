@@ -1923,7 +1923,9 @@ function (mat, comp = NULL, blocks = c(1, 2), cutoff = 0, row.names = TRUE,
 #
 # Adaptation of original function mixOmics:::network
 #
-# Only edges with weights above cutoff value will be kept in the final, returned network.
+# 1. Only edges with weights above cutoff value will be kept in the final, returned network.
+# 2. Possible to preserve node positions: 
+#        previously defined/saved layout (e. g. from complete network) can be used for plot of reduced network.
 # 
     arg.call = match.call()
     user.arg = names(arg.call)[-1]
