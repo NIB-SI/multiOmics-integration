@@ -247,6 +247,17 @@ Put data into safe object `DATA`.
 DATA <- X
 ```
 
+Short names for proteomics subset
+
+```{r}
+
+pretty = as.data.frame(data.table::fread(file.path('..', 'input', 'Proteomics-subset-annotation.txt'))[, 1:2])
+ind = match(colnames(DATA$proteomics), pretty[ , 1])
+colnames(DATA$proteomics) = pretty[ind, 2]
+
+```
+
+
 We will also need the names of treatment groups.
 
 ```{r}

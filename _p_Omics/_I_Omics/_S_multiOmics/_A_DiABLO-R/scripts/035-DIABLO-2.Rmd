@@ -263,7 +263,7 @@ matrix (as is the circos plot). Colour represent variable type.
 ```{r 035a, results='asis'}
 blocks <- combn(length(data),2)
 j <- 1
-cutoff <- 0.8
+cutoff <- 0.7
 out35a <- ""
 for(j in 1:ncol(blocks)){
     out35a <- paste( out35a, knit_child("035a-DIABLO-network.Rmd", quiet=!TRUE))
@@ -293,7 +293,7 @@ if(exists(deparse(substitute(nw)))) ly <- nw$layout else ly <- NULL
 ```
 
 ```{r results='asis'}
-cutoff <- 0.8
+cutoff <- 0.7
 x <- final.diablo.model
 label <- paste(.treat, collapse=", ")
 out35b <- ""
@@ -436,7 +436,7 @@ datasets <- names(CCDATA[-1])
 ndatasets<- length(datasets)
 #
 nname <- paste("../ouptut/figs/network-",paste(useTreatment,collapse=""),sep="")
-N12 <- network(res
+N12 <- mixOmics:::network(res
     , cutoff = 0
     , blocks = 1:ndatasets
     , shape.node = c("rectangle")
