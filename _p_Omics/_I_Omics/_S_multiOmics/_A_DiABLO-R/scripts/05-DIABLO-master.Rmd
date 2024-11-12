@@ -31,6 +31,13 @@ opts_knit$set( concordance=TRUE
 opts_knit$get("root.dir")
 ```
 
+```{r}
+
+set.seed(123456)
+
+```
+
+
 # Introduction
 
 [Needs more text]

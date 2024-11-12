@@ -19,6 +19,7 @@ nfn <- paste("../reports/figs/network-035b",lbl,cutoff*10,sep="-")
 
 ```{r }
 set.seed(1234)
+<<<<<<< Updated upstream
 nw <- network(x
         , blocks = 1:ndata
         , color.node = cols
@@ -28,6 +29,18 @@ nw <- network(x
         , save = "png"
         , name.save = nfn
         )
+=======
+cat ('#########\n035b-multipartite\n\n\n')
+# nw <- my.network(x
+#         , blocks = 1:ndata
+#         , color.node = cols
+#         , cutoff = cutoff
+#         , shape.node = "rectangle"
+#         , layout = layout.fun
+#         , save = "png"
+#         , name.save = nfn
+#         )
+>>>>>>> Stashed changes
 ```
 
 ![`r nfn`](`r  paste0(nfn,".png")`)
