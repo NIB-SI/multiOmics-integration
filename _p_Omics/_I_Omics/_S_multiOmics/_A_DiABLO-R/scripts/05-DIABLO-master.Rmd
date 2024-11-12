@@ -33,16 +33,20 @@ opts_knit$get("root.dir")
 
 # Introduction
 
-[Needs more text]
 
-In this document we present a work-flow for integration across different omics datasets.
+In this document we present a workflow for integration across different omics datasets.
 
-[Note] This is not the final version of the document.
+Moreover, suing sparse Partial Least Squares Discriminant Analysis (DIABLO, multiblock PLS-DA) approach for horizontal (N-Integration) and canonical-correlation analysis (CCA) we will generate (pairwise) inputs for differential network construction using automatic thresholding.
+
+
+[Note] This is not the final version of the document. Network figure generation may cause some unexpected issues.
 
 # Packages and files
 
 
 A package with regularized CCA and multiomics DIABLO method is *mixOmics*. Package *igraph* is needed for network analysis.
+
+Read more about packages at <https://mixomics.org/> and <https://r.igraph.org/>.
 
 ```{r message=FALSE,warning=FALSE}
 library(mixOmics)
