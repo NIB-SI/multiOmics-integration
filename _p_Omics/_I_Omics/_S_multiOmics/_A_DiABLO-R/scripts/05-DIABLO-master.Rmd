@@ -39,7 +39,7 @@ In this document we present a workflow for integration across different omics da
 Moreover, suing sparse Partial Least Squares Discriminant Analysis (DIABLO, multiblock PLS-DA) approach for horizontal (N-Integration) and canonical-correlation analysis (CCA) we will generate (pairwise) inputs for differential network construction using automatic thresholding.
 
 
-[Note] This is not the final version of the document. Network figure generation may cause some unexpected issues.
+[Note] This is not the final version of the document. Network figure generation may cause some unexpected issues. For more help visit <https://mixomics-users.discourse.group/>
 
 # Packages and files
 

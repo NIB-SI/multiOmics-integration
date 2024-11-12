@@ -19,12 +19,12 @@ nfn <- paste("../reports/figs/network-035b",lbl,cutoff*10,sep="-")
 
 ```{r }
 set.seed(1234)
-nw <- network(x
+nw <- mixOmics:::network(x
         , blocks = 1:ndata
         , color.node = cols
         , cutoff = cutoff
         , shape.node = "rectangle"
-        , layout = layout.fun
+        , layout = layout.fun # default layout.fruchterman.reingold
         , save = "png"
         , name.save = nfn
         )

@@ -1,3 +1,8 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 ```{r echo=FALSE}
 ###############################################
 ##                                           ##
@@ -2812,7 +2817,6 @@ function (mat, comp = NULL, blocks = c(1, 2), cutoff = 0, row.names = TRUE,
 }
 
 ```
-
 
 
 ```{r }
