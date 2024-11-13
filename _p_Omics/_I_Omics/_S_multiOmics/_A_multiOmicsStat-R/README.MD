@@ -15,5 +15,5 @@ Assay _A_multiOmicsStat-R
 - t-test: Welch's and Permutation t-Test
 
 
-
+___
 *Note:* <https://html-preview.github.io/> doesn't show menu bars
