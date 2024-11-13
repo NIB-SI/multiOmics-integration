@@ -20,4 +20,4 @@ Assay _A_015_thresholding-py
 
 ***Integration of data with prior knowledge***
 
-- The background network was merged with both the thresholded within omics level correlation networks and the thresholded across omics level correlation networks
+- The background network was merged with thresholded correlation networks
