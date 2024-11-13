@@ -112,7 +112,7 @@ datanames
 Define groups to consider. In a small example, we will pick two groups, based on treatment:
 
 ```{r}
-useTreatment <- c("C","H")
+useTreatment <- c("C","D")
 ```
 
 Just to check:
