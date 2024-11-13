@@ -1,3 +1,8 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 ```{r echo=FALSE}
 ###############################################
 ##                                           ##
@@ -24,7 +29,7 @@ nw <- mixOmics:::network(final.diablo.model
         , color.node = cols[blocks[,j]]
         , cutoff = cutoff
         , shape.node = "rectangle"
-        , save = "png"
+        , save = 'pdf'
        , name.save = nfn
         )
 ```

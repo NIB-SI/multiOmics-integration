@@ -179,7 +179,7 @@
 #' @keywords multivariate graphs dplot hplot iplot
 #' @export
 #' @example ./examples/network-examples.R
-network <- function(mat
+networkX <- function(mat
                     ,
                     comp = NULL
                     ,

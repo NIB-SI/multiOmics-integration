@@ -293,12 +293,14 @@ if(exists(deparse(substitute(nw)))) ly <- nw$layout else ly <- NULL
 ```
 
 ```{r results='asis'}
+
 cutoff <- 0.7
 x <- final.diablo.model
 label <- paste(.treat, collapse=", ")
 out35b <- ""
   out35b <- paste( out35b, knit_child("035b-multipartite-network.Rmd", quiet=TRUE))
 cat(out35b)
+
 ```
 
 ## Visualize loadings
@@ -306,6 +308,7 @@ cat(out35b)
 The function "plotLoadings" visualises the loading weights of each selected  variable on each component and each data set. The colour indicates the class in which the variable has the maximum level of expression "contrib = 'max'" using the median "method = 'median'". Figure below depicts the loading values for each dimension.
 
 ```{r plotLoadings, fig.height=7}
+
 for(i in 1:ncomp)
 plotLoadings(final.diablo.model, comp = i, contrib = 'max', method = 'median')
 
@@ -318,9 +321,11 @@ to represent the multi-omics molecular signature expression for each sample. Fro
 
 ```{r}
 cimfn <- "../reports/figs/cim.png"
+
 ```
 
 ```{r cim1}
+
 png(cimfn, res = 600, width = 4000, height = 4000)
 cimDiablo(final.diablo.model, size.legend=0.7)
 dev.off()
@@ -335,20 +340,25 @@ An AUC plot per block can also be obtained using the function auroc().
 The interpretation of this output may not be particularly insightful in relation to the performance evaluation of our methods, but can complement the statistical analysis.
 
 ```{r }
+
 par(mfrow=c(2,2))
 for(i in 1:length(data))
 auc.splsda = auroc(final.diablo.model, roc.block = names(data[i]),
                    roc.comp = 1, print = FALSE)
+
 ```
 
 Save finil DIABLO model for future use in networks.
 ```{r }
+
 res <- final.diablo.model
+
 ```
 
 Estimate classification error rate. The error rate should drop by more components used.
 
 ```{r }
+
 # run component number tuning with repeated CV
 system.time(perf.diablo  <-  perf(res, validation = 'Mfold',
                    folds = 3, nrepeat = 10))
@@ -360,6 +370,7 @@ plot(perf.diablo) # plot output of tuning
 ## Names of kept variables
 
 ```{r }
+
 # the features selected to form components
 for (comp in 1:ncomp){
 cat("\nComponent ", comp,":\n")
@@ -368,12 +379,14 @@ cat(names(data)[i],"\n")
 print(selectVar(res, comp = comp)[[i]]$name)
 }
 }
+
 ```
 
 One would like to reduce the number of nodes, especially for proteomics data. One option is to reduce datasets in a way to keep only the variables in the selectVars in original data in .
 We will keep variables from the first two components.
 
 ```{r }
+
 keptVars <- unique(c(
  selectVar(res, comp=1)[[1]]$name
 ,selectVar(res, comp=2)[[1]]$name
@@ -381,12 +394,14 @@ keptVars <- unique(c(
 )
 which(keptVars%in%selectVar(res, comp=1)[[1]]$name)
 which(keptVars%in%selectVar(res, comp=2)[[1]]$name)
+
 ```
 
 ## Networks circos plots
 
 
 ```{r fig.width=8, fig.height=8}
+
 size.variables <- 1
 sim <-circosPlot(final.diablo.model, cutoff = 0.5, line = TRUE,
            color.blocks= cols,
@@ -411,6 +426,7 @@ circosPlot(final.diablo.model, cutoff = 0.9, line = TRUE,
 We will prepare partial models for each treatment and treatment combination.
 
 ```{r results='asis'}
+
 netlist <- list()
 layout.fun <- NULL
 for(i in 1:length(.treat)){
@@ -422,15 +438,19 @@ netlist[[thisTreat]] <- RETURN  # complete network
 
 cat(out037)
 }
+
 ```
 
 ```{r}
+
 names(netlist)
+
 ```
 
 ## Network for `r paste(.treat, collapse=" and ")`.
 
 ```{r}
+
 # Complete network, cutoff = 0, all treatments
 datasets <- names(CCDATA[-1])
 ndatasets<- length(datasets)
@@ -449,26 +469,35 @@ colnames(e)[ncol(e)] <- paste(.treat, collapse=".")
 head(e)
 tail(e)
 dim(e)
+
+e$from = gsub(paste0('_', unique(e$group1), collapse = '|'), '',  e$from)
+e$to = gsub(paste0('_', unique(e$group2), collapse = '|'), '',  e$to)
+
 ```
 
 Save networks file for combined and single treatments, stored in `netlist`.
 Combine edges from all networks as columns in a data.frame.
 
 ```{r}
+
 for (i in 1:length(netlist)) {
 e1 <- extractEdges2(netlist[[i]])
 colnames(e1)[ncol(e1)] <- names(netlist)[i]
 e <- merge(e,e1, sort=FALSE, all=TRUE)
 }
+
 ```
 
 ```{r}
+
 str(e)
+
 ```
 
 Compose file name and necessary information for network export file
 
 ```{r}
+
 netfn <- paste0("../output/network-",paste(.treat, collapse="_"),"-",paste(datasets, collapse="_"),".txt")
 label0 <- paste(paste(.treat, collapse=", "),"|",paste(datasets, collapse=", "),"; cutoff =",0)
 title <- label0
@@ -481,14 +510,18 @@ suffix <- paste0(substr(names(DATA),1,2)[sets[-1]],collapse="-")
 ## Export edges table
 
 ```{r  }
+
 #e <- data.frame(x=1:10,y=1:10)
 #my.write.table(e, file="network.txt",meta=FALSE)
 write.table(e, file = netfn, na="0", sep="\t", col.names=NA, row.names=TRUE)
+
 ```
 
 Network edges are exported into file
 ```{r}
+
 netfn
+
 ```
 
 Table with edges for networks based on combined treatments (C, H) and single treatments (C) and (H) is exported as a text file. This table can be used for

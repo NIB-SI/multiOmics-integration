@@ -19,6 +19,7 @@ output:
 ```
 
 ```{r include=FALSE, message=FALSE, warnings=FALSE, cache=FALSE}
+
 require(knitr)
 render_markdown()
 opts_chunk$set( fig.path='../reports/figs/'
@@ -28,7 +29,9 @@ opts_knit$set( concordance=TRUE
     , unnamed.chunk.label = "ch"
     , width = 70
 )
+knitr::opts_chunk$set(cache.extra = rand_seed)
 opts_knit$get("root.dir")
+
 ```
 
 # Introduction
@@ -49,17 +52,21 @@ A package with regularized CCA and multiomics DIABLO method is *mixOmics*. Packa
 Read more about packages at <https://mixomics.org/> and <https://r.igraph.org/>.
 
 ```{r message=FALSE,warning=FALSE}
+
 library(mixOmics)
 library(igraph)
+
 ```
 
 Package for complex heatmaps.
 ```{r message=FALSE,warning=FALSE}
+
 #BiocManager::install("ComplexHeatmap")
 library(ComplexHeatmap)
 # https://www.rdocumentation.org/packages/pheatmap/versions/1.0.12/topics/pheatmap
 library(pheatmap)
 library(RColorBrewer)
+
 ```
 
 ## Functions
@@ -68,9 +75,23 @@ Some original and adapted functions can be found in the file that is silently pr
 
 
 ```{r result='hide'}
+
 out <- ""
 out <- paste(out,knit_child("005-Functions.Rmd", quiet=TRUE))
+
 ```
+
+```{r result='hide'}
+
+# source('mixOmics_network.R')
+
+# source_rmd <- function(rmd_file){
+#   knitr::knit(rmd_file, output = tempfile())
+# }
+# source_rmd("005-Functions.Rmd")
+
+```
+
 
 ## File names
 
@@ -99,6 +120,7 @@ files <- c(
 For future use and labeling, we need text names of dataset objects.
 
 ```{r datanames}
+
 datanames <- c(
       "hormonomics"
     , "metabolomics"
@@ -107,23 +129,30 @@ datanames <- c(
     , "proteomics"
 )
 datanames
+
 ```
 
 Define groups to consider. In a small example, we will pick two groups, based on treatment:
 
 ```{r}
-useTreatment <- c("C","D")
+
+useTreatment <- c("C","W")
+
 ```
 
 Just to check:
 Phenodata file name
 ```{r}
+
 pfn
+
 ```
 
 Data file names
 ```{r }
+
 files 
+
 ```
 
 It is advisable to first read the phenodata, followed by actual data input. This enables smart selection of samples, based on the sample selection column with the assay name.
@@ -131,6 +160,7 @@ It is advisable to first read the phenodata, followed by actual data input. This
 ## Phenodata
 
 ```{r }
+
 pfn
 #
 phdata <- read.table(pfn
@@ -142,19 +172,23 @@ phdata <- read.table(pfn
 dim(phdata)
 names(phdata)
 pdata <- phdata
+
 ```
 
 Filter out groups
 ```{r}
+
 pdata$Treatment
 pdata <- pdata[pdata$Treatment %in% useTreatment,]
 pdata$Treatment
 dim(pdata)
+
 ```
 
 Overview of selected samples:
 
 ```{r }
+
 addmargins(table(pdata$Treatment, pdata$SamplingDay))
 .treat <- unique(pdata$Treatment)
 .days <- unique(pdata$SamplingDay)
@@ -163,8 +197,10 @@ addmargins(table(pdata$Treatment, pdata$SamplingDay))
 ```
 
 ```{r }
+
 summary(pdata)
 apply(pdata,2,function(x) summary(as.factor(x)))
+
 ```
 
 ## Process data files
@@ -175,6 +211,7 @@ We have data on hormonomics, metabolomics, and qPCR:
 
 Read all datafiles and assign them to named objects
 ```{r}
+
 for (i in 1:length(files)){
   print(datanames[i])
   assign(datanames[i], read.table(files[i], header=TRUE, sep="\t"))
@@ -186,8 +223,10 @@ for (i in 1:length(files)){
 
 Check if all `r length(datanames)` objects are created
 ```{r}
+
 datanames
 datanames %in% ls()
+
 ```
 
 ## Combine datasets
@@ -197,6 +236,7 @@ Datasets for DIABLO need to be collected in a list, with rows corresponding to t
 The first component of the list will be a grouping variable, indicating the conditions. We will create reasonable names for groups.
 
 ```{r}
+
 sday <- paste0(0,pdata$SamplingDay)
 len <- nchar(sday)
 sday <- substr(sday,len-1,len)
@@ -206,16 +246,20 @@ what
 X <- list(status= what)
 names(X[[1]]) <- rownames(pdata)
 X
+
 ```
 
 
 
 ```{r}
+
 print(addmargins(table(pdata$SamplingDay, what)), zero.print=".")
 print(addmargins(table(pdata$Treatment, what)), zero.print=".")
+
 ```
 Put datasets into the list X and ensure that they all have same order of samples as in phenodata.
 ```{r}
+
 datanames
 i <- 1
 for(i in 1:length(datanames)){
@@ -227,25 +271,32 @@ names(X)[i+1] <- datanames[i]
 }
 str(X)
 names(X)
+
 ```
 
 Check if sample names in all datasets match.
 ```{r}
+
 OK <- TRUE
 for(i in 2:length(X)) {
 print(ok <- all(names(X[[1]])==rownames(X[[i]])))
 OK <- OK&ok
 }
+
 ```
 
 ```{r, echo=FALSE, results='asis'}
+
 if(OK) catln("Sample names in datasets match.") else catln("ERROR: Sample names in datasets do not match!!")
+
 ```
 
 Put data into safe object `DATA`. 
 
 ```{r}
+
 DATA <- X
+
 ```
 
 Short names for proteomics subset
@@ -262,28 +313,36 @@ colnames(DATA$proteomics) = pretty[ind, 2]
 We will also need the names of treatment groups.
 
 ```{r}
+
 groups <- unique(pdata$Treatment)
 groups
+
 ```
 
 # Multiomics data integration with DIABLO
 
 ```{r}
+
 CCDATA <- DATA
 names(CCDATA)
+
 ```
 
 
 ```{r diablo, results='asis'}
+
 out <- ""
 out <- paste(out,knit_child("035-DIABLO-2.Rmd", quiet=TRUE))
 cat(out)
+
 ```
 
 
 # SessionInfo
 
 ```{r sessionInfo,results='asis',echo=FALSE}
+
 cat(win.version(),"<br>")
 sessionInfo()
+
 ```

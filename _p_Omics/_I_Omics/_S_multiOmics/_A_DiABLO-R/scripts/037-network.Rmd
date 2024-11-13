@@ -1,3 +1,8 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 ```{r echo=FALSE}
 ###############################################
 ##                                           ##
@@ -12,13 +17,16 @@ options(width=70)
 ## Network for `r thisTreat`.
 
 ```{r }
+
 filter <- pdata$Treatment %in% thisTreat
 XX1 <- lapply(CCDATA, function(x) if(is.null(dim(x))) x[filter] else 
 x[filter,])
 table(XX1$status)
+
 ```
 
 ```{r }
+
 res1 <- block.splsda(X = XX1[-1]
     , Y = as.factor(XX1[[1]])
     , ncomp = ncomp
@@ -29,6 +37,7 @@ res1 <- block.splsda(X = XX1[-1]
 ```
 
 ```{r results='asis'}
+
 cutoff <- 0.0
 x <- res1
 layout.fun <- NULL
@@ -38,6 +47,7 @@ out23b <- ""
   quiet=TRUE))
 RETURN <- nw  # complete network
 cat(out23b)
+
 ```
 
 Save network layout for further plots, used by layout function `my.layout`.
