@@ -4,7 +4,7 @@ _S_multiOmics
 Assays in consecutive steps:
 
 ***_A_multiOmicsStat-R***
-- Prepsocessing
+- Preprocessing
 - Analysis of individual omics data layers  
 
 ***_A_multiOmics-FS-Py***
