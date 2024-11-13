@@ -1,0 +1,34 @@
+```{r echo=FALSE}
+###############################################
+##                                           ##
+## (c) Andrej Blejec (andrej.blejec@nib.si)  ##
+##                                           ##
+###############################################
+```
+```{r echo=FALSE,results='hide'}
+options(width=70)
+```
+### Cutoff = `r cutoff`
+
+
+```{r }
+ndata <- length(data)
+lbl <- gsub(", ","-",label)
+nfn <- paste("../reports/figs/network-035b",lbl,cutoff*10,sep="-")
+```
+
+```{r }
+set.seed(1234)
+nw <- network(x
+        , blocks = 1:ndata
+        , color.node = cols
+        , cutoff = cutoff
+        , shape.node = "rectangle"
+        , layout = layout.fun
+        , save = "png"
+        , name.save = nfn
+        )
+```
+
+![`r nfn`](`r  paste0(nfn,".png")`)
+

@@ -1,0 +1,37 @@
+proteinID	shortName	MapManBins	Use
+VdnDe2_86784	PPD1	1.1.1.2 PS.lightreaction.photosystem II.PSII polypeptide subunits | 1.1 PS.lightreaction | 1.1.1 PS.lightreaction.photosystem II | 1 PS	for all networks
+PBdnRY1_7025	PNSL2	1.1.1.2 PS.lightreaction.photosystem II.PSII polypeptide subunits | 1.1.1 PS.lightreaction.photosystem II | 1.1 PS.lightreaction | 1 PS	for all networks
+VdnPW5_1541	LHCA3	1.1.2.1 PS.lightreaction.photosystem I.LHC-I | 1.1.2 PS.lightreaction.photosystem I | 1.1 PS.lightreaction | 1 PS	for all networks
+CLCdnPW10_11437	ndhI	1.1.40 PS.lightreaction.cyclic electron flow-chlororespiration | 1 PS | 1.1 PS.lightreaction	for all networks
+CLCdnDe2_96512	RPE	1.3.11 PS.calvin cycle.RPE | 1.3 PS.calvin cycle | 1 PS	for all networks
+VdnPW1_81435	ACSL	11.1.9 lipid metabolism.FA synthesis and FA elongation.long chain fatty acid CoA ligase | 11.1 lipid metabolism.FA synthesis and FA elongation | 11 lipid metabolism	only for mixOmicy and LOO network
+CLCdnDe6_4953	ATS1	11.3.1 lipid metabolism.phospholipid synthesis.1-acylglycerol-3-phosphate O-acyltransferase | 11.3 lipid metabolism.phospholipid synthesis | 11 lipid metabolism	only for mixOmicy and LOO network
+CLCdnDe13_5738	ACAD	11.9.4.2 lipid metabolism.lipid degradation.beta-oxidation.acyl CoA DH | 11.9.4 lipid metabolism.lipid degradation.beta-oxidation | 11.9 lipid metabolism.lipid degradation | 11 lipid metabolism	only for mixOmicy and LOO network
+CLCdnPW12_1472	GLU1	12.2.1.1 N-metabolism.ammonia metabolism.glutamate synthase.ferredoxin dependent | 12.2.1 N-metabolism.ammonia metabolism.glutamate synthase | 12.2 N-metabolism.ammonia metabolism | 12 N-metabolism	for all networks
+CLCdnPW49_8560	POP2	13.1.1.1.2 amino acid metabolism.synthesis.central amino acid metabolism.GABA.GABA transaminase | 13.1.1.1 amino acid metabolism.synthesis.central amino acid metabolism.GABA | 13.1.1 amino acid metabolism.synthesis.central amino acid metabolism | 13.1 amino acid metabolism.synthesis | 13 amino acid metabolism	for all networks
+VdnPW4_18801	F14P22.200	13.1.4.1.2 amino acid metabolism.synthesis.branched chain group.common.ketol-acid reductoisomerase | 13.1.4.1 amino acid metabolism.synthesis.branched chain group.common | 13.1.4 amino acid metabolism.synthesis.branched chain group | 13.1 amino acid metabolism.synthesis | 13 amino acid metabolism	for all networks
+SdnRY1_10712	DHQS	13.1.6.1.2 amino acid metabolism.synthesis.aromatic aa.chorismate.3-dehydroquinate synthase | 13.1.6.1 amino acid metabolism.synthesis.aromatic aa.chorismate | 13.1.6 amino acid metabolism.synthesis.aromatic aa | 13.1 amino acid metabolism.synthesis | 13 amino acid metabolism	for all networks
+CLCdnDe2_311	ISPH	16.1.1.7 secondary metabolism.isoprenoids.non-mevalonate pathway.HDR | 16.1.1 secondary metabolism.isoprenoids.non-mevalonate pathway | 16.1 secondary metabolism.isoprenoids | 16 secondary metabolism	for all networks
+CLCdnDe13_63179	HQT	16.2 secondary metabolism.phenylpropanoids | 16 secondary metabolism	for all networks
+CLCdnDe10_24187	ALDH10A8	16.4.2 secondary metabolism.N misc.betaine | 16.4.2.1 secondary metabolism.N misc.betaine.betaine-aldehyde dehydrogenase | 16.4 secondary metabolism.N misc | 16 secondary metabolism	for all networks
+TDe_comp110944_c2_seq4	F3H	16.8.3.2 secondary metabolism.flavonoids.dihydroflavonols.flavanone 3-hydroxylase | 16.8.3 secondary metabolism.flavonoids.dihydroflavonols | 16.8 secondary metabolism.flavonoids | 16 secondary metabolism	for all networks
+PBdnRY1_11085	BSL1	17.3.2.1 hormone metabolism.brassinosteroid.signal transduction.BRI | 17.3.2 hormone metabolism.brassinosteroid.signal transduction | 17.3 hormone metabolism.brassinosteroid | 17 hormone metabolism	only for mixOmicy and LOO network
+CLCdnPW48_15164	EMB2004	17.6.3 hormone metabolism.gibberelin.induced-regulated-responsive-activated | 17.6 hormone metabolism.gibberelin | 17 hormone metabolism	only for mixOmicy and LOO network
+CLCdnPW31_956	LOX2	17.7.1.2 hormone metabolism.jasmonate.synthesis-degradation.lipoxygenase | 17.7.1 hormone metabolism.jasmonate.synthesis-degradation | 17.7 hormone metabolism.jasmonate | 17 hormone metabolism	for all networks
+VdnDe1_162036	DSP4	2.2.2.10 major CHO metabolism.degradation.starch.laforin like phosphoglucan phosphatase (SEX4) | 2.2.2 major CHO metabolism.degradation.starch | 2.2 major CHO metabolism.degradation | 2 major CHO metabolism	only for mixOmicy and LOO network
+PBdnRY1_2239	DPE2	2.2.2.4 major CHO metabolism.degradation.starch.D enzyme | 2 major CHO metabolism | 2.2.2 major CHO metabolism.degradation.starch | 2.2 major CHO metabolism.degradation	for all networks
+CLCdnPW22_15452	CHA	20.1.7.3 stress.biotic.PR-proteins.PR3/4/8/11 (chitinases and chitin binding proteins) | 20.1.7 stress.biotic.PR-proteins | 20.1 stress.biotic | 20 stress	for all networks
+CLCdnPW50_2470	DNAJ2	20.2 stress.abiotic | 20.2.1 stress.abiotic.heat | 20 stress	for all networks
+VdnPW3_37011	CLPB4	20.2.1 stress.abiotic.heat | 20.2 stress.abiotic | 20 stress	for all networks
+SdnPW1_46	HSP101	20.2.1 stress.abiotic.heat | 20.2 stress.abiotic | 20 stress	for all networks
+CLCdnDe7_34340	HSP25.3	20.2.1 stress.abiotic.heat | 20.2 stress.abiotic | 20 stress	for all networks
+CLCdnDe11_2286	HSP90-1	20.2.1 stress.abiotic.heat | 20.2 stress.abiotic | 20 stress	for all networks
+VdnDe2_53978	CSD2	21.6 redox.dismutases and catalases | 21 redox	for all networks
+CLCdnDe7_6144	MSD1	21.6 redox.dismutases and catalases | 21 redox	for all networks
+CLCdnRY10_6741	PP2C	29.4 protein.postranslational modification | 29 protein	for all networks
+PBdnRY1_5389	HSP	29.6 protein.folding | 20.2.1 stress.abiotic.heat | 20.2 stress.abiotic | 20 stress | 29 protein	for all networks
+VdnDe2_29290	HSP70-7	29.6 protein.folding | 20.2.1 stress.abiotic.heat | 20.2 stress.abiotic | 20 stress | 29 protein	for all networks
+VdnDe4_115100	MED37E	29.6 protein.folding | 20.2.1 stress.abiotic.heat | 20.2 stress.abiotic | 20 stress | 29 protein	for all networks
+Sotub11g025210.1.1	CCT2	29.6 protein.folding | 29 protein	for all networks
+VdnDe1_39992	VDAC1	34.20 transport.porins | 34 transport	only for mixOmicy and LOO network
+VdnPW4_15664	ACA11	34.21 transport.calcium | 30.3 signalling.calcium | 34 transport | 30 signalling	for all networks

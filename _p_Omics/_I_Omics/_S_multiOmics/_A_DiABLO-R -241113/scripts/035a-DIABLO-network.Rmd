@@ -1,0 +1,36 @@
+```{r echo=FALSE}
+###############################################
+##                                           ##
+## (c) Andrej Blejec (andrej.blejec@nib.si)  ##
+##                                           ##
+###############################################
+```
+```{r echo=FALSE,results='hide'}
+options(width=70)
+```
+### `r  paste(names(data)[blocks[,j]],  collapse=" and ")`
+
+```{r}
+nfn <- paste0("../reports/figs/network-035a-",paste(names(data)[blocks[,j]], collapse="-"),"-",cutoff*10)
+nfn
+
+```
+
+
+```{r }
+png(paste0(nfn,".png"), res = 600, width = 4000, height = 4000)
+nw <- network(final.diablo.model
+        , blocks = blocks[,j]
+        , color.node = cols[blocks[,j]]
+        , cutoff = cutoff
+        , shape.node = "rectangle"
+        , save = "png"
+       , name.save = nfn
+        )
+```
+
+
+Cutoff = `r cutoff`
+
+![`r nfn`](`r paste0(nfn,".png")`)
+
