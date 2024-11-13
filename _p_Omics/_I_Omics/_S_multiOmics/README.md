@@ -17,9 +17,10 @@ Assays in consecutive steps:
 
 ***_A_multiOmics-differential-networks-Py***
 - Automated graph thresholding
+- Integration of data with prior knowledge
 
 ***_A_multiOmics-visualisation-Python***
-- Integration of data with prior knowledge
+- Visualisation of data with prior knowledge
 
 # R package versions
 - paper versions:
