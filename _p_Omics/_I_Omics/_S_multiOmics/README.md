@@ -18,3 +18,6 @@ Assays in consecutive steps:
 
 ***_A_multiOmics-visualisation-Python***
 - Integration of data with prior knowledge
+
+
+![](https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_Omics/_I_Omics/_S_multiOmics/reports/Pipeline.svg)
