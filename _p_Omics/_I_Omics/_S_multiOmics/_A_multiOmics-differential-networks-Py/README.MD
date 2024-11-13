@@ -20,4 +20,4 @@ Assay _A_015_thresholding-py
 
 ***Integration of data with prior knowledge***
 
-- The background network was merged with thresholded correlation networks
+- The background network was merged with thresholded correlation networks and visualised using Cytoscape (![_A_multiOmics-visualisation-Python](https://github.com/NIB-SI/multiOmics-integration/tree/main/_p_Omics/_I_Omics/_S_multiOmics/_A_multiOmics-visualisation-Python))
