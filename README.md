@@ -75,6 +75,9 @@
    * Leave-One-Out graphs
      * qgraph [{qgraph}](https://cran.r-project.org/web/packages/qgraph/)
      * [igraph](https://igraph.org/r/)
+   * Lioness
+   
+   Since results from both methods heavily depend on selected thresholds, Lioness node and edge selection using FDR being even more sensitive on correlation difference cut-off, we suggest to use an automated graph thresholding approach.
 5. ***Integration across different omics datasets***
  * [Canonical Correlation Analysis](https://mixomics.org/methods/)
  * [N-Integration Discriminant Analysis with DIABLO](https://mixomics.org/mixDIABLO/)  
