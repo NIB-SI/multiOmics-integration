@@ -1,3 +1,8 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 ```{r echo=FALSE}
 ###############################################
 ##                                           ##
@@ -19,6 +24,17 @@ nfn <- paste("../reports/figs/network-035b",lbl,cutoff*10,sep="-")
 
 ```{r }
 set.seed(1234)
+# source('mixOmics_network.R')
+# nw <- network(x
+#         , blocks = 1:ndata
+#         , color.node = cols
+#         , cutoff = cutoff
+#         , shape.node = "rectangle"
+#         , layout = layout.fun # default layout.fruchterman.reingold
+#         , save = "png"
+#         , name.save = nfn
+#         , plot.graph = FALSE
+#         )
 nw <- mixOmics:::network(x
         , blocks = 1:ndata
         , color.node = cols
@@ -27,7 +43,9 @@ nw <- mixOmics:::network(x
         , layout = layout.fun # default layout.fruchterman.reingold
         , save = "png"
         , name.save = nfn
+        , plot.graph = FALSE
         )
+
 ```
 
 ![`r nfn`](`r  paste0(nfn,".png")`)

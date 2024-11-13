@@ -59,6 +59,7 @@ Package for complex heatmaps.
 library(ComplexHeatmap)
 # https://www.rdocumentation.org/packages/pheatmap/versions/1.0.12/topics/pheatmap
 library(pheatmap)
+library(RColorBrewer)
 ```
 
 ## Functions
