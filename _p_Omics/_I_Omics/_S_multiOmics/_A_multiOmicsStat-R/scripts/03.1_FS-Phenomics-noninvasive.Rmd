@@ -38,8 +38,8 @@ knitr::opts_chunk$set(#dev = c('pdf', 'png'),  # this embeds pdf and crates scro
 rm(list = ls(all = TRUE))
 gc()
 
-
-set.seed(123456)
+seed = 123456
+set.seed(seed)
 
 ```
 
@@ -116,6 +116,8 @@ pheno = pheno[, c(ncol(pheno), 1:(ncol(pheno) - 1))]
 
 ```{r, Imputation, echo=TRUE, warning=FALSE, message=FALSE}
 
+set.seed(seed)
+
 
 registerDoParallel(cores=4)
 
@@ -155,6 +157,7 @@ for (i in unique(pheno$group)){
 
 ```{r, cor, echo=TRUE, warning=FALSE}
 
+set.seed(seed)
 
 subset = imputed[imputed$DAS %in% 2:14, ]
 ind = grep('PRI|NDVI|SIPI|MCARI|OSAVI|WATER1', colnames(subset))
@@ -219,6 +222,7 @@ subsets = seq(1, nc, 1) # a numeric vector of integers corresponding to the numb
 
 ```{r, rf-rfe, echo=TRUE, warning=FALSE}
 
+set.seed(seed)
 
 df = subset.rescaled[, cn:ncol(subset.rescaled)]
 df$response = subset.rescaled$treatment
@@ -281,6 +285,7 @@ ggplot(data = results, metric = "Kappa") + theme_bw()
 
 ```{r, importance, echo=TRUE, warning=FALSE}
 
+set.seed(seed)
 
 # plot the results
 # plot(results, type=c("g", "o"))
@@ -337,49 +342,54 @@ prp(mytree)
 
 ```{r, heatmaps, echo=TRUE, warning=FALSE}
 
-ind = grep(paste(results$optVariables[1:5], collapse = '|'), 
+set.seed(seed)
+
+ind = grep(paste(c(results$optVariables[1:5], 'fv_fm'), collapse = '|'), 
            colnames(subset.rescaled))
 
+nlen = length(seq(-1, 1, 0.1)) - 1
 myC = colorRampPalette(c("deepskyblue4", "cornflowerblue", 
-                         "white",   
-                         "darkgoldenrod1", "brown3"))(n = 20)
+                         rep("white", 1),   
+                         "darkgoldenrod1", "brown3"))(n = nlen)
+myC[floor(nlen/2)] = 'white'
+myC[ceiling((nlen+1)/2)] = 'white'
 
 hm = pheatmap(cor(subset.rescaled[, ind], 
                    use = 'pairwise.complete.obs'),
                display_numbers = F, kmeans_k = NA,
-               cluster_cols = TRUE, cluster_rows = TRUE, main = 'FS', 
+               cluster_cols = FALSE, cluster_rows = FALSE, main = 'across all', 
                breaks = seq(-1, 1, 0.1), 
-               color = myC, silent = TRUE)$gtable
+               color = myC, silent = TRUE, legend = TRUE)$gtable
 hmC = pheatmap(cor(subset.rescaled[subset.rescaled$treatment == 'C', ind], 
                    use = 'pairwise.complete.obs'),
                display_numbers = F, kmeans_k = NA,
-               cluster_cols = TRUE, cluster_rows = TRUE, main = 'C', 
+               cluster_cols = TRUE, cluster_rows = TRUE, main = 'Control', 
                breaks = seq(-1, 1, 0.1), 
-               color = myC, silent = TRUE, legend = TRUE)$gtable
+               color = myC, silent = TRUE, legend = FALSE)$gtable
 
 
 hmH = pheatmap(cor(subset.rescaled[subset.rescaled$treatment == 'H', ind], 
                    use = 'pairwise.complete.obs'),
                display_numbers = F, kmeans_k = NA,
-               cluster_cols = FALSE, cluster_rows = FALSE, main = 'H', 
+               cluster_cols = TRUE, cluster_rows = TRUE, main = 'Heat', 
                breaks = seq(-1, 1, 0.1), 
                color = myC, silent = TRUE, legend = FALSE)$gtable
 hmHD = pheatmap(cor(subset.rescaled[subset.rescaled$treatment == 'HD', ind], 
                    use = 'pairwise.complete.obs'),
                display_numbers = F, kmeans_k = NA,
-               cluster_cols = FALSE, cluster_rows = FALSE, main = 'HD', 
+               cluster_cols = TRUE, cluster_rows = TRUE, main = 'Heat + Drought', 
                breaks = seq(-1, 1, 0.1), 
                color = myC, silent = TRUE, legend = FALSE)$gtable
 hmW = pheatmap(cor(subset.rescaled[subset.rescaled$treatment == 'W', ind], 
                    use = 'pairwise.complete.obs'),
                display_numbers = F, kmeans_k = NA,
-               cluster_cols = FALSE, cluster_rows = FALSE, main = 'W', 
+               cluster_cols = TRUE, cluster_rows = TRUE, main = 'Waterlogging', 
                breaks = seq(-1, 1, 0.1), 
                color = myC, silent = TRUE, legend = FALSE)$gtable
 hmD = pheatmap(cor(subset.rescaled[subset.rescaled$treatment == 'D', ind], 
                    use = 'pairwise.complete.obs'),
                display_numbers = F, kmeans_k = NA,
-               cluster_cols = FALSE, cluster_rows = FALSE, main = 'D', 
+               cluster_cols = TRUE, cluster_rows = TRUE, main = 'Drought', 
                breaks = seq(-1, 1, 0.1), 
                color = myC, silent = TRUE, legend = FALSE)$gtable
 
