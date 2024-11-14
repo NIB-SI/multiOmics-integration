@@ -21,7 +21,7 @@ Assay _A_multiOmicsStat-R
 
 ___
 # R and package versions
-- paper versions:
+- manuscript versions:
     * R version 4.3.1
     * missForest v1.5
     * caret v6.0-94
