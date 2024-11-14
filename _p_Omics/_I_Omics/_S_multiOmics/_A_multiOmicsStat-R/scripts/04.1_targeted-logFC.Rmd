@@ -45,7 +45,8 @@ rm(list = ls(all = TRUE))
 gc()
 gc()
 
-set.seed(123456)
+seed = 123456
+set.seed(seed)
 
 ```
 
@@ -91,7 +92,7 @@ library(ggh4x)
 my.customised.t.test <- function(Ctrl, Stress, StressC, CtrlC, genotype){
   
 
-
+  set.seed(seed)
   
   Ctrl$Stress = unique(Ctrl$mygroup)
   stress$Stress = unique(stress$mygroup)
@@ -566,6 +567,9 @@ my.pairs.panels = function(df, mytitle, mycond, cccex) {
 
 # Compute correlation p-values
 cor.test.p = function(x){
+  
+  set.seed(seed)
+  
     FUN = function(x, y) cor.test(x, y)[["p.value"]]
     z = outer(
       colnames(x), 
@@ -1248,6 +1252,7 @@ stat = stat[, c(1, ind+1)]
 stat[2:ncol(stat)] = format(round(as.data.frame(stat[2:ncol(stat)]), 3), nsmall = 3)
 openxlsx::write.xlsx(stat, '../reports/Desiree.logFC-metabolomics_leaves.xlsx', asTable = TRUE)
 
+
 ```
 
 ## heatmap
@@ -1278,6 +1283,8 @@ my.pheatmap.logFC(df, forHeatmap,
 
 ```{r, echo=TRUE, results='hide', warning=FALSE, message=FALSE}
 
+
+metabolomics.leaves = stat[, grep('molecule|log', colnames(stat))]
 # rm()
 gc()
 gc()
@@ -1661,6 +1668,8 @@ my.pheatmap.logFC(df, forHeatmap,
 
 ```{r, echo=TRUE, results='hide', warning=FALSE, message=FALSE}
 
+hormonomics.leaves = stat[, grep('molecule|log', colnames(stat))]
+
 # rm()
 gc()
 gc()
@@ -2033,6 +2042,8 @@ my.pheatmap.logFC(df, forHeatmap,
 
 
 ```{r, echo=TRUE, results='hide', warning=FALSE, message=FALSE}
+
+transcriptomics.leaves = stat[, grep('molecule|log', colnames(stat))]
 
 # rm()
 gc()
@@ -2475,18 +2486,33 @@ my.pheatmap.logFC(df, forHeatmap,
 
 ```{r, echo=TRUE, results='hide', warning=FALSE, message=FALSE}
 
+metabolomics.tubers = stat[, grep('molecule|log', colnames(stat))]
+
 # rm()
 gc()
 gc()
 
 ```
 
+# logFC results
+
+```{r, echo=TRUE, warning=FALSE, message=FALSE}
 
 
+targeted = rbind(metabolomics.leaves, hormonomics.leaves, transcriptomics.leaves)
+targeted = merge(targeted, metabolomics.tubers, by = 'molecule', all.x = TRUE, all.y = TRUE)
+
+data.table::fwrite(targeted, file.path('..', 'output', 'targeted_logFC.txt'), sep = '\t')
+
+```
+
+
+# Session info
 
 ```{r, session_info}
 
-devtools::session_info()
+# devtools::session_info()
+sessionInfo()
 
 
 ```
