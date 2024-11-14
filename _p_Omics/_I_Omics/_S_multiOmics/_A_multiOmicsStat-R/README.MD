@@ -9,7 +9,7 @@ Assay _A_multiOmicsStat-R
 - Feature selection ([FS](https://github.com/topepo/caret/)) with Random Forest (RF) and Recursive Feature Elimination (RFE) {noninvasive}
 - Nonparametric statistics {noninvasive, invasive}
 - various plots {noninvasive, invasive}
--*Note*: hyperspectral measurements were not conducted on same days as other, therefore were just visualised
+- *Note*: hyperspectral measurements were not conducted on same days as other, therefore were just visualised
 
 ***Transcriptomics, hormonomics, metabolomics***
 - logFC
