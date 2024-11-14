@@ -6,9 +6,10 @@ Assay _A_multiOmicsStat-R
 - ![GSEA](https://www.gsea-msigdb.org/gsea/index.jsp)
 
 ***Phenomics***
-- Feature selection ([FS](https://github.com/topepo/caret/)) with Random Forest (RF) and Recursive Feature Elimination (RFE)
-- Nonparametric statistics
-- various plots
+- Feature selection ([FS](https://github.com/topepo/caret/)) with Random Forest (RF) and Recursive Feature Elimination (RFE) {noninvasive}
+- Nonparametric statistics {noninvasive, invasive}
+- various plots {noninvasive, invasive}
+-*Note*: hyperspectral measurements were not conducted on same days as other, therefore were just visualised
 
 ***Transcriptomics, hormonomics, metabolomics***
 - logFC
