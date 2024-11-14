@@ -22,17 +22,20 @@ Assays in consecutive steps:
 ***_A_multiOmics-visualisation-Python***
 - Visualisation of data with prior knowledge
 
-# R package versions
+# R and package versions
 - paper versions:
+    * R version 4.3.1
     * missForest v1.5
     * caret v6.0-94
-    * DEP v 1.22.0
+    * DEP v 1.22.0 (![Bioconductor version 3.17](https://bioconductor.org/packages/3.17/BiocViews.html#___Software))
     * MKinfer v1.1
-    * mixOmics v6.24.0
+    * mixOmics v6.24.0 (![Bioconductor version 3.17](https://bioconductor.org/packages/3.17/BiocViews.html#___Software))
 - currect versions:
+    * R version 4.4.1
     * missForest v1.5
     * caret v6.0-94
-    * DEP v 1.28.0
+    * DEP v 1.28.0 (![Bioconductor version 3.20]([https://bioconductor.org/packages/3.17/BiocViews.html#___Software](https://bioconductor.org/packages/3.20/BiocViews.html#___Software)))
     * MKinfer v1.2
-    * mixOmics v6.30.0
+    * mixOmics v6.30.0 (![Bioconductor version 3.20]([https://bioconductor.org/packages/3.17/BiocViews.html#___Software](https://bioconductor.org/packages/3.20/BiocViews.html#___Software)))
+- *Note*: there can be some discrepancies between outputs from different versions
 
