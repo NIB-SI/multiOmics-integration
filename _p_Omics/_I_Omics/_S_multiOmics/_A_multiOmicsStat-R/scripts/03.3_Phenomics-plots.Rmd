@@ -45,7 +45,8 @@ rm(list = ls(all = TRUE))
 gc()
 gc()
 
-set.seed(123456)
+seed = 123456
+set.seed(seed)
 
 ```
 
@@ -136,7 +137,7 @@ summarySE =function(data=NULL, measurevar, groupvars=NULL, na.rm=TRUE,
 
 # palette
 
-```{r, echo=TRUE, warning=FALSE, message=FALSE}
+```{r, palette, echo=TRUE, warning=FALSE, message=FALSE}
 
 # C #7F7F7F
 # D #FFC000
@@ -154,7 +155,7 @@ mypallette = c('#7F7F7F', '#FFC000', '#C00000', '#ED7D31', '#4472C4')
 # data
 
 
-```{r, echo=TRUE, warning=FALSE, message=FALSE}
+```{r, data, echo=TRUE, warning=FALSE, message=FALSE}
 
 
 fp = file.path('..', 'input')
@@ -205,9 +206,9 @@ colnames(pheno)[4] = 'Condition'
 ```
 
 
-non-hyperspectral 
+# non-hyperspectral 
 
-```{r, echo=TRUE, warning=FALSE, message=FALSE}
+```{r, non-hyperspectral, echo=TRUE, warning=FALSE, message=FALSE}
 
 
 
@@ -242,7 +243,7 @@ ph.SE =summarySE(data = ph.l,
 
 ```
 
-# plots
+## plots
 
 ```{r, phenomics_1-14, echo=TRUE, warning=FALSE, message=FALSE}
 
@@ -297,9 +298,11 @@ print(myplot)
 
 ```
 
-# Wilcox
+## Wilcox
 
-```{r, echo=TRUE, warning=FALSE, message=FALSE}
+```{r, Wilcox-Holm, cho=TRUE, warning=FALSE, message=FALSE}
+
+set.seed(seed)
 
 wilcoxTest = NULL
 
@@ -322,6 +325,22 @@ for (i in unique(ph.l$variable)) {
 
 
 openxlsx::write.xlsx(wilcoxTest, '../reports/Desiree.Phenomics_wilcox-with-Holm.xlsx', asTable = TRUE)
+
+subset = wilcoxTest[wilcoxTest$variable %in% c("TOP-AREA", 
+                                               "COMPACTNESS", 
+                                               "qL", 
+                                               "T",
+                                               "WATER.CONSUMPTION",
+                                               "Fv/Fm") &
+                      wilcoxTest$DAS %in% c(1,7,8,14), ]
+subset$comparison = paste(subset$group2, stringr::str_pad(subset$DAS, 2, pad = "0"), sep = '')
+subset = subset[, grep('variable|comparison|p.adj$', colnames(subset))]
+
+subset.l = tidyr::spread(subset, comparison, p.adj)
+
+data.table::fwrite(subset.l, 
+                   file.path('..', 'output', 'Phenomics-FS_Wilcox.txt'),
+                   sep = '\t')
 
 ```
 
