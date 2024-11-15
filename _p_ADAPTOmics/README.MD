@@ -11,4 +11,4 @@ This ![pISA-tree](https://github.com/NIB-SI/pISA-tree) structured repository coi
 
 <img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/presentations/potato.jpg" width="300" class="center">
 
-
+For more information see instructions at each pISA-tree level: [*_Investigation_*](https://github.com/NIB-SI/multiOmics-integration/tree/main/_p_ADAPTOmics/_I_Desiree), [*_Study_*](https://github.com/NIB-SI/multiOmics-integration/tree/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics), and *_Assay_*
