@@ -8,7 +8,7 @@ Assay _A_multiOmicsStat-R
 *Denote:* GSEA (2.1) produces multiple files per comparison. Combine information (2.2) and visualise (2.3) in R
 
 ***Phenomics***
-- Feature selection ([FS](https://github.com/topepo/caret/)) with Random Forest (RF) and Recursive Feature Elimination (RFE) {noninvasive} (3.1)
+- Feature selection ([FS](https://github.com/topepo/caret/)) with Random Forest (RF) and Recursive Feature Elimination (RFE) {noninvasive} (3.1). For other methods see Assay [_A_multiOmics-FS-Py](https://github.com/NIB-SI/multiOmics-integration/tree/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_multiOmics-FS-Py)
 - Nonparametric statistics {noninvasive, invasive} (3.2, 3.3)
 - Various plots {noninvasive, invasive} (3.2, 3.3, 3.4)
 
@@ -18,5 +18,6 @@ Assay _A_multiOmicsStat-R
 - logFC (4.1)
 - t-test: Welch's (4.1) and [Permutation](https://github.com/stamats/MKinfer) t-Test (4.2)
 
+These results are visualised in Assay [_A_multiOmics-visualisation-Python](https://github.com/NIB-SI/multiOmics-integration/tree/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_multiOmics-visualisation-Python)
 
 
