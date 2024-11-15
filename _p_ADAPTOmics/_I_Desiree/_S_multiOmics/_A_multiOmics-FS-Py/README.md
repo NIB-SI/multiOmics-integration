@@ -13,8 +13,12 @@ Assay _A_multiOmics-FS-Py
 - The sixth variable, was selected based on expert knowledge
 
 # model comparison
-![](https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_multiOmics-FS-Py/reports/model_comparison.png)
+
+<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_multiOmics-FS-Py/reports/model_comparison.png" height="600">
+
 # RF feature importance scores
-![](https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_multiOmics-FS-Py/reports/RF_importance_all.png)
+
+<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_multiOmics-FS-Py/reports/RF_importance_all.png" height="600">
 # RF feature improtance, MI
-![](https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_multiOmics-FS-Py/reports/RF_importance_mutualInformation.png)
+
+<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_multiOmics-FS-Py/reports/RF_importance_mutualInformation.png" height="600">
