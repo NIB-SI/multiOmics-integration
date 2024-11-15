@@ -42,5 +42,5 @@ ___
     * MKinfer v1.2
     * mixOmics v6.30.0 ([Bioconductor version 3.20](https://bioconductor.org/packages/3.20/BiocViews.html#___Software))
 
-*Note*: there can be some discrepancies between outputs from different versions
+*Denote*: there can be some discrepancies between outputs from different versions
 
