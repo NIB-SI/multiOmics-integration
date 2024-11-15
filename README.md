@@ -4,6 +4,8 @@
 
 ## Data management framework
 
+<img src="https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fs41597-022-01805-5/MediaObjects/41597_2022_1805_Fig1_HTML.png?as=webp" width="300" class="center">
+
 [pISA-tree on GitHub](https://github.com/NIB-SI/pISA-tree)
 
 Petek, M., Zagorščak, M., Blejec, A. et al. pISA-tree - a data management framework for life science research projects using a standardised directory tree. Sci Data 9, 685 (2022). https://doi.org/10.1038/s41597-022-01805-5
