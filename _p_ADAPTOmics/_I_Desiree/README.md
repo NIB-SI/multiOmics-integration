@@ -71,7 +71,7 @@ Prior to data analysis and integration, some prerequisites should be met
 - Cystoscape manual is available at <https://manual.cytoscape.org/en/stable/>
 - Example of manually created network for this specific data set can be found within the ***input*** directory of the **_Assay_** [_A_multiOmics-differential-networks-Py](https://github.com/NIB-SI/multiOmics-integration/tree/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_multiOmics-differential-networks-Py)
 - Visualised network are available from **_Assay_** [_A_multiOmics-visualisation-Python](https://github.com/NIB-SI/multiOmics-integration/tree/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_multiOmics-visualisation-Python)
-- For more prior knowledge network for plant species see <https://skm.nib.si/biomine/>  and <https://skm.nib.si/downloads/>.
+- For more prior knowledge network for plant species see <https://skm.nib.si/> and <https://knetminer.com/>
 
 ___
 (1) Petek, M., Zagorščak, M., Blejec, A. et al. pISA-tree - a data management framework for life science research projects using a standardised directory tree. Sci Data 9, 685 (2022). https://doi.org/10.1038/s41597-022-01805-5
