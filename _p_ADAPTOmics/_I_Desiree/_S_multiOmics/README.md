@@ -50,9 +50,8 @@ ___
 - Always plot the data before carrying on with any analysis
 - Data visualisation tips at [Friends Don't Let Friends Make Bad Graphs](https://github.com/saeedsiddik/Graph_FriendsDontLetFriends)
 
-<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/e.g._NMDS.png" height="250">   
-
-<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/e.g._PCoA.png" height="250">   
+<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/e.g._NMDS.png" height="225"> 
+<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/e.g._PCoA.png" height="225">   
   
 - Check vignettes for: [{gplot2}](https://cran.r-project.org/web/packages/ggplot2/index.html),  [{rgl}](https://cran.r-project.org/web/packages/rgl/index.html), [{raster}](https://cran.r-project.org/web/packages/raster/index.html), [{multcompView}](https://cran.r-project.org/web/packages/multcompView/index.html), [{gridExtra}](https://cran.r-project.org/web/packages/gridExtra/index.html)
 
@@ -137,7 +136,7 @@ ___
      * circosPlot {mixOmics} - _circosPlot for DIABLO_
      * cimDiablo {mixOmics} - _Clustered Image Maps (CIMs) ("heat maps") for DIABLO_
      * network {mixOmics} - _Relevance Network for (r)CCA and (s)PLS regression_
-### ***Integration of data with prior knowledge***
+### ***Integration of data with prior knowledge and visualisation***
    * [Stress Knowledge Map](https://skm.nib.si/)
 
    <img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/PSS-conceptual.png" height="300"> 
@@ -146,7 +145,7 @@ ___
    * [igraph](https://igraph.org/r/)
    * [DiNAR](https://github.com/NIB-SI/DiNAR)
 
-   <img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/dn.jpg" height="300"> 
+   <img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/dn.jpg" height="200"> 
 
    * [Cytoscape](https://cytoscape.org/)
 
