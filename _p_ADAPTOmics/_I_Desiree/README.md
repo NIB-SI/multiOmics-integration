@@ -21,12 +21,12 @@ Prior to data analysis and integration, some prerequisites should be met
 
 ### Data management framework
 - All data should be annotated with detailed metadata, including <ins>*_Phenodata_*</ins> – a master sample description table, and preferably structured according to the pISA-tree data management framework (1)
-- Each measurement should be stored as a separate data file, including SampleName (and/or SampleID) and measurements only, preferably as tab-separated text file
+- Each measurement should be stored as a separate data file, including **SampleName** (and/or **SampleID**) and measurements only, preferably as tab-separated text file
 - If using Excel as primary measurement storage format, prior to analyses, export each data set as tab separated text file
 - Avoid merged cells and Excel calculations in exported files under any cost
 
 ### Expected measurements 
-- Omics' strategies include: Hormonomics, Transcriptomics, Proteomics (non-targeted), Metabolomics, Phenomics and more
+- Omics' strategies include: Hormonomics, Transcriptomics, Proteomics (non-targeted), Metabolomics (leaves and tubers), and Phenomics
 - Measurements can include single or multiple genotypes with single or multiple tissues under single or combine abiotic or biotic stressors
 - Preferential measurements are time-series measurements
 
@@ -38,7 +38,12 @@ Prior to data analysis and integration, some prerequisites should be met
 - <ins>*_Phenodata_*</ins> must contain **SampleName** (and/or **SampleID**) column, which will be utilized to combine measurements with sample descriptions
 
 #### Step 2: Data preprocessing and overall inspection 
-- Prior to analyses, it is expected that the analyst conducted data preprocessing and overall inspection, which might include: i) detection of outliers and faulty measurements, ii) data transformation, iii) interpolation, iv) extrapolation and, v) imputation
+- Prior to analyses, it is expected that the analyst conducted data preprocessing and overall inspection, which might include: 
+  i) detection of outliers and faulty measurements,
+  ii) data transformation,
+  iii) interpolation,
+  iv) extrapolation and,
+  v) imputation
 - For qPCR imputation suggestions see (2)
 - For other steps see suggested packages in the [README.md](https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/README.md) file of this repository
 
