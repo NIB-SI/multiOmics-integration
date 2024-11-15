@@ -11,8 +11,8 @@ Assay _A_multiOmics-FS-Py
 - Recursive feature elimination was applied in R and multiple importance scores, including mutual information (MI), Anova, RF importance and SHAP values (REF) were computed in Python, showing consistencies between the approaches for the top 5 variables. The sixth variable, was selected based on expert knowledge
 
 # model comparison
-![](https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_Omics/_I_Omics/_S_multiOmics/_A_multiOmics-FS-Py/reports/model_comparison.png)
+![](https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_multiOmics-FS-Py/reports/model_comparison.png)
 # RF feature importance scores
-![](https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_Omics/_I_Omics/_S_multiOmics/_A_multiOmics-FS-Py/reports/RF_importance_all.png)
+![](https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_multiOmics-FS-Py/reports/RF_importance_all.png)
 # RF feature improtance, MI
-![](https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_Omics/_I_Omics/_S_multiOmics/_A_multiOmics-FS-Py/reports/RF_importance_mutualInformation.png)
+![](https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_multiOmics-FS-Py/reports/RF_importance_mutualInformation.png)
