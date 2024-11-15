@@ -3,9 +3,9 @@ _S_multiOmics
 
 ![](https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_Omics/_I_Omics/_S_multiOmics/reports/Pipeline.svg)
 
-<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/Pipeline.svg" width="300" class="center">
+<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/Pipeline.svg" width="600" class="center">
 
-Assays in consecutive steps:
+Run Assays in consecutive steps:
 
 ***_A_multiOmicsStat-R***
 - Preprocessing
@@ -25,7 +25,8 @@ Assays in consecutive steps:
 - Visualisation of data with prior knowledge
 
 ___
-# R and package versions
+# Notes
+## R and package versions
 - manuscript versions:
     * R version 4.3.1
     * missForest v1.5
@@ -40,5 +41,6 @@ ___
     * DEP v 1.28.0 ([Bioconductor version 3.20](https://bioconductor.org/packages/3.20/BiocViews.html#___Software))
     * MKinfer v1.2
     * mixOmics v6.30.0 ([Bioconductor version 3.20](https://bioconductor.org/packages/3.20/BiocViews.html#___Software))
-- *Note*: there can be some discrepancies between outputs from different versions
+
+*Note*: there can be some discrepancies between outputs from different versions
 
