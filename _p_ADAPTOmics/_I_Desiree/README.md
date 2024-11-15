@@ -1,8 +1,8 @@
 _I_Desiree
 ========
 
-- Master sample description file: 01_Experimental-design-and-days-of-tissue-sampling.xlsx
-- Phenomics variable description file: 02_Phenomics-featuredata.xlsx
+- <ins>*_Phenodata_*</ins> - Master sample description file: 01_Experimental-design-and-days-of-tissue-sampling.xlsx
+- <ins>*_Featuredata_*</ins> Phenomics variable description file: 02_Phenomics-featuredata.xlsx
 - RGB phenotipisation e.g.: 03_Phenomics-RBG_Hyponasty.pdf
 - Analysis steps are grouped in Assays within a joint Study
 
@@ -52,7 +52,7 @@ Prior to data analysis and integration, some prerequisites should be met
 - Example of input data, consisting of various Omics’ levels can be found within **_Assay_** **input** directory
 - Experimental design can be inspected from [01_Experimental-design-and-days-of-tissue-sampling.xlsx](https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/01_Experimental-design-and-days-of-tissue-sampling.xlsx) file, stored at **_Investigation_** level
 - In this scenario, SampleName column was created from condition, time point, and plant replicate number
-- Plants were exposed to Heat stress, Drought stress, Waterlogging stress, double- and triple-stress (H, D, W, HD, HDW; later defined as ‘Stress’); measurements considered in this analysis were taken at days: 1, 7, 8, and 14; which is denoted under Treatment and SamplingDay columns of Phenodata
+- Plants were exposed to Heat stress, Drought stress, Waterlogging stress, double- and triple-stress (H, D, W, HD, HDW; later defined as ‘Stress’); measurements considered in this analysis were taken at days: 1, 7, 8, and 14; which is denoted under **Treatment** and **SamplingDay** columns of <ins>*_Phenodata_*</ins>
 - For statistical analysis of individual omics data layers prepare data in similar manner, and use scripts from **_Assay_** [_A_multiOmicsStat-R](https://github.com/NIB-SI/multiOmics-integration/tree/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_multiOmicsStat-R) and **_Assay_** [_A_multiOmics-FS-Py](https://github.com/NIB-SI/multiOmics-integration/tree/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_multiOmics-FS-Py)
 - Main packages and functions are listed in the [README.md](https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/README.md) file of this repository
 
