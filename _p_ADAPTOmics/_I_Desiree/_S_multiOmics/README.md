@@ -49,19 +49,25 @@ ___
 #### detection of outliers and faulty measurements
 - Always plot the data before carrying on with any analysis
 - Data visualisation tips at [Friends Don't Let Friends Make Bad Graphs](https://github.com/saeedsiddik/Graph_FriendsDontLetFriends)
+
+<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/e.g._NMDS.png" width=25%>   
+
+<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/e.g._PCoA.png" width=25%>   
+  
 - Check vignettes for: [{gplot2}](https://cran.r-project.org/web/packages/ggplot2/index.html),  [{rgl}](https://cran.r-project.org/web/packages/rgl/index.html), [{raster}](https://cran.r-project.org/web/packages/raster/index.html), [{multcompView}](https://cran.r-project.org/web/packages/multcompView/index.html), [{gridExtra}](https://cran.r-project.org/web/packages/gridExtra/index.html)
 
 #### data transformation (if needed)
 - Check prerequisites (e.g. distribution, homoscedasticity) to decide between parametric and nonparametric approach
 - Check vignettes for: [{multimode}](https://cran.r-project.org/web/packages/multimode/index.html), [{fitdistrplus}](https://cran.r-project.org/web/packages/fitdistrplus/index.html), [{caret}](https://cran.r-project.org/web/packages/caret/index.html), [{glmnet}](https://cran.r-project.org/web/packages/glmnet/index.html), [{MASS}](https://cran.r-project.org/web/packages/MASS/index.html), [{BIGL}](https://cran.r-project.org/web/packages/BIGL/index.html), [{robustbas}](https://cran.r-project.org/web/packages/robustbase/index.html), [{preprocessCore}](https://www.bioconductor.org/packages/release/bioc/html/preprocessCore.html), [{compositions}](https://cran.r-project.org/web/packages/compositions/index.html), [{mgcv}](https://cran.r-project.org/web/packages/mgcv/index.html)
 
-#### extrapolation
-   
-<img src="https://www.statology.org/wp-content/uploads/2021/09/interp3-768x545.png" width=25% height=25%>
-  
-*Denote:* extrapolate and interpolate only when you can be sure there is a trend, do not generate random or biased synthetic data
+
+<img src="https://www.statology.org/wp-content/uploads/2021/09/interp3-768x545.png" width=25% height=25%>  
+
   
 #### interpolation
+
+<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/e.g._interpolate.png" width=25%>  
+
 ##### point-to-point
 * approxfun {stats} - _Returns a list of points which linearly interpolate given data points, or a function performing the linear (or constant) interpolation._
 ##### polynomial
@@ -69,7 +75,13 @@ ___
 * boxplot.stats {grDevices} - _Box Plot Statistics_
 * mad [{BiocGenerics}](https://bioconductor.org/packages/release/bioc/html/BiocGenerics.html) - _Compute the median absolute deviation for a vector_
 * aq.plot [{mvoutlier}](https://cran.r-project.org/web/packages/mvoutlier/index.html) - _Adjusted quantile plots for multivariate outlier detection_
- 
+
+#### extrapolation
+
+<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/e.g._extrapolate.png" width=25%>     
+  
+*Denote:* extrapolate and interpolate only when you can be sure there is a trend, do not generate random or biased synthetic data
+  
 
 #### imputation
 * for qPCR see Baebler, Š., Svalina, M., Petek, M. et al. quantGenius: implementation of a decision support system for qPCR-based gene quantification. BMC Bioinformatics 18, 276 (2017). https://doi.org/10.1186/s12859-017-1688-7
@@ -100,7 +112,12 @@ ___
    * Leave-One-Out graphs
      * qgraph [{qgraph}](https://cran.r-project.org/web/packages/qgraph/)
      * [igraph](https://igraph.org/r/)
+
+<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/e.g._Loo.png" width=25%>   
+       
    * Lioness [{lionessR}](https://bioconductor.org/packages/release/bioc/vignettes/lionessR/inst/doc/lionessR.html)
+
+<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/e.g._Lioness.png" width=25%>   
    
    *Denote:* Since results from both methods heavily depend on selected thresholds, Lioness node and edge selection using FDR being even more sensitive on correlation difference cut-off, we suggest to use an automated graph thresholding approach.
 
