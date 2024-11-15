@@ -50,8 +50,7 @@ ___
 - Always plot the data before carrying on with any analysis
 - Data visualisation tips at [Friends Don't Let Friends Make Bad Graphs](https://github.com/saeedsiddik/Graph_FriendsDontLetFriends)
 
-<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/e.g._NMDS.png" height="225"> 
-<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/e.g._PCoA.png" height="225">   
+<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/e.g._NMDS.png" height="200"><img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/e.g._PCoA.png" height="200">   
   
 - Check vignettes for: [{gplot2}](https://cran.r-project.org/web/packages/ggplot2/index.html),  [{rgl}](https://cran.r-project.org/web/packages/rgl/index.html), [{raster}](https://cran.r-project.org/web/packages/raster/index.html), [{multcompView}](https://cran.r-project.org/web/packages/multcompView/index.html), [{gridExtra}](https://cran.r-project.org/web/packages/gridExtra/index.html)
 
@@ -65,7 +64,7 @@ ___
   
 #### interpolation
 
-<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/e.g._interpolate.png" height="300">  
+<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/e.g._interpolate.png" height="250">  
 
 ##### point-to-point
 * approxfun {stats} - _Returns a list of points which linearly interpolate given data points, or a function performing the linear (or constant) interpolation._
@@ -77,7 +76,7 @@ ___
 
 #### extrapolation
 
-<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/e.g._extrapolate.png" height="300">     
+<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/e.g._extrapolate.png" height="250">     
   
 *Denote:* extrapolate and interpolate only when you can be sure there is a trend, do not generate random or biased synthetic data
   
@@ -139,13 +138,13 @@ ___
 ### ***Integration of data with prior knowledge and visualisation***
    * [Stress Knowledge Map](https://skm.nib.si/)
 
-   <img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/PSS-conceptual.png" height="300"> 
+   <img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/PSS-conceptual.png" height="400"> 
    
    * [SKM tools](https://github.com/NIB-SI/skm-tools)
    * [igraph](https://igraph.org/r/)
    * [DiNAR](https://github.com/NIB-SI/DiNAR)
 
-   <img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/dn.jpg" height="200"> 
+   <img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/dn.jpg" height="100"> 
 
    * [Cytoscape](https://cytoscape.org/)
 
