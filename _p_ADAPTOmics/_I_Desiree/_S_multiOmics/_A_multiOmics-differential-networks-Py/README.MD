@@ -21,3 +21,4 @@ Assay _A_015_thresholding-py
 ***Integration of data with prior knowledge***
 
 - The background network is merged with thresholded correlation networks and visualised using Cytoscape (![_A_multiOmics-visualisation-Python](https://github.com/NIB-SI/multiOmics-integration/tree/main/_p_Omics/_I_Omics/_S_multiOmics/_A_multiOmics-visualisation-Python))
+- LogFC values are taken from [_A_multiOmicsStat-R](https://github.com/NIB-SI/multiOmics-integration/tree/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_multiOmicsStat-R)
