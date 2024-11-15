@@ -3,8 +3,10 @@
 - Systems biology analysis and visualization pipeline in [R](https://cran.r-project.org/) and [Python](https://www.python.org/)
 
 ## Data management framework
-- [pISA-tree on GitHub](https://github.com/NIB-SI/pISA-tree)
-  * Petek, M., Zagorščak, M., Blejec, A. et al. pISA-tree - a data management framework for life science research projects using a standardised directory tree. Sci Data 9, 685 (2022). https://doi.org/10.1038/s41597-022-01805-5
+
+[pISA-tree on GitHub](https://github.com/NIB-SI/pISA-tree)
+
+Petek, M., Zagorščak, M., Blejec, A. et al. pISA-tree - a data management framework for life science research projects using a standardised directory tree. Sci Data 9, 685 (2022). https://doi.org/10.1038/s41597-022-01805-5
 
 ## Expected measurements
 
@@ -21,6 +23,7 @@ Factorial experiment:
   * Proteomics
   * Metabolomics 
   * Phenomics
+  * ...
 
 - Combination of targeted and untargeted measurements
 - Phenomics data should be preprocessed, i.e. this protocol does not include image analysis
