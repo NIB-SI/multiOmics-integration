@@ -110,14 +110,12 @@ ___
      * limma::topTable - _Table of Top Genes from Linear Model Fit_
 ### ***Correlation based network inference within each omics level***
 
-   * Correlation network construction
-     
-<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/e.g._Loo.png" height="300">  
-
+   <img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/e.g._Loo.png" height="300">
+   
    * Leave-One-Out graphs
-     * similar approach as in Cross-Validation, just with sample (all replicates) correlation matrix 
-     * qgraph [{qgraph}](https://cran.r-project.org/web/packages/qgraph/)
-     * [igraph](https://igraph.org/r/)    
+       * similar approach as in Cross-Validation, just with sample (all replicates) correlation matrix 
+       * qgraph [{qgraph}](https://cran.r-project.org/web/packages/qgraph/)
+       * [igraph](https://igraph.org/r/)    
    * Lioness [{lionessR}](https://bioconductor.org/packages/release/bioc/vignettes/lionessR/inst/doc/lionessR.html)
 
 <img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/e.g._Lioness.png" height="300">   
