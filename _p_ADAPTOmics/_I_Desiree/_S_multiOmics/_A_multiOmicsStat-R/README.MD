@@ -42,12 +42,11 @@ ___
 ## List of useful R f-ctions and packages
 ### Data preprocessing and overall inspection
   #### detection of outliers and faulty measurements
-
-    * [{gplot2}](https://cran.r-project.org/web/packages/ggplot2/index.html)
-    * [{rgl}](https://cran.r-project.org/web/packages/rgl/index.html)
-    * [{raster}](https://cran.r-project.org/web/packages/raster/index.html)
-    * [{multcompView}](https://cran.r-project.org/web/packages/multcompView/index.html)
-    * [{gridExtra}](https://cran.r-project.org/web/packages/gridExtra/index.html)
+  * [{gplot2}](https://cran.r-project.org/web/packages/ggplot2/index.html)
+  * [{rgl}](https://cran.r-project.org/web/packages/rgl/index.html)
+  * [{raster}](https://cran.r-project.org/web/packages/raster/index.html)
+  * [{multcompView}](https://cran.r-project.org/web/packages/multcompView/index.html)
+  * [{gridExtra}](https://cran.r-project.org/web/packages/gridExtra/index.html)
 
   #### data transformation (if needed)
  - [{multimode}](https://cran.r-project.org/web/packages/multimode/index.html)
@@ -63,17 +62,16 @@ ___
 
   #### interpolation
     ##### point-to-point
-      * approxfun {stats} - _Returns a list of points which linearly interpolate given data points, or a function performing the linear (or constant) interpolation._
+    * approxfun {stats} - _Returns a list of points which linearly interpolate given data points, or a function performing the linear (or constant) interpolation._
     ##### polynomial
-      * predict {stats} - _A generic function for predictions from the results of various model fitting functions_
-      * boxplot.stats {grDevices} - _Box Plot Statistics_
-      * mad [{BiocGenerics}](https://bioconductor.org/packages/release/bioc/html/BiocGenerics.html) - _Compute the median absolute deviation for a vector_
-      * aq.plot [{mvoutlier}](https://cran.r-project.org/web/packages/mvoutlier/index.html) - _Adjusted quantile plots for multivariate outlier detection_
-  #### extrapolation
-  
+    * predict {stats} - _A generic function for predictions from the results of various model fitting functions_
+    * boxplot.stats {grDevices} - _Box Plot Statistics_
+    * mad [{BiocGenerics}](https://bioconductor.org/packages/release/bioc/html/BiocGenerics.html) - _Compute the median absolute deviation for a vector_
+    * aq.plot [{mvoutlier}](https://cran.r-project.org/web/packages/mvoutlier/index.html) - _Adjusted quantile plots for multivariate outlier detection_
+  #### extrapolation  
     <img src="https://www.statology.org/wp-content/uploads/2021/09/interp3-768x545.png" width=25% height=25%>
   #### imputation
-    * for qPCR see Baebler, Š., Svalina, M., Petek, M. et al. quantGenius: implementation of a decision support system for qPCR-based gene quantification. BMC Bioinformatics 18, 276 (2017). https://doi.org/10.1186/s12859-017-1688-7
+  * for qPCR see Baebler, Š., Svalina, M., Petek, M. et al. quantGenius: implementation of a decision support system for qPCR-based gene quantification. BMC Bioinformatics 18, 276 (2017). https://doi.org/10.1186/s12859-017-1688-7
   
 ### ***Statistical analysis of individual omics data layers***
    * ggplot [{ggplot2}](https://cran.r-project.org/web/packages/ggplot2/index.html) - various plots, <https://r-graphics.org/chapter-ggplot2>
