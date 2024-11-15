@@ -46,18 +46,14 @@ ___
 
 ## List of useful R f-ctions, packages, and web resources
 ### Data preprocessing and overall inspection
-  #### detection of outliers and faulty measurements
-  Always plot the data before carrying on with any analysis
+#### detection of outliers and faulty measurements
+- Always plot the data before carrying on with any analysis
+- Data visualisation tips at [Friends Don't Let Friends Make Bad Graphs](https://github.com/saeedsiddik/Graph_FriendsDontLetFriends)
+- Check vignettes for: [{gplot2}](https://cran.r-project.org/web/packages/ggplot2/index.html),  [{rgl}](https://cran.r-project.org/web/packages/rgl/index.html), [{raster}](https://cran.r-project.org/web/packages/raster/index.html), [{multcompView}](https://cran.r-project.org/web/packages/multcompView/index.html), [{gridExtra}](https://cran.r-project.org/web/packages/gridExtra/index.html)
 
-  Data visualisation tips at [Friends Don't Let Friends Make Bad Graphs](https://github.com/saeedsiddik/Graph_FriendsDontLetFriends)
-
-  R packages: [{gplot2}](https://cran.r-project.org/web/packages/ggplot2/index.html),  [{rgl}](https://cran.r-project.org/web/packages/rgl/index.html), [{raster}](https://cran.r-project.org/web/packages/raster/index.html), [{multcompView}](https://cran.r-project.org/web/packages/multcompView/index.html), [{gridExtra}](https://cran.r-project.org/web/packages/gridExtra/index.html)
-
-  #### data transformation (if needed)
-
- Check prerequisites to decide between parametric and nonparametric approach
-
- R packages: [{multimode}](https://cran.r-project.org/web/packages/multimode/index.html), [{fitdistrplus}](https://cran.r-project.org/web/packages/fitdistrplus/index.html), [{caret}](https://cran.r-project.org/web/packages/caret/index.html), [{glmnet}](https://cran.r-project.org/web/packages/glmnet/index.html), [{MASS}](https://cran.r-project.org/web/packages/MASS/index.html), [{BIGL}](https://cran.r-project.org/web/packages/BIGL/index.html), [{robustbas}](https://cran.r-project.org/web/packages/robustbase/index.html), [{preprocessCore}](https://www.bioconductor.org/packages/release/bioc/html/preprocessCore.html), [{compositions}](https://cran.r-project.org/web/packages/compositions/index.html), [{mgcv}](https://cran.r-project.org/web/packages/mgcv/index.html)
+#### data transformation (if needed)
+- Check prerequisites to decide between parametric and nonparametric approach
+- Check vignettes for: [{multimode}](https://cran.r-project.org/web/packages/multimode/index.html), [{fitdistrplus}](https://cran.r-project.org/web/packages/fitdistrplus/index.html), [{caret}](https://cran.r-project.org/web/packages/caret/index.html), [{glmnet}](https://cran.r-project.org/web/packages/glmnet/index.html), [{MASS}](https://cran.r-project.org/web/packages/MASS/index.html), [{BIGL}](https://cran.r-project.org/web/packages/BIGL/index.html), [{robustbas}](https://cran.r-project.org/web/packages/robustbase/index.html), [{preprocessCore}](https://www.bioconductor.org/packages/release/bioc/html/preprocessCore.html), [{compositions}](https://cran.r-project.org/web/packages/compositions/index.html), [{mgcv}](https://cran.r-project.org/web/packages/mgcv/index.html)
 
   #### extrapolation  
   <img src="https://www.statology.org/wp-content/uploads/2021/09/interp3-768x545.png" width=25% height=25%>
