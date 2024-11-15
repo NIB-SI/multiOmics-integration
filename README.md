@@ -1,6 +1,6 @@
 # **‘multiOmics data analysis, integration, and visualisation protocol**
 - Data integration and modelling with [R](https://cran.r-project.org/)
-- Systems biology analysis and visualization pipeline in [R](https://cran.r-project.org/)
+- Systems biology analysis and visualization pipeline in [R](https://cran.r-project.org/) and [Python](https://www.python.org/)
 
 ## Data management framework
 - [pISA-tree on GitHub](https://github.com/NIB-SI/pISA-tree)
@@ -9,7 +9,7 @@
 ## Expected measurements
 - one or multiple genotypes
 - under single and multiple abiotic/biotic stressors
-- experiment duration: XY hours, days, ... : time-series experimental design
+- experiment duration: hours, days, ... : time-series experimental design
 - tissue: single or multiple
 - Omics' strategies: 
   * Hormonomics
