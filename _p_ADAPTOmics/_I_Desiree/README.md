@@ -20,14 +20,22 @@ Prior to data analysis and integration, some prerequisites should be met
 ## Prerequisites and protocol
 
 ### Data management framework
-All data should be annotated with detailed metadata, including <ins>*_Phenodata_*</ins> – a master sample description table, and preferably structured according to the pISA-tree data management framework (1). Each measurement should be stored as a separate data file, including SampleName (and/or SampleID) and measurements only, preferably as tab-separated text file. If using Excel as primary measurement storage format, prior to analyses, export each data set as tab separated text file. Avoid merged cells and Excel calculations in exported files under any cost.
+- All data should be annotated with detailed metadata, including <ins>*_Phenodata_*</ins> – a master sample description table, and preferably structured according to the pISA-tree data management framework (1)
+- Each measurement should be stored as a separate data file, including SampleName (and/or SampleID) and measurements only, preferably as tab-separated text file
+- If using Excel as primary measurement storage format, prior to analyses, export each data set as tab separated text file
+- Avoid merged cells and Excel calculations in exported files under any cost
 
 ### Expected measurements 
-Omics' strategies include: Hormonomics, Transcriptomics, Proteomics (non-targeted),   Metabolomics, Phenomics and more. Measurements can include single or multiple genotypes with single or multiple tissues under single or combine abiotic or biotic stressors. Preferential measurements are time-series measurements.
+- Omics' strategies include: Hormonomics, Transcriptomics, Proteomics (non-targeted), Metabolomics, Phenomics and more
+- Measurements can include single or multiple genotypes with single or multiple tissues under single or combine abiotic or biotic stressors
+- Preferential measurements are time-series measurements
 
 ### Analysis steps 
 #### Step 1: Exprimental design master table
-Design Phenodata, a master experimental design table describing samples for analysis, prior to sample collection according to good data management practice. Store Phenodata at Investigation level. Define relative path of Phenodata in [_INVESTIGATION_METADATA.TXT](https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_INVESTIGATION_METADATA.TXT), as well as in _ASSAY_METADATA.TXT. Phenodata must contain SampleName (and/or SampleID) column, which will be utilized to combine measurements with sample descriptions.
+- Design <ins>*_Phenodata_*</ins>, a master experimental design table describing samples for analysis, prior to sample collection according to good data management practice
+- Store <ins>*_Phenodata_*</ins> at *_Investigation_* level
+- Define relative path of <ins>*_Phenodata_*</ins> in [_INVESTIGATION_METADATA.TXT](https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_INVESTIGATION_METADATA.TXT), as well as in <ins>*__ASSAY_METADATA.TXT_*</ins>
+- Phenodata must contain SampleName (and/or SampleID) column, which will be utilized to combine measurements with sample descriptions
 
 #### Step 2: Data preprocessing and overall inspection 
 Prior to analyses, it is expected that the analyst conducted data preprocessing and overall inspection, which might include: i) detection of outliers and faulty measurements, ii) data transformation, iii) interpolation, iv) extrapolation and, v) imputation. For qPCR imputation suggestions see (2). For other steps see suggested packages in the [README.md](https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/README.md) file of this repository.
