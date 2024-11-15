@@ -4,7 +4,7 @@
 
 ## Data management framework
 
-<img src="https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fs41597-022-01805-5/MediaObjects/41597_2022_1805_Fig1_HTML.png?as=webp" width="300" class="center">
+<img src="https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fs41597-022-01805-5/MediaObjects/41597_2022_1805_Fig1_HTML.png?as=webp" width="400" class="center">
 
 [pISA-tree on GitHub](https://github.com/NIB-SI/pISA-tree)
 
@@ -31,4 +31,4 @@ Factorial experiment:
 - Phenomics data should be preprocessed, i.e. this protocol does not include image analysis
 
 ## Analysis
-Protocol for the integration of multi-omics data and deep phenotyping of potato under single- and combined abiotic stress responses is available at [_p_ADAPTOmics](https://github.com/NIB-SI/multiOmics-integration/tree/main/_p_ADAPTOmics)
+Protocol for the integration of multi-omics data and deep phenotyping of potato cv. Désirée under single- and combined abiotic stress responses is available at [_p_ADAPTOmics](https://github.com/NIB-SI/multiOmics-integration/tree/main/_p_ADAPTOmics)
