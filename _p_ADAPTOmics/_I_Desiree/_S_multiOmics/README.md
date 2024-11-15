@@ -87,7 +87,7 @@ ___
 * for qPCR see Baebler, Š., Svalina, M., Petek, M. et al. quantGenius: implementation of a decision support system for qPCR-based gene quantification. BMC Bioinformatics 18, 276 (2017). https://doi.org/10.1186/s12859-017-1688-7
 * for other levels check [NAguideR](https://github.com/wangshisheng/)
 
-*Denote:* understand your data, is it Missing At Random (MAR) or Not Missing At Random (NMAR); do not introduce bias; define Limit of Detection (LOD) and Limit of Quantification (LOQ)
+*Denote:* understand your data, is it Missing At Random (MAR) or Not Missing At Random (NMAR); do not introduce bias; find out what was the Limit of Detection (LOD) and Limit of Quantification (LOQ) per data type
   
 ### ***Statistical analysis of individual omics data layers***
    * ggplot [{ggplot2}](https://cran.r-project.org/web/packages/ggplot2/index.html) - various plots, <https://r-graphics.org/chapter-ggplot2>
@@ -110,9 +110,12 @@ ___
      * limma::topTable - _Table of Top Genes from Linear Model Fit_
 ### ***Correlation based network inference within each omics level***
 
+   * Correlation network construction
+     
 <img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/e.g._Loo.png" height="300">  
 
    * Leave-One-Out graphs
+     * similar approach as in Cross-Validation, just with sample (all replicates) correlation matrix 
      * qgraph [{qgraph}](https://cran.r-project.org/web/packages/qgraph/)
      * [igraph](https://igraph.org/r/)    
    * Lioness [{lionessR}](https://bioconductor.org/packages/release/bioc/vignettes/lionessR/inst/doc/lionessR.html)
