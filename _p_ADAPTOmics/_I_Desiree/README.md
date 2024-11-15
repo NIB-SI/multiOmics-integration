@@ -57,11 +57,11 @@ Prior to data analysis and integration, some prerequisites should be met
 - Main packages and functions are listed in the [README.md](https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/README.md) file of this repository
 
 #### Step 4: Correlation based network inference within each omics level 
-- Correlation-based network can be constructed using ‘Leave-One-Out’ or [Lioness](https://pmc.ncbi.nlm.nih.gov/articles/PMC6815019/) approach from all Omics’ levels
+- Correlation-based network can be constructed using ‘Leave-One-Out’ or Lioness (3) approach from all Omics’ levels
 - Since they are highly depended on thresholds we advise to use thresholding approach from **_Assay_** [_A_multiOmics-differential-networks-Py](https://github.com/NIB-SI/multiOmics-integration/tree/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_multiOmics-differential-networks-Py) 
 
 #### Step 5: Integration across different omics datasets
-- This step focuses on Canonical Correlation Analysis and N-Integration Discriminant Analysis with [DIABLO](https://academic.oup.com/bioinformatics/article/35/17/3055/5292387) using [mixOmics](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005752) (3)
+- This step focuses on Canonical Correlation Analysis and N-Integration Discriminant Analysis with DIABLO (4) using mixOmics (5)
 - Prepare data in a similar manner and run master script from **_Assay_** [_A_DiABLO-R](https://github.com/NIB-SI/multiOmics-integration/tree/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_DiABLO-R)
 - Main packages and functions are listed in the [README.md](https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/README.md) file of this repository
 - Read more about DIABLO at <https://mixomics.org/mixDIABLO/>
@@ -78,4 +78,8 @@ ___
 
 (2) Baebler, Š., Svalina, M., Petek, M. et al. quantGenius: implementation of a decision support system for qPCR-based gene quantification. BMC Bioinformatics 18, 276 (2017). https://doi.org/10.1186/s12859-017-1688-7
 
-(3) Rohart F, Gautier B, Singh A, Lê Cao KA. mixOmics: An R package for 'omics feature selection and multiple data integration. PLoS Comput Biol. 2017 Nov 3;13(11):e1005752. doi: 10.1371/journal.pcbi.1005752. PMID: 29099853; PMCID: PMC5687754.
+(3) Kuijjer ML, Hsieh PH, Quackenbush J, Glass K. lionessR: single sample network inference in R. BMC Cancer. 2019 Oct 25;19(1):1003. doi: 10.1186/s12885-019-6235-7
+
+(4) Amrit Singh, Casey P Shannon, Benoît Gautier, Florian Rohart, Michaël Vacher, Scott J Tebbutt, Kim-Anh Lê Cao, DIABLO: an integrative approach for identifying key molecular drivers from multi-omics assays, Bioinformatics, Volume 35, Issue 17, September 2019, Pages 3055–3062, https://doi.org/10.1093/bioinformatics/bty1054
+
+(5) Rohart F, Gautier B, Singh A, Lê Cao KA. mixOmics: An R package for 'omics feature selection and multiple data integration. PLoS Comput Biol. 2017 Nov 3;13(11):e1005752. doi: 10.1371/journal.pcbi.1005752. PMID: 29099853; PMCID: PMC5687754.
