@@ -50,9 +50,9 @@ ___
 - Always plot the data before carrying on with any analysis
 - Data visualisation tips at [Friends Don't Let Friends Make Bad Graphs](https://github.com/saeedsiddik/Graph_FriendsDontLetFriends)
 
-<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/e.g._NMDS.png" height="400">   
+<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/e.g._NMDS.png" height="250">   
 
-<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/e.g._PCoA.png" height="400">   
+<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/e.g._PCoA.png" height="250">   
   
 - Check vignettes for: [{gplot2}](https://cran.r-project.org/web/packages/ggplot2/index.html),  [{rgl}](https://cran.r-project.org/web/packages/rgl/index.html), [{raster}](https://cran.r-project.org/web/packages/raster/index.html), [{multcompView}](https://cran.r-project.org/web/packages/multcompView/index.html), [{gridExtra}](https://cran.r-project.org/web/packages/gridExtra/index.html)
 
@@ -66,7 +66,7 @@ ___
   
 #### interpolation
 
-<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/e.g._interpolate.png" height="400">  
+<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/e.g._interpolate.png" height="300">  
 
 ##### point-to-point
 * approxfun {stats} - _Returns a list of points which linearly interpolate given data points, or a function performing the linear (or constant) interpolation._
@@ -78,7 +78,7 @@ ___
 
 #### extrapolation
 
-<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/e.g._extrapolate.png" height="400">     
+<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/e.g._extrapolate.png" height="300">     
   
 *Denote:* extrapolate and interpolate only when you can be sure there is a trend, do not generate random or biased synthetic data
   
@@ -110,14 +110,14 @@ ___
      * limma::topTable - _Table of Top Genes from Linear Model Fit_
 ### ***Correlation based network inference within each omics level***
 
-<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/e.g._Loo.png" height="400">  
+<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/e.g._Loo.png" height="300">  
 
    * Leave-One-Out graphs
      * qgraph [{qgraph}](https://cran.r-project.org/web/packages/qgraph/)
      * [igraph](https://igraph.org/r/)    
    * Lioness [{lionessR}](https://bioconductor.org/packages/release/bioc/vignettes/lionessR/inst/doc/lionessR.html)
 
-<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/e.g._Lioness.png" height="400">   
+<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/e.g._Lioness.png" height="300">   
    
    *Denote:* Since results from both methods heavily depend on selected thresholds, Lioness node and edge selection using FDR being even more sensitive on correlation difference cut-off, we suggest to use an automated graph thresholding approach.
 
@@ -125,9 +125,9 @@ ___
  * [Canonical Correlation Analysis](https://mixomics.org/methods/)
  * [N-Integration Discriminant Analysis with DIABLO](https://mixomics.org/mixDIABLO/)
 
-   <img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/e.g._diablo1.png" height="400">  
+   <img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/e.g._diablo1.png" height="300">  
 
-   <img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/e.g._diablo2.png" height="400">  
+   <img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/e.g._diablo2.png" height="300">  
    
      * block.splsda {mixOmics} - _N-integration and feature selection with Projection to Latent Structures models (PLS) with sparse Discriminant Analysis_
      * plotDiablo {mixOmics} - _Graphical output for the DIABLO framework_
