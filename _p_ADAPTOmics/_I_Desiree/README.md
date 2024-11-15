@@ -39,11 +39,11 @@ Prior to data analysis and integration, some prerequisites should be met
 
 #### Step 2: Data preprocessing and overall inspection 
 - Prior to analyses, it is expected that the analyst conducted data preprocessing and overall inspection, which might include: 
-  i) detection of outliers and faulty measurements,
-  ii) data transformation,
-  iii) interpolation,
-  iv) extrapolation and,
-  v) imputation
+  * i) detection of outliers and faulty measurements,
+  * ii) data transformation,
+  * iii) interpolation,
+  * iv) extrapolation and,
+  * v) imputation
 - For qPCR imputation suggestions see (2)
 - For other steps see suggested packages in the [README.md](https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/README.md) file of this repository
 
