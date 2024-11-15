@@ -39,7 +39,8 @@ Prior to data analysis and integration, some prerequisites should be met
 
 #### Step 2: Data preprocessing and overall inspection 
 - Prior to analyses, it is expected that the analyst conducted data preprocessing and overall inspection, which might include: i) detection of outliers and faulty measurements, ii) data transformation, iii) interpolation, iv) extrapolation and, v) imputation
-- For qPCR imputation suggestions see (2). For other steps see suggested packages in the [README.md](https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/README.md) file of this repository
+- For qPCR imputation suggestions see (2)
+- For other steps see suggested packages in the [README.md](https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/README.md) file of this repository
 
 #### Step 3: Statistical analysis of individual omics data layers
 - This step focuses on various within-level correlations calculations and visualization, calculation of correlation differences, multidimensional scaling, t-tests and log2FC calculations, variable/feature selection and more
@@ -57,7 +58,8 @@ Prior to data analysis and integration, some prerequisites should be met
 #### Step 5: Integration across different omics datasets
 - This step focuses on Canonical Correlation Analysis and N-Integration Discriminant Analysis with DIABLO using mixOmics (3)
 - Prepare data in a similar manner and run master script from Assay [_A_DiABLO-R](https://github.com/NIB-SI/multiOmics-integration/tree/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_DiABLO-R)
-- Main packages and functions are listed in the [README.md](https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/README.md) file of this repository. Read more about DIABLO at <https://mixomics.org/mixDIABLO/>
+- Main packages and functions are listed in the [README.md](https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/README.md) file of this repository
+- Read more about DIABLO at <https://mixomics.org/mixDIABLO/>
 
 #### Step 6: Integration of data with prior knowledge 
 - Log2FC values from Step 3, or standard differential expression analysis, can be visualised in prior knowledge network in a differential network context using Cytoscape and [DiNAR](https://github.com/NIB-SI/DiNAR)
