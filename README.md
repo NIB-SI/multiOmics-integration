@@ -107,4 +107,4 @@
 - For Step 4: Correlation based network inference within/between each omics level run script [02_Step4.Rmd](https://github.com/NIB-SI/multiOmics-integration/blob/main/_I_Omics/_S_multiOmics/_A_multiOmics-integration-R/scripts/02_Step4.Rmd)
 - For Step 5: Integration across different omics datasets run script 03_Step5.Rnw
 
-For more info see [multiOmics_data_analysis_Protocol](https://github.com/NIB-SI/multiOmics-integration/blob/main/multiOmics_data_analysis_Protocol.docx)
+For more info see [multiOmics_data_analysis_Protocol](https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_Omics/multiOmics_data_analysis_Protocol.docx)
