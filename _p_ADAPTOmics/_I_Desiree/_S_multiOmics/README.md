@@ -139,9 +139,15 @@ ___
      * network {mixOmics} - _Relevance Network for (r)CCA and (s)PLS regression_
 ### ***Integration of data with prior knowledge***
    * [Stress Knowledge Map](https://skm.nib.si/)
+
+   <img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/PSS-conceptual.png" height="300"> 
+   
    * [SKM tools](https://github.com/NIB-SI/skm-tools)
    * [igraph](https://igraph.org/r/)
    * [DiNAR](https://github.com/NIB-SI/DiNAR)
+
+   <img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/dn.jpg" height="300"> 
+
    * [Cytoscape](https://cytoscape.org/)
 
 
