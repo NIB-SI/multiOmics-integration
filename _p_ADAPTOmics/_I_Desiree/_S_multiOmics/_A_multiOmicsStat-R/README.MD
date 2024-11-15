@@ -39,15 +39,18 @@ ___
 
 *Denote*: there can be some discrepancies between outputs from different versions
 
-## List of useful R packages
+## List of useful R f-ctions and packages
 ### Data preprocessing and overall inspection
   #### detection of outliers and faulty measurements
+
     * [{gplot2}](https://cran.r-project.org/web/packages/ggplot2/index.html)
     * [{rgl}](https://cran.r-project.org/web/packages/rgl/index.html)
     * [{raster}](https://cran.r-project.org/web/packages/raster/index.html)
     * [{multcompView}](https://cran.r-project.org/web/packages/multcompView/index.html)
     * [{gridExtra}](https://cran.r-project.org/web/packages/gridExtra/index.html)
+
   #### data transformation (if needed)
+
     * [{multimode}](https://cran.r-project.org/web/packages/multimode/index.html)
     * [{fitdistrplus}](https://cran.r-project.org/web/packages/fitdistrplus/index.html)
     * [{caret}](https://cran.r-project.org/web/packages/caret/index.html)
@@ -58,6 +61,7 @@ ___
     * [{preprocessCore}](https://www.bioconductor.org/packages/release/bioc/html/preprocessCore.html)
     * [{compositions}](https://cran.r-project.org/web/packages/compositions/index.html)
     * [{mgcv}](https://cran.r-project.org/web/packages/mgcv/index.html)
+
   #### interpolation
     ##### point-to-point
       * approxfun {stats} - _Returns a list of points which linearly interpolate given data points, or a function performing the linear (or constant) interpolation._
