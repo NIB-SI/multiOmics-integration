@@ -1,4 +1,4 @@
-_I_Omics
+_I_Desiree
 ========
 
 - Master sample description file: 01_Experimental-design-and-days-of-tissue-sampling.xlsx

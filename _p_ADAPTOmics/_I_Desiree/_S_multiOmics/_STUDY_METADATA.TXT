@@ -1,6 +1,6 @@
 Study:	_S_multiOmics
 Title:	multiOmics
-Description:	Minimal, reproducible example for multi-Omics integration pipeline Study
+Description:	Minimal, reproducible example for multi-Omics integration pipeline
 pISA Study creation date:	2022-10-01
 pISA Study creator:	MZ
 Principal investigator:	Kristina Gruden
