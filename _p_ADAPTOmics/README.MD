@@ -9,6 +9,6 @@ This ![pISA-tree](https://github.com/NIB-SI/pISA-tree) structured repository coi
 
 
 
-![](https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/presentations/potato.jpg)
+<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/presentations/potato.jpg" width="300" class="center">
 
 For more info see [ADAPTOmics data analysis protocol](https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/reports/ADAPTOmics_data_analysis_Protocol.docx)
