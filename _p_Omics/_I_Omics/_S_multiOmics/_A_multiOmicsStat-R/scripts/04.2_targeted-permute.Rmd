@@ -45,7 +45,8 @@ rm(list = ls(all = TRUE))
 gc()
 gc()
 
-set.seed(123456)
+seed = 123456
+set.seed(seed)
 
 ```
 
@@ -69,7 +70,9 @@ library(MKinfer)
 ```
 
 
-# data
+# leaves
+
+## data
 
 ```{r, omics, echo=TRUE, warning=FALSE, message=FALSE}
 
@@ -152,6 +155,7 @@ omics = omics[(omics$Stress %in% c('C', 'H') & omics$Time %in% 1:14) |
 
 
 
+
 ```
 
 
@@ -179,7 +183,7 @@ DTC[DTC$measurement == 0, ]$measurement = NA # LOD
 
 
 
-add noise to avoid ties
+## add noise to avoid ties
 
 ```{r, noise, echo=TRUE, warning=FALSE, message=FALSE}
 
@@ -199,7 +203,7 @@ DTC = rbind(DTC, replace)
 ```
 
 
-# stat test
+## stat test
 
 ```{r, stat, echo=TRUE, warning=FALSE, message=FALSE}
 
@@ -214,6 +218,7 @@ stat.test = NULL
 for (en in levels(DTC$variable)) {
 
 
+  set.seed(seed)
 
   el = NULL
   el = levels(DTC$Stress)[-1]
@@ -243,7 +248,6 @@ for (en in levels(DTC$variable)) {
         }
 
         mydata.long = gdata::drop.levels(mydata.long)
-        # print(table(mydata.long$Experiment, mydata.long$Effector))
 
 
           mytable = NULL
@@ -294,7 +298,7 @@ for (en in levels(DTC$variable)) {
 
 ```
 
-# wide
+## wide format
 
 ```{r, wide, echo=TRUE, warning=FALSE, message=FALSE}
 
@@ -322,7 +326,7 @@ stat.test.wide = stat.test.wide[, c(1, ind+1)]
 
 ```
 
-# write res
+## write
 
 ```{r, res, echo=TRUE, warning=FALSE, message=FALSE}
 
@@ -343,8 +347,193 @@ fn = 'Desiree.stat-omics-leaves.xlsx'
 openxlsx::write.xlsx(stat.test.wide, file.path(fp, fn), asTable = TRUE)
 
 
+stat.test.wide.leaves = stat.test.wide[, grep('Variable|PermP', colnames(stat.test.wide))]
+
+
+
 
 ```
+
+
+# tubers
+
+## data
+
+
+```{r, tubers, echo=TRUE, warning=FALSE, message=FALSE}
+
+fp = file.path('..', 'input')
+fn = 'data_targeted.xlsx'
+
+tubers = openxlsx::read.xlsx(xlsxFile = file.path(fp, fn),
+                            sheet = 'metabolomics-tubers',
+                            startRow = 1,
+                            colNames = TRUE,
+                            rowNames = FALSE,
+                            detectDates = FALSE,
+                            skipEmptyRows = TRUE,
+                            skipEmptyCols = TRUE,
+                            rows = NULL,
+                            cols = NULL,
+                            check.names = FALSE,
+                            sep.names = ".",
+                            namedRegion = NULL,
+                            na.strings = "NA",
+                            fillMergedCells = FALSE)
+data.table::setDF(tubers)
+
+
+```
+
+
+```{r, DTC-tubers, echo=TRUE, warning=FALSE, message=FALSE}
+
+stat.test = NULL
+
+
+tubers = tubers[order(tubers$Stress, tubers$Tuber, tubers$Plant), ]
+rownames(tubers) = paste(tubers[, 2], tubers[, 3], tubers[, 4], sep = '_')
+
+
+DTC = tubers[, -grep('Plant|SampleID', colnames(tubers))]
+DTC$Stress = factor(DTC$Stress, levels = c("C",   "D",   "H",   "HD",  "W"))
+DTC = tidyr::gather(DTC, variable, measurement, colnames(DTC)[3]:colnames(DTC)[ncol(DTC)], factor_key=TRUE)
+DTC = DTC[!is.na(DTC$measurement), ]
+DTC = gdata::drop.levels(DTC)
+DTC$variable = factor(DTC$variable)
+
+
+```
+
+
+
+## stat test
+
+```{r, stat-tubers, echo=TRUE, warning=FALSE, message=FALSE}
+
+
+en = levels(DTC$variable)[1]
+eff = 'D'
+
+stat.test = NULL
+
+
+for (en in levels(DTC$variable)) {
+
+
+  set.seed(seed)
+
+  el = NULL
+  el = levels(DTC$Stress)[-1]
+
+
+  for (eff in el) {
+
+
+    # cat(en, '\t', eff, '\n')
+
+
+
+
+
+
+  mydata.long = NULL
+  mydata.long = dplyr::as_tibble(data.table::data.table(DTC[DTC$variable == en &
+                                                                   DTC$Stress %in% c('C', eff), ]))
+  
+  mydata.long = gdata::drop.levels(mydata.long)
+  mytable = NULL
+  
+  
+  model = MKinfer::perm.t.test(log2(measurement) ~ Stress ,
+                                                   data=mydata.long,
+                                                   alternative = "two.sided",
+                                                   mu = 0,
+                                                   paired = FALSE,
+                                                   var.equal = FALSE,
+                                                   conf.level = 0.95,
+                                                   symmetric = TRUE, # a logical variable indicating whether to assume symmetry in the two-sided test. If TRUE then the symmetric permutation p value otherwise the equal-tail permutation p value is computed.
+                                                   p.adjust.method = "none",
+                                                   detailed = TRUE,
+                                                   R = 999, set.seed(123456),
+                                              simplify = TRUE)
+  myvec = c(en, eff, model$method, model$p.value, model$perm.p.value)
+  mytable = rbind(mytable, myvec)
+  
+  mytable = as.data.frame(mytable)
+  colnames(mytable) = c('Variable', 'Treatment', 'Method', 'WelchP', 'PermP')
+  
+  stat.test = rbind(stat.test, mytable)
+
+
+
+  }
+
+
+
+} 
+
+
+
+```
+
+
+## wide format
+
+```{r, wide-tubers, echo=TRUE, warning=FALSE, message=FALSE}
+
+
+stat.test$Treatment = paste0(stat.test$Treatment, 
+                                 formatC(28, width=2, flag="0"))
+
+stat.test$WelchP = format(round(as.numeric(stat.test$WelchP), 3), nsmall = 3)
+stat.test$PermP = format(round(as.numeric(stat.test$PermP), 3), nsmall = 3)
+
+
+stat.test.wide2 = tidyr::spread(stat.test[, c(1:2, 5)], Treatment, PermP)
+stat.test.wide1 = tidyr::spread(stat.test[, c(1:2, 4)], Treatment, WelchP)
+
+colnames(stat.test.wide2)[2:ncol(stat.test.wide2)] = paste(colnames(stat.test.wide2)[2:ncol(stat.test.wide2)], 
+                                                                   'PermP', sep = ' | ')
+colnames(stat.test.wide1)[2:ncol(stat.test.wide1)] = paste(colnames(stat.test.wide1)[2:ncol(stat.test.wide1)], 
+                                                                   'WelchP', sep = ' | ')
+
+
+stat.test.wide = merge(stat.test.wide1, stat.test.wide2, by = c('Variable'), all = TRUE)
+ind = match(sort(colnames(stat.test.wide)[2:ncol(stat.test.wide)]), colnames(stat.test.wide)[2:ncol(stat.test.wide)])
+stat.test.wide = stat.test.wide[, c(1, ind+1)]
+
+```
+
+## write
+
+```{r, res-tubers, echo=TRUE, warning=FALSE, message=FALSE}
+
+
+fp = file.path('..', 'reports')
+fn = 'Desiree.stat-omics-tubers.xlsx'
+openxlsx::write.xlsx(stat.test.wide, file.path(fp, fn), asTable = TRUE)
+
+
+
+```
+
+# write res
+
+```{r, res-write, echo=TRUE, warning=FALSE, message=FALSE}
+
+
+fp = file.path('..', 'output')
+fn = 'targeted_stat.txt'
+stat.test.wide = stat.test.wide[, grep('Variable|PermP', colnames(stat.test.wide))]
+stat.test.wide = merge(stat.test.wide.leaves, stat.test.wide, by = 'Variable', all.x = TRUE, all.y = TRUE)
+
+data.table::fwrite(stat.test.wide, file.path(fp, fn), sep = '\t')
+
+
+```
+
+
 
 
 # session Info
