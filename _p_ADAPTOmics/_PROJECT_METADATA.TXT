@@ -1,0 +1,20 @@
+project:	_p_ADAPTOmics
+Short Name:	ADAPTOmics
+Title:	ADAPTOmics
+Title:	ADAPTOmics: multi-omics data analysis, integration, and visualisation protocol
+Description:	H2020 ADAPT multi-omics data analysis, integration, and visualisation protocol
+pISA projects path:	./pISA-Projects/
+Local pISA-tree organisation:	National Institute of Biology (NIB)
+pISA project creation date:	2020-06-01
+pISA project creator:	Kristina Gruden
+Project funding code:	H2020-SFS-2019-2
+Project coordinator:	Markus Teige
+Project partners:	UNIVIE, UBO, UU, FAU, HUTTON, UDUR, WUR, UP, CRAG, NIB, HZPC, Meijer, SOL, NOES, PSI, EUROPATAT, AGES
+Project start date:	2020-06-01
+Project end date:	2024-11-01
+Principal investigator:	Kristina Gruden
+License:	CC BY 4.0, MIT
+Sharing permission:	Public
+Upload to FAIRDOMHub:	No
+Keywords:	Genomics, comparative genomics, functional genomics, potato, stress tolerance, abiotic stress, molecular mechanisms, modelling
+GitHub:	https://github.com/NIB-SI/multiOmics-integration
