@@ -5,14 +5,14 @@ Assay _A_multiOmicsStat-R
 - ![DEP](https://bioconductor.org/packages/release/bioc/html/DEP.html)
 - ![GSEA](https://www.gsea-msigdb.org/gsea/index.jsp)
 
-*Note:* GSEA (2.1) produces multiple files per comparison. Information was combined (2.2) and visualised (2.3) in R.
+*Denote:* GSEA (2.1) produces multiple files per comparison. Combine information (2.2) and visualise (2.3) in R
 
 ***Phenomics***
 - Feature selection ([FS](https://github.com/topepo/caret/)) with Random Forest (RF) and Recursive Feature Elimination (RFE) {noninvasive} (3.1)
 - Nonparametric statistics {noninvasive, invasive} (3.2, 3.3)
-- various plots {noninvasive, invasive} (3.2, 3.3, 3.4)
+- Various plots {noninvasive, invasive} (3.2, 3.3, 3.4)
 
-*Note*: hyperspectral (3.4) measurements were not conducted on same days as other, therefore were just visualised
+*Deote*: hyperspectral (3.4) measurements are not conducted on the same days as RGB, thermal, targeted Omics', etc, therefore are just visualised
 
 ***Transcriptomics, hormonomics, metabolomics***
 - logFC (4.1)
