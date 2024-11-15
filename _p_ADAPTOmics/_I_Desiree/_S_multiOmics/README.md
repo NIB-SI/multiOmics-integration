@@ -109,21 +109,26 @@ ___
      * limma::decideTests - _Multiple Testing Across Genes and Contrasts_
      * limma::topTable - _Table of Top Genes from Linear Model Fit_
 ### ***Correlation based network inference within each omics level***
+
+<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/e.g._Loo.png" width=33%>  
+
    * Leave-One-Out graphs
      * qgraph [{qgraph}](https://cran.r-project.org/web/packages/qgraph/)
-     * [igraph](https://igraph.org/r/)
-
-<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/e.g._Loo.png" width=25%>   
-       
+     * [igraph](https://igraph.org/r/)    
    * Lioness [{lionessR}](https://bioconductor.org/packages/release/bioc/vignettes/lionessR/inst/doc/lionessR.html)
 
-<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/e.g._Lioness.png" width=25%>   
+<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/e.g._Lioness.png" width=33%>   
    
    *Denote:* Since results from both methods heavily depend on selected thresholds, Lioness node and edge selection using FDR being even more sensitive on correlation difference cut-off, we suggest to use an automated graph thresholding approach.
 
 ### ***Integration across different omics datasets***
  * [Canonical Correlation Analysis](https://mixomics.org/methods/)
- * [N-Integration Discriminant Analysis with DIABLO](https://mixomics.org/mixDIABLO/)  
+ * [N-Integration Discriminant Analysis with DIABLO](https://mixomics.org/mixDIABLO/)
+
+   <img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/e.g._diablo1.png" width=25%>  
+
+   <img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/e.g._diablo2.png" width=25%>  
+   
      * block.splsda {mixOmics} - _N-integration and feature selection with Projection to Latent Structures models (PLS) with sparse Discriminant Analysis_
      * plotDiablo {mixOmics} - _Graphical output for the DIABLO framework_
      * plotVar {mixOmics} - _Plot of Variables_
