@@ -3,6 +3,8 @@ _S_multiOmics
 
 ![](https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_Omics/_I_Omics/_S_multiOmics/reports/Pipeline.svg)
 
+<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/Pipeline.svg" width="300" class="center">
+
 Assays in consecutive steps:
 
 ***_A_multiOmicsStat-R***
