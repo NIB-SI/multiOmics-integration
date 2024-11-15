@@ -20,7 +20,8 @@ Assay _A_multiOmicsStat-R
 
 
 ___
-# R and package versions
+# Notes
+## R and package versions
 - manuscript versions:
     * R version 4.3.1
     * missForest v1.5
@@ -35,6 +36,5 @@ ___
     * DEP v 1.28.0 ([Bioconductor version 3.20](https://bioconductor.org/packages/3.20/BiocViews.html#___Software))
     * MKinfer v1.2
     * mixOmics v6.30.0 ([Bioconductor version 3.20](https://bioconductor.org/packages/3.20/BiocViews.html#___Software))
-- *Note*: there can be some discrepancies between outputs from different versions
 
-*Note:* <https://html-preview.github.io/> doesn't show menu bars
+*Denote*: there can be some discrepancies between outputs from different versions
