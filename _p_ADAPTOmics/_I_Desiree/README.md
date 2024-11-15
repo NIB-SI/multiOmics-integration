@@ -61,7 +61,7 @@ Prior to data analysis and integration, some prerequisites should be met
 - Since they are highly depended on thresholds we advise to use thresholding approach from **_Assay_** [_A_multiOmics-differential-networks-Py](https://github.com/NIB-SI/multiOmics-integration/tree/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_multiOmics-differential-networks-Py) 
 
 #### Step 5: Integration across different omics datasets
-- This step focuses on Canonical Correlation Analysis and N-Integration Discriminant Analysis with [DIABLO](https://academic.oup.com/bioinformatics/article/35/17/3055/5292387) using mixOmics (3)
+- This step focuses on Canonical Correlation Analysis and N-Integration Discriminant Analysis with [DIABLO](https://academic.oup.com/bioinformatics/article/35/17/3055/5292387) using [mixOmics](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005752) (3)
 - Prepare data in a similar manner and run master script from **_Assay_** [_A_DiABLO-R](https://github.com/NIB-SI/multiOmics-integration/tree/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_DiABLO-R)
 - Main packages and functions are listed in the [README.md](https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/README.md) file of this repository
 - Read more about DIABLO at <https://mixomics.org/mixDIABLO/>
