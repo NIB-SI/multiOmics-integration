@@ -1,0 +1,11 @@
+Investigation:	_I_Desiree
+Title:	Desiree
+Description:	Minimal, reproducible example for multi-Omics integration pipeline
+Phenodata:	./01_Experimental-design-and-days-of-tissue-sampling.xlsx
+Featuredata:	./02_Phenomics-featuredata.xlsx
+pISA Investigation creation date:	2022-10-01
+pISA Investigation creator:	MZ
+Principal investigator:	Kristina Gruden
+License:	CC BY 4.0, MIT
+Sharing permission:	Public
+Upload to FAIRDOMHub:	No
