@@ -1,5 +1,4 @@
-```{r echo=FALSE}
-###############################################
+```{r echo=FALSE}gsub("\\.","_",as.character(cutoff)###############################################
 ##                                           ##
 ## (c) Andrej Blejec (andrej.blejec@nib.si)  ##
 ##                                           ##
@@ -11,7 +10,7 @@ options(width=70)
 ### `r  paste(names(data)[blocks[,j]],  collapse=" and ")`
 
 ```{r}
-nfn <- paste0("../reports/figs/network-035a-",paste(names(data)[blocks[,j]], collapse="-"),"-",cutoff*10)
+nfn <- paste0("../reports/figs/network-035a-",paste(names(data)[blocks[,j]], collapse="-"),"-",gsub("\\.","_",as.character(cutoff)))
 nfn
 
 ```
@@ -19,7 +18,7 @@ nfn
 
 ```{r }
 png(paste0(nfn,".png"), res = 600, width = 4000, height = 4000)
-nw <- network(final.diablo.model
+nw <- my.network(final.diablo.model
         , blocks = blocks[,j]
         , color.node = cols[blocks[,j]]
         , cutoff = cutoff

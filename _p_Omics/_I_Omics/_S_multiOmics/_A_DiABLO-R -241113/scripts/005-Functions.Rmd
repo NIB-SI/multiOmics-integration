@@ -9,12 +9,87 @@
 options(width=70)
 ```
 
+```{r}
+hclust<-
+function (d, method = "complete", members = NULL) 
+{
+  print(d)
+    METHODS <- c("ward.D", "single", "complete", 
+        "average", "mcquitty", "median", "centroid", 
+        "ward.D2")
+    if (method == "ward") {
+        message("The \"ward\" method has been renamed to \"ward.D\"; note new \"ward.D2\"")
+        method <- "ward.D"
+    }
+    i.meth <- pmatch(method, METHODS)
+    if (is.na(i.meth)) 
+        stop("invalid clustering method", paste("", 
+            method))
+    if (i.meth == -1) 
+        stop("ambiguous clustering method", paste("", 
+            method))
+    n <- as.integer(attr(d, "Size"))
+    if (is.null(n)) 
+        stop("invalid dissimilarities")
+    if (is.na(n) || n > 65536L) 
+        stop("size cannot be NA nor exceed 65536")
+    if (n < 2) 
+        stop("must have n >= 2 objects to cluster")
+    len <- as.integer(n * (n - 1)/2)
+    if (length(d) != len) 
+        (if (length(d) < len) 
+            stop
+        else warning)("dissimilarities of improper length")
+    if (is.null(members)) 
+        members <- rep(1, n)
+    else if (length(members) != n) 
+        stop("invalid length of members")
+    storage.mode(d) <- "double"
+    hcl <- .Fortran(C_hclust, n = n, len = len, method = as.integer(i.meth), 
+        ia = integer(n), ib = integer(n), crit = double(n), members = as.double(members), 
+        nn = integer(n), disnn = double(n), diss = d)
+    hcass <- .Fortran(C_hcass2, n = n, ia = hcl$ia, ib = hcl$ib, 
+        order = integer(n), iia = integer(n), iib = integer(n))
+    structure(list(merge = cbind(hcass$iia[1L:(n - 1)], hcass$iib[1L:(n - 
+        1)]), height = hcl$crit[1L:(n - 1)], order = hcass$order, 
+        labels = attr(d, "Labels"), method = METHODS[i.meth], 
+        call = match.call(), dist.method = attr(d, "method")), 
+        class = "hclust")
+}
+
+```
+
+
 ## Additional functions
 
 ```{r}
 # cat + end of line
 catln <- function(...) cat(...,"\n")
 ```
+
+
+### Find columns with NAs
+
+Check the pairs of columns that produce NAs in calculations
+
+```{r}
+find_NA_pairs <- function(x, verbose=FALSE){
+    XX <- x
+     a <- expand.grid(1:ncol(XX),1:ncol(XX))
+    nas <- apply(a, 1, function(x) all(is.na(unlist(XX[,x[1]]+XX[,x[2]]))))
+    bad <- unique(unlist((a[nas,1])))
+        if(length(bad)>0){ 
+          res <- dimnames(XX)[[2]][bad]
+    if(verbose ) {
+      cat("   Columns with mutual NA values:\n") 
+      cat(paste("     ", res,collapse=",\n"), sep="\n")
+    }
+    }  else res <- NULL
+    return(res)
+}
+```
+
+
 
 
 ### Panel functions

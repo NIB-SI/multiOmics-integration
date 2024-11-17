@@ -263,7 +263,7 @@ matrix (as is the circos plot). Colour represent variable type.
 ```{r 035a, results='asis'}
 blocks <- combn(length(data),2)
 j <- 1
-cutoff <- 0.8
+cutoff <- 0.7
 out35a <- ""
 for(j in 1:ncol(blocks)){
     out35a <- paste( out35a, knit_child("035a-DIABLO-network.Rmd", quiet=!TRUE))
@@ -293,7 +293,7 @@ if(exists(deparse(substitute(nw)))) ly <- nw$layout else ly <- NULL
 ```
 
 ```{r results='asis'}
-cutoff <- 0.8
+cutoff <- 0.7
 x <- final.diablo.model
 label <- paste(.treat, collapse=", ")
 out35b <- ""
@@ -316,15 +316,16 @@ plotLoadings(final.diablo.model, comp = i, contrib = 'max', method = 'median')
 The cimDIABLO() function is a clustered image map specifically implemented 
 to represent the multi-omics molecular signature expression for each sample. From figure below the areas of homogeneous expression levels for a set of samples across a set of features can be determined. For instance, the H14 samples were the only group to show extremely high levels of expression for a specific set of genes and metabolites. This indicates these features are fairly discriminating for this subtype.
 
+
+
 ```{r}
 cimfn <- "../reports/figs/cim.png"
 ```
 
 ```{r cim1}
 png(cimfn, res = 600, width = 4000, height = 4000)
-cimDiablo(final.diablo.model, size.legend=0.7)
+cim <- cimDiablo(final.diablo.model, size.legend=0.7,comp=1:3)
 dev.off()
-
 ```
 
 ![`r cimfn`](`r cimfn`)
@@ -346,7 +347,7 @@ Save finil DIABLO model for future use in networks.
 res <- final.diablo.model
 ```
 
-Estimate classification error rate. The error rate should drop by more components used.
+Estimate classification error rate. The error rate should drop by more components used. 
 
 ```{r }
 # run component number tuning with repeated CV
@@ -436,7 +437,7 @@ datasets <- names(CCDATA[-1])
 ndatasets<- length(datasets)
 #
 nname <- paste("../ouptut/figs/network-",paste(useTreatment,collapse=""),sep="")
-N12 <- network(res
+N12 <- my.network(res
     , cutoff = 0
     , blocks = 1:ndatasets
     , shape.node = c("rectangle")

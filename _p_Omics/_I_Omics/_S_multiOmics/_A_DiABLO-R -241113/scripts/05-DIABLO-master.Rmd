@@ -20,15 +20,24 @@ output:
 
 ```{r include=FALSE, message=FALSE, warnings=FALSE, cache=FALSE}
 require(knitr)
+# progress report also from child files: use option progress=TRUE
+knitr::knit_hooks$set(progress = function(before, ...) {
+  if (before) {
+    cat(paste("\r",Sys.time(),current_input(),":", opts_current$get("label")),"\n", file=stderr())
+  }
+})
+#
 render_markdown()
 opts_chunk$set( fig.path='../reports/figs/'
-    , tidy=TRUE)
+    , tidy=TRUE
+    , progress=TRUE)
 opts_knit$set( concordance=TRUE
     , root.dir = getwd() # working directory for all chunks
     , unnamed.chunk.label = "ch"
     , width = 70
 )
 opts_knit$get("root.dir")
+
 ```
 
 # Introduction
@@ -81,12 +90,14 @@ Sample description file (aka phenodata)
 
 pfn <- "../input/phenodata_subset_2023-03-08.txt"
 files <- c(
-   "../input/data_hormonomics.txt"
+   "../input/data_Proteomics.txt"
  , "../input/data_metabolomics.txt"
+ , "../input/data_hormonomics.txt"
  , "../input/data_qPCR.txt"
  , "../input/data_Phenomics.txt"
-  , "../input/data_Proteomics.txt"
  )
+
+
 
 ```
 
@@ -95,11 +106,11 @@ For future use and labeling, we need text names of dataset objects.
 
 ```{r datanames}
 datanames <- c(
-      "hormonomics"
+      "proteomics"
     , "metabolomics"
+    , "hormonomics"
     , "qPCR"
     , "phenomics"
-    , "proteomics"
 )
 datanames
 ```
@@ -107,7 +118,7 @@ datanames
 Define groups to consider. In a small example, we will pick two groups, based on treatment:
 
 ```{r}
-useTreatment <- c("C","H")
+useTreatment <- c("H","HD")
 ```
 
 Just to check:
@@ -185,6 +196,7 @@ datanames
 datanames %in% ls()
 ```
 
+
 ## Combine datasets
 
 Datasets for DIABLO need to be collected in a list, with rows corresponding to the same samples. The order of samples from shrinked phenodata will be enforced.
@@ -236,6 +248,26 @@ OK <- OK&ok
 ```{r, echo=FALSE, results='asis'}
 if(OK) catln("Sample names in datasets match.") else catln("ERROR: Sample names in datasets do not match!!")
 ```
+
+### Check missing values
+
+Pairs of Variables with many missing values sometimes produce missing correlations. Most of the times they will be ignored in the analysis but might produce problems at some point.
+
+This checks if any such pairs exist:
+
+```{r}
+for(i in 2:length(X)){
+  catln(names(X[i]))
+bad_columns <- find_NA_pairs(X[[i]])
+    if(!is.null(bad_columns) ) {
+      cat("   Columns with mutual NA values:\n") 
+      cat(paste("     ", bad_columns,collapse=",\n"), sep="\n")
+    }
+}
+```
+
+Listed vector of names (if not NULL) can be used to delete the columns with lots of missing values.
+
 
 Put data into safe object `DATA`. 
 

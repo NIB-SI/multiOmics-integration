@@ -14,12 +14,12 @@ options(width=70)
 ```{r }
 ndata <- length(data)
 lbl <- gsub(", ","-",label)
-nfn <- paste("../reports/figs/network-035b",lbl,cutoff*10,sep="-")
+nfn <- paste("../reports/figs/network-035b",lbl,gsub("\\.","_",as.character(cutoff)),sep="-")
 ```
 
 ```{r }
 set.seed(1234)
-nw <- network(x
+nw <- my.network(x
         , blocks = 1:ndata
         , color.node = cols
         , cutoff = cutoff
