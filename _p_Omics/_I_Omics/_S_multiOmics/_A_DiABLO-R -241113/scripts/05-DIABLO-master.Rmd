@@ -121,6 +121,17 @@ Define groups to consider. In a small example, we will pick two groups, based on
 useTreatment <- c("H","HD")
 ```
 
+Set path to figures directory
+```{r}
+opts_knit$set( 
+     fig.path=paste0(opts_knit$get("fig.path"), paste(useTreatment,collapse="-"),"/")
+)
+opts_knit$get("fig.path")
+```
+
+
+
+
 Just to check:
 Phenodata file name
 ```{r}

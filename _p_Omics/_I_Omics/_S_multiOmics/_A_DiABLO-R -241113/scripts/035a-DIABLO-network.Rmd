@@ -10,7 +10,7 @@ options(width=70)
 ### `r  paste(names(data)[blocks[,j]],  collapse=" and ")`
 
 ```{r}
-nfn <- paste0("../reports/figs/network-035a-",paste(names(data)[blocks[,j]], collapse="-"),"-",gsub("\\.","_",as.character(cutoff)))
+nfn <- paste0(opts_knit$get("fig.path"),"network-035a-",paste(names(data)[blocks[,j]], collapse="-"),"-",gsub("\\.","_",as.character(cutoff)))
 nfn
 
 ```
