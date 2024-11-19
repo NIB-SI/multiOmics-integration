@@ -14,7 +14,7 @@ options(width=70)
 ```{r }
 ndata <- length(data)
 lbl <- gsub(", ","-",label)
-nfn <- paste("../reports/figs/network-035b",lbl,gsub("\\.","_",as.character(cutoff)),sep="-")
+nfn <- paste0(opts_chunk$get("fig.path"),paste("network-035b",lbl,gsub("\\.","_",as.character(cutoff)),sep="-"))
 ```
 
 ```{r }

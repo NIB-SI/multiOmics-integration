@@ -104,10 +104,6 @@ basic.diablo.model = block.splsda(X = data, Y = Y, ncomp = 5, design = design)
 ```
 
 
-```{r}
-######################################## test eval
-knitr::opts_chunk$set(eval=!FALSE)
-```
 
 ### Tuning the number of components
 
@@ -319,7 +315,7 @@ to represent the multi-omics molecular signature expression for each sample. Fro
 
 
 ```{r}
-cimfn <- "../reports/figs/cim.png"
+cimfn <- paste0(opts_chunk$get("fig.path"),"cim.png")
 ```
 
 ```{r cim1}
@@ -436,7 +432,7 @@ names(netlist)
 datasets <- names(CCDATA[-1])
 ndatasets<- length(datasets)
 #
-nname <- paste("../ouptut/figs/network-",paste(useTreatment,collapse=""),sep="")
+nname <- paste(opts_chunk$get("fig.path"),"network-",paste(useTreatment,collapse=""),sep="")
 N12 <- my.network(res
     , cutoff = 0
     , blocks = 1:ndatasets

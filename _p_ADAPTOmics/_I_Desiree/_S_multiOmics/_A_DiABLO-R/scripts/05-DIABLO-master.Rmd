@@ -28,14 +28,18 @@ knitr::knit_hooks$set(progress = function(before, ...) {
 })
 #
 render_markdown()
+
 opts_chunk$set( fig.path='../reports/figs/'
     , tidy=TRUE
     , progress=TRUE)
+#
 opts_knit$set( concordance=TRUE
     , root.dir = getwd() # working directory for all chunks
     , unnamed.chunk.label = "ch"
     , width = 70
 )
+
+
 opts_knit$get("root.dir")
 
 ```
@@ -115,11 +119,25 @@ datanames <- c(
 datanames
 ```
 
-Define groups to consider. In a small example, we will pick two groups, based on treatment:
+Define groups to consider. In a small example, we will pick two groups, based on the treatment:
 
 ```{r}
 useTreatment <- c("H","HD")
 ```
+
+Set path to figures directory
+```{r echo=FALSE}
+treatString <- paste(useTreatment,collapse="-")
+opts_chunk$set( 
+     fig.path=paste0(opts_chunk$get("fig.path"), treatString ,"/"))
+opts_chunk$get("fig.path")
+opts_knit$set(unnamed.chunk.label = treatString)
+opts_knit$get( "unnamed.chunk.label")
+
+if(!dir.exists(opts_chunk$get("fig.path"))) dir.create(opts_chunk$get("fig.path")) else
+  bla <- file.remove(paste0(opts_chunk$get("fig.path"),dir(opts_chunk$get("fig.path"))))
+```
+
 
 Just to check:
 Phenodata file name
