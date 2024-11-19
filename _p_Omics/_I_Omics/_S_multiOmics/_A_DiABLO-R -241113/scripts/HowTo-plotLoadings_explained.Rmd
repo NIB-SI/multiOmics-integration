@@ -1,0 +1,189 @@
+---
+title: "plotLoadings - what it plots?"
+author: "A. Blejec"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Package
+
+```{r, eval=FALSE}
+library(mixOmics)
+```
+
+
+```{r include=FALSE, warnings=FALSE, message=FALSE, results="hide"}
+library(mixOmics)
+```
+
+
+## Get saved model
+
+Model for H-HD
+
+```{r}
+source("final-diablo-model-H-HD.R")
+```
+
+
+
+
+## plotLoadings
+
+The function “plotLoadings” visualises the loading weights of each selected variable on each component and each data set. The colour indicates the class in which the variable has the maximum level of expression “contrib = ‘max’” using the median “method = ‘median’”. Figure below depicts the loading values for each dimension.
+
+Loadings have the same meaning as in PCA: 
+
+For each case, 
+
+component score = sum (loadings * variable)
+
+$$score_{k,i}=\sum_j{} l_{j,k} * x_{i,j}$$
+```{r}
+loadings <- final.diablo.model$loadings
+head(loadings)
+```
+
+
+
+Take proteomics loadings for component $m$
+
+```{r}
+m <- 1
+names(final.diablo.model$loadings[m])
+```
+
+
+```{r}
+names(loadings)
+loadings[m]
+loadings <- loadings[[m]][,1]
+loadings
+```
+Take nonzero loadings and order by absolute value
+
+```{r}
+loadings <- loadings[loadings!=0]
+loadings <- loadings[order(abs(loadings))]
+as.data.frame(loadings)
+```
+
+This is plotted by plotLoadings
+
+```{r}
+plotLoadings(final.diablo.model,block = m,comp=1,contrib = "max",     method = "median")
+```
+
+Colors show groups with maximal median measurements for each variable. 
+
+Variable with maximal absolute loading is:
+
+```{r}
+maxl <- which(abs(loadings)==max(abs(loadings)))
+loadings[maxl]
+```
+
+Get data:
+
+```{r}
+names(final.diablo.model$X)
+x <- final.diablo.model$X[[m]]
+head(x)
+```
+And select variable for selected loading
+
+```{r}
+x[,names(maxl),drop=FALSE]
+x <- x[,names(maxl),drop=FALSE]
+
+```
+
+
+plotLoadings is using maximal median vale by groups.
+
+
+
+Medians of values by group
+
+```{r}
+group <- final.diablo.model$Y
+med <- aggregate((x),list(group),median)
+med
+maxm <- which(med[,2]==max(med[,2]))
+maxmed <- med[maxm,]
+maxmed
+```
+
+We can see that the group with maximal median measurement is in group 
+
+```{r}
+as.character(maxmed[,1])
+```
+ which is indicated by the color on the plot 
+ 
+```{r}
+plotLoadings(final.diablo.model,block = m,comp=1,contrib = "max",     method = "median")
+```
+
+
+## Note for cases with possible negative measurements.
+
+IN such case, more sense would be the maximal median of absolute values, since the product of such value with loading gives higher contribution. This dilemma exists only with negative measured values. 
+
+Contribution
+
+```{r}
+med
+loadings[maxl]
+contr <- med[,2]*loadings[maxl]
+names(contr) <- med[,1]
+contr
+```
+
+
+
+### Using median of absolute values
+
+```{r}
+group <- final.diablo.model$Y
+med <- aggregate((x),list(group),median)
+med
+amed <- aggregate(abs(x),list(group),median)
+amed
+maxm <- which(amed[,2]==max(amed[,2]))
+maxamed <- med[maxm,]
+maxamed
+```
+
+We can see that the group with maximal median measurement is in group 
+
+```{r}
+as.character(maxamed[,1])
+```
+
+Contribution
+
+```{r}
+med
+loadings[maxl]
+contr <- med[,2]*loadings[maxl]
+names(contr) <- med[,1]
+contr
+```
+
+We can see that the group with maximal median measurement is in group 
+
+```{r}
+as.character(maxamed[,1])
+```
+
+
+```{r eval=as.character(maxmed[,1])!=as.character(maxamed[,1]), echo=FALSE}
+cat("Component 1 gains the highest contribution (in absolute values) in group ", as.character(maxamed[,1]),", not in " , as.character(maxmed[,1]),".", sep="")
+```
+
+
