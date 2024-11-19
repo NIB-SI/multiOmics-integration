@@ -122,7 +122,7 @@ datanames
 Define groups to consider. In a small example, we will pick two groups, based on the treatment:
 
 ```{r}
-useTreatment <- c("C","H")
+useTreatment <- c("H","HD")
 ```
 
 Set path to figures directory
@@ -137,8 +137,6 @@ opts_knit$get( "unnamed.chunk.label")
 if(!dir.exists(opts_chunk$get("fig.path"))) dir.create(opts_chunk$get("fig.path")) else
   bla <- file.remove(paste0(opts_chunk$get("fig.path"),dir(opts_chunk$get("fig.path"))))
 ```
-
-
 
 
 Just to check:
