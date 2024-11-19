@@ -15,11 +15,12 @@ moti <- c("CLCdnDe10_24187",	"VdnPW4_15664")
 ```
 
 ```{r}
-remove_NA_pairs <- function(x){
+remove_NA_pairs <- function(x, verbose=TRUE){
       X <- x
       print(ncol(X))
       a <- expand.grid(1:ncol(X),1:ncol(X))
-    nas <- apply(apply(a,1,function(x) X[,x[1]]+X[,x[2]]),2,function(x) all(is.na(x)))
+    nas <- apply(a,1,function(x) X[,x[1]]+X[,x[2]])
+    nas <- apply(nas,2,function(x) all(is.na(x)))
     gnile <- unlist(a[nas,][1,])
     print(dimnames(X)[[2]][gnile])
     X <- X[,-gnile]
