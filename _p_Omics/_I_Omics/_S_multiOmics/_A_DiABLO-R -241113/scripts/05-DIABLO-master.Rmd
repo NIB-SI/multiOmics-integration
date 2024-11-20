@@ -18,7 +18,7 @@ output:
 ###############################################
 ```
 
-```{r include=FALSE, message=FALSE, warnings=FALSE, cache=FALSE}
+```{r include=FALSE, message=FALSE, warnings=FALSE}
 require(knitr)
 # progress report also from child files: use option progress=TRUE
 knitr::knit_hooks$set(progress = function(before, ...) {
@@ -133,10 +133,14 @@ opts_chunk$set(
 opts_chunk$get("fig.path")
 opts_knit$set(unnamed.chunk.label = treatString)
 opts_knit$get( "unnamed.chunk.label")
-
-if(!dir.exists(opts_chunk$get("fig.path"))) dir.create(opts_chunk$get("fig.path")) else
-  bla <- file.remove(paste0(opts_chunk$get("fig.path"),dir(opts_chunk$get("fig.path"))))
+# figures directory
+if(!dir.exists(opts_chunk$get("fig.path"))) dir.create(opts_chunk$get("fig.path"))
+# output directory
+oroot <- file.path("../output", treatString)
+dir.create(oroot)
 ```
+
+Output tables and model are in `r oroot`.
 
 
 Just to check:

@@ -155,12 +155,20 @@ The final DIABLO model is run as:
 
 ```{r }
 # set the optimised DIABLO model
-final.diablo.model = block.splsda(X = data, Y = as.factor(state)
+final.diablo.model <- block.splsda(X = data, Y = as.factor(state)
                           ,  ncomp = ncomp
                           , keepX = list.keepX
                           , design = design)
 
 ```
+
+Save model for future use
+
+```{r}
+modfn <- paste0(oroot,"/model-",paste(.treat, collapse="_"),"-",paste(names(CCDATA[-1]), collapse="_"),".R")
+dump("final.diablo.model", file=modfn)
+```
+
 
 The selected variables can be extracted with the function selectVar(), for example in each block, as seen below. Note that the stability of selected variables can be extracted from the output of the perf() function.
 
@@ -466,7 +474,7 @@ str(e)
 Compose file name and necessary information for network export file
 
 ```{r}
-netfn <- paste0("../output/network-",paste(.treat, collapse="_"),"-",paste(datasets, collapse="_"),".txt")
+netfn <- paste0(oroot,"/network-",paste(.treat, collapse="_"),"-",paste(datasets, collapse="_"),".txt")
 label0 <- paste(paste(.treat, collapse=", "),"|",paste(datasets, collapse=", "),"; cutoff =",0)
 title <- label0
 sets <- 1:length(DATA)

@@ -11,7 +11,7 @@
 
 <meta name="author" content="A. Blejec" />
 
-<meta name="date" content="2024-11-19" />
+<meta name="date" content="2024-11-20" />
 
 <title>plotLoadings - what it plots?</title>
 
@@ -352,7 +352,7 @@ display: none;
 
 <h1 class="title toc-ignore">plotLoadings - what it plots?</h1>
 <h4 class="author">A. Blejec</h4>
-<h4 class="date">2024-11-19</h4>
+<h4 class="date">2024-11-20</h4>
 
 </div>
 
@@ -853,6 +853,48 @@ group</p>
 <pre class="r"><code>as.character(maxamed[,1])</code></pre>
 <pre><code>## [1] &quot;HD14&quot;</code></pre>
 </div>
+</div>
+<div id="contributions-from-mixomics" class="section level2">
+<h2>Contributions from mixOmics</h2>
+<pre class="r"><code>get.contrib.df &lt;- 
+function (Y, X, method, contrib, value.selected.var, colnames.X, 
+    name.selected.var, legend.color, col.ties) 
+{
+    which.comp = method.group = list()
+    which.contrib = data.frame(matrix(FALSE, ncol = nlevels(Y) + 
+        2, nrow = length(colnames.X), dimnames = list(name.selected.var, 
+        c(paste0(&quot;Contrib.&quot;, levels(Y)), &quot;Contrib&quot;, 
+            &quot;GroupContrib&quot;))))
+    for (k in 1:ncol(X)) {
+        method.group[[k]] = tapply(X[, k], Y, method, na.rm = TRUE)
+        which.contrib[k, 1:nlevels(Y)] = (method.group[[k]]) == 
+            get(contrib)((method.group[[k]]), na.rm = TRUE)
+    }
+    which.contrib$color = apply(which.contrib, 1, function(x) {
+        if (length(which(x)) &gt; 1) {
+            return(col.ties)
+        }
+        else {
+            return(legend.color[1:nlevels(Y)][which(x)])
+        }
+    })
+    which.contrib$GroupContrib = apply(which.contrib[, 1:(nlevels(Y))], 
+        1, function(x) {
+            if (length(which(x)) &gt; 1) {
+                return(&quot;tie&quot;)
+            }
+            else {
+                return(levels(Y)[which(x)])
+            }
+        })
+    method.group = do.call(rbind, method.group)
+    df = data.frame(method.group, which.contrib, importance = value.selected.var)
+    return(df)
+}</code></pre>
+<pre class="r"><code>x &lt;- final.diablo.model$X[[m]]
+y &lt;- final.diablo.model$Y
+res &lt;- get.contrib.df(y,x,method=&quot;median&quot;, colnames=colnames(x), name.selected.var=colnames(x), contrib=&quot;max&quot;, legend.color=1:6,value.selected.var=22)
+res</code></pre>
 </div>
 
 
