@@ -37,8 +37,7 @@ use protein short names
 
 
 
-DENOTE: 
-
+**technical notes**: 
 1. water.consumption has missing values for day 1, therefore: i) for C, H, D, HD day 2 was taken; ii) for W day 3 was taken (only early day with non-negative values)
 2. deltaT had negative values - al values shifted by abs(min())
 
