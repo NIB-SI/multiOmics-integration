@@ -21,7 +21,7 @@ Run Assays in consecutive steps:
 - Automated graph thresholding
 - Integration of data with prior knowledge
 
-***_A_multiOmics-visualisation-Python***
+***_A_multiOmics-visualisation-Py***
 - Visualisation of data with prior knowledge
 
 ___
