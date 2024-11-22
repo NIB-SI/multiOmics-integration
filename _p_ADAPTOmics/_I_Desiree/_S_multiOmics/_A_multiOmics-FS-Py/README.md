@@ -16,9 +16,9 @@ Assay _A_multiOmics-FS-Py
 
 <img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_multiOmics-FS-Py/reports/model comparison.svg" height="400">
 
-# RF feature importance scores
+# feature importance scores
 
 <img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_multiOmics-FS-Py/reports/feature_importance_all.svg" height="400">
 
-
+# average feature importance
 <img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_multiOmics-FS-Py/reports/avg-drop_cols.svg" height="300">
