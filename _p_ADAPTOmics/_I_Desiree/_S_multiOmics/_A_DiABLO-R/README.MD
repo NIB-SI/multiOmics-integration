@@ -3,22 +3,30 @@
 ## Input
 
 ### Protein selection
-- ../input/data_Proteomics.txt - data
-- ../input/Proteomics-subset-annotation.txt - short names and more
+```
+../input/data_Proteomics.txt - data
+../input/Proteomics-subset-annotation.txt - short names and more
+```
 
 ## Targeted omics
-- ../input/data_Phenomics.txt - 4 out of 6 replicates selected
-- ../input/data_hormonomics.txt
-- ../input/data_metabolomics.txt
-- ../input/data_qPCR.txt
+```
+../input/data_Phenomics.txt - 4 out of 6 replicates selected
+../input/data_hormonomics.txt
+../input/data_metabolomics.txt
+../input/data_qPCR.txt
+```
 
 ## Phenotyping
-- ../input/data_Phenomics.txt - 4 out of 6 replicates selected
+```
+../input/data_Phenomics.txt - 4 out of 6 replicates selected
+```
 
 
 
 ## Sample description
-- ../input/phenodata_subset_2023-03-08.txt
+```
+../input/phenodata_subset_2023-03-08.txt
+```
 - HDW - ignore
 - C (Ctrl, control): 1, 7, 8, 14, 15, 21, 28
 - H: 1, 7, 8, 14
@@ -36,10 +44,10 @@ DENOTE:
 
 
 # Notes
-recovery after H: 15, 21, 28
-recovery after D: 15, 21, 28
-recovery after HD: 15, 21, 28
-recovery after W: 15, 21, 28 (wobbly)
+- recovery after H: 15, 21, 28
+- recovery after D: 15, 21, 28
+- recovery after HD: 15, 21, 28
+- recovery after W: 15, 21, 28 (wobbly)
 
 
 
