@@ -5,12 +5,12 @@
 ### Protein selection
 ```
 ../input/data_Proteomics.txt - data
-../input/Proteomics-subset-annotation.txt - short names and more
+../input/Proteomics-subset-annotation.txt
 ```
+use protein short names
 
 ## Targeted omics
 ```
-../input/data_Phenomics.txt - 4 out of 6 replicates selected
 ../input/data_hormonomics.txt
 ../input/data_metabolomics.txt
 ../input/data_qPCR.txt
@@ -18,8 +18,9 @@
 
 ## Phenotyping
 ```
-../input/data_Phenomics.txt - 4 out of 6 replicates selected
+../input/data_Phenomics.txt
 ```
+4 out of 6 replicates selected
 
 
 
