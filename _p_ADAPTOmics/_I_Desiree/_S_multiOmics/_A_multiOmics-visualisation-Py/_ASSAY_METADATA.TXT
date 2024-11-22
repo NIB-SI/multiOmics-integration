@@ -1,4 +1,4 @@
-Assay:	_A_multiOmics-visualisation-Python
+Assay:	_A_multiOmics-visualisation-Py
 Assay Class:	DRY
 Assay Type:	R
 Title:	multiOmics-visualisation
