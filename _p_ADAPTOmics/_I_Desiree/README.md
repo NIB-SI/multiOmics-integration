@@ -78,7 +78,7 @@ Prior to data analysis and integration, some prerequisites should be met
 - Log2FC values from Step 3, or standard differential expression analysis, can be visualised in prior knowledge network in a differential network context using Cytoscape and [DiNAR](https://github.com/NIB-SI/DiNAR)
 - Cystoscape manual is available at <https://manual.cytoscape.org/en/stable/>
 - Example of manually created network for this specific data set can be found within the ***input*** directory of the **_Assay_** [_A_multiOmics-differential-networks-Py](https://github.com/NIB-SI/multiOmics-integration/tree/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_multiOmics-differential-networks-Py)
-- Visualised network are available from **_Assay_** [_A_multiOmics-visualisation-Python](https://github.com/NIB-SI/multiOmics-integration/tree/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_multiOmics-visualisation-Py)
+- Visualised network are available from **_Assay_** [_A_multiOmics-visualisation-Py](https://github.com/NIB-SI/multiOmics-integration/tree/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_multiOmics-visualisation-Py)
 - For more prior knowledge network for plant species see <https://skm.nib.si/> and <https://knetminer.com/>
 
 ___
