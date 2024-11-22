@@ -1,32 +1,32 @@
 # Assay _A_DiABLO-R
 
-## Protein selection
+## Input
 
-input/data_Proteomics.txt
-- data
+### Protein selection
+- ../input/data_Proteomics.txt - data
+- ../input/Proteomics-subset-annotation.txt - short names and more
 
-
-and short names from
-
-input/Proteomics-subset-annotation.txt 
-- proteinID	shortName	MapManBins	Use
-
-
-
-## Stress and samples
-
-HDW - ignore
-
-C (Ctrl, control): 1, 7, 8, 14, 15, 21, 28
-H: 1, 7, 8, 14
-D: 8, 14
-HD: 8, 14
-W: 1, 7 (sever damage after days)
-
+## Targeted omics
+- ../input/data_Phenomics.txt - 4 out of 6 replicates selected
+- ../input/data_hormonomics.txt
+- ../input/data_metabolomics.txt
+- ../input/data_qPCR.txt
 
 ## Phenotyping
+- ../input/data_Phenomics.txt - 4 out of 6 replicates selected
 
-input/data_Phenomics.txt
+
+
+## Sample description
+- ../input/phenodata_subset_2023-03-08.txt
+- HDW - ignore
+- C (Ctrl, control): 1, 7, 8, 14, 15, 21, 28
+- H: 1, 7, 8, 14
+- D: 8, 14
+- HD: 8, 14
+- W: 1, 7 (sever damage in later days)
+
+
 
 DENOTE: 
 
@@ -35,24 +35,13 @@ DENOTE:
 
 
 
-## random notes
-
-
+# Notes
 recovery after H: 15, 21, 28
 recovery after D: 15, 21, 28
 recovery after HD: 15, 21, 28
 recovery after W: 15, 21, 28 (wobbly)
 
 
-logFC
-START
-H1 vs C1
-D8 vs C8
-W1 vs C1
-STOP
-H7 vs C7
-HD14 vs C14
-W7 vs C7
 
 
 
