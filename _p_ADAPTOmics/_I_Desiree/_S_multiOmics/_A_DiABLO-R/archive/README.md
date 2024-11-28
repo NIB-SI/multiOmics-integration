@@ -11,11 +11,15 @@ concepts:
 
 blocks of data: X and Y, latent components: t and u, loading vectors: p and q
 
-ref: [https://doi.org/10.1371/journal.pone.0179638](https://journals.plos.org/plosone/article/figure?id=10.1371/journal.pone.0179638.g001)
+* ref: [https://doi.org/10.1371/journal.pone.0179638](https://journals.plos.org/plosone/article/figure?id=10.1371/journal.pone.0179638.g001)
 
 <img src="https://ars.els-cdn.com/content/image/1-s2.0-S2451902222001859-gr1_lrg.jpg" width="500" class="center">
 
-ref: [https://doi.org/10.1016/j.bpsc.2022.07.012](https://www.sciencedirect.com/science/article/pii/S2451902222001859#fig1)
+* ref: [https://doi.org/10.1016/j.bpsc.2022.07.012](https://www.sciencedirect.com/science/article/pii/S2451902222001859#fig1)
+
+* [PLS-DA](https://asterics.pages.mia.inra.fr/user_documentation/plsda.html)
+
+* [So you think you can PLS-DA? https://doi.org/10.1186/s12859-019-3310-7](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-019-3310-7)
 
 ___
 
