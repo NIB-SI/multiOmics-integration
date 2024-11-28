@@ -1,0 +1,374 @@
+---
+title: "100_Diablo-corPlots"
+author: "zagor"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    fig_caption: yes
+    self_contained: yes
+    fig_width: 24
+    fig_height: 9
+    toc: true
+    toc_float:
+      collapsed: false
+    toc_depth: 5
+    number_sections: true
+    theme: flatly
+    highlight: tango
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(dev = 'png', # c('svg', 'pdf'), 
+                      fig.align = 'center', 
+                      # fig.height = 12, 
+                      # fig.width = 24 ,
+                      warning = FALSE, message = FALSE
+                      )
+
+
+```
+
+# packages
+
+```{r,  warning=FALSE, message=FALSE}
+
+rm(list = ls(all = TRUE))
+gc()
+
+set.seed(123456)
+
+
+`%nin%` = Negate(`%in%`)
+
+# library("RColorBrewer")
+library(ComplexHeatmap)
+library(ggplot2)
+
+```
+
+# palletes
+
+```{r,  warning=FALSE, message=FALSE}
+
+
+
+breaks = seq(-1, 1, length.out = 11)
+col = rev(RColorBrewer::brewer.pal(n = length(breaks), name = "RdBu"))
+col[6] = 'grey90'
+# pie(rep(1, length(col)), col = col, labels = seq(-1, 1, 0.2), main = 'cor')
+
+
+
+
+n = 9
+# (intervals = cut(c(-1,1), n*2))
+intervals = cut(c(-1,1), 
+                breaks = setdiff(seq(-1, 1, 0.1), 0), 
+                include.lowest = TRUE)
+
+my.heatmap.col1 = c(rev(RColorBrewer::brewer.pal(n, 'Reds')), 'white', RColorBrewer::brewer.pal(n, 'Blues'))
+my.heatmap.col = c(my.heatmap.col1[1:3], 
+                    rep('grey90', length(4:(n*2-2))),
+                    my.heatmap.col1[(n*2-1): (n*2 + 1)])
+# pie(rep(1, length(my.heatmap.col)),
+#     col = rev(my.heatmap.col),
+#     labels = levels(intervals),
+#     main = 'heatmap palette')
+
+
+my.heatmap.col = rev(my.heatmap.col)
+
+
+
+
+```
+
+# data
+
+```{r,  warning=FALSE, message=FALSE}
+
+fp = file.path('..', 'output')
+pattern = '\\.txt'
+fl = list.files(fp, recursive = TRUE, full.names = TRUE, pattern = pattern)
+ind = grep('H_HD|old', fl)
+(fl = fl[-ind])
+
+```
+
+
+```{r,  warning=FALSE, message=FALSE}
+
+cnt = 1
+mymerge = NULL
+
+for (i in fl) {
+  
+  print(i)
+  
+  df = as.data.frame(data.table::fread(file.path(i), header = TRUE, fill = TRUE))
+  ind = as.vector(min(grep('group', colnames(df))):ncol(df))
+  df = df[, ind]
+  
+  print(nrow(df))
+  
+
+  if (cnt == 1) {
+    mymerge = df
+  } else {
+    
+    ind = which(df$from %nin% mymerge$from)
+    if (length(ind) > 0) {
+      tmp = df[ind, ]
+      df = df[-ind, ]
+      cn = colnames(tmp)
+      tmp = tmp[, c(3,4,1,2, 5,6,7)]
+      colnames(tmp) = cn
+    }
+    
+    ind = which(df$to %nin% mymerge$to)
+    if (length(ind) > 0) {
+      tmp = df[ind, ]
+      df = df[-ind, ]
+      cn = colnames(tmp)
+      tmp = tmp[, c(3,4,1,2, 5,6,7)]
+      colnames(tmp) = cn
+    }
+    
+  
+    mymerge = merge(mymerge, df, by = c('group1', 'from', 'group2', 'to', 'C'), all.x = TRUE, all.y = TRUE)
+  }
+
+  print(nrow(mymerge))
+  
+  cnt = cnt + 1
+  
+
+  
+}
+
+lapply(mymerge[, grep('^C$', colnames(mymerge)):ncol(mymerge)], function(x) table(is.na(x)))
+
+table(duplicated(mymerge[, 1:4]))
+dim(unique(mymerge[, 1:4], MARGIN=2) )
+
+ind = unique(sort(unlist(lapply(mymerge[, grep('^C$', colnames(mymerge)):ncol(mymerge)], function(x) which(is.na(x))))))
+cat('problematic measuremets:', unique(mymerge[ind, ]$from), '\n')
+
+table(mymerge$group1)
+table(mymerge$group2)
+
+
+```
+
+# colour codes
+
+```{r,  warning=FALSE, message=FALSE}
+
+fp = file.path('..', 'other')
+fn = 'colourCodes_v2.txt'
+
+cc = as.data.frame(data.table::fread(file.path(fp, fn), header = TRUE, fill = TRUE))
+
+ids = sort(unique(c(mymerge$from, mymerge$to)))
+table(ids %in% cc$name)
+
+colnames(cc) = c('from','color_from', 'name_from')
+mymerge = merge(cc, mymerge, by.x = 'from', by.y = 'from', all.x = FALSE, all.y = TRUE)
+colnames(cc) = c('to','color_to', 'name_to')
+mymerge = merge(cc, mymerge, by.x = 'to', by.y = 'to', all.x = FALSE, all.y = TRUE)
+
+ind = grep('\\.', colnames(mymerge))
+mymerge = mymerge[, -ind]
+
+ind = grep('^from$|^to$', colnames(mymerge))
+mymerge = mymerge[, -ind]
+pairs = paste(mymerge$group1, mymerge$group2, sep = '|')
+mymerge = cbind(pairs, mymerge)
+ind = grep('^group', colnames(mymerge))
+mymerge = mymerge[, -ind]
+
+table(sort(mymerge$pairs))
+ 
+```
+
+
+# heatmaps
+
+```{r,  warning=FALSE, message=FALSE}
+
+g = sort(unique(mymerge$pairs))
+
+fpp = file.path('..', 'reports', 'figs', 'compositeHeatmap')
+if (!file.exists(fpp)) dir.create(fpp)
+
+plot_heatmaps = function() {
+  
+    # fnp = paste0('compositeHeatmap_', gsub('\\|', '-', g[i]), ".svg")
+  # svg(file.path(fpp, fnp), width = 24, height = 12)
+  
+  
+  grid.newpage()
+  pushViewport(viewport(layout = grid.layout(nr = 1, nc = 5)))
+  
+  column_colors = cc[match(colnames(htCm), cc$name_to), ]$color_to
+  row_colors = cc[match(rownames(htCm), cc$name_to), ]$color_to
+  
+  pushViewport(viewport(layout.pos.row = 1, layout.pos.col = 1))
+  draw(Heatmap(htCm, 
+               col = circlize::colorRamp2(seq(-1, 1, length = length(my.heatmap.col)), colors = my.heatmap.col), # col, 
+               column_title = paste0('Control', ' ', '1', '-', '14', ' ', 'days'), 
+               show_heatmap_legend = TRUE,
+               column_names_gp = grid::gpar(fontsize = 8, col = column_colors), # col = tcc$HEX), 
+               row_names_gp = grid::gpar(fontsize = 8, col = row_colors), #hcc$HEX), 
+               cluster_columns = FALSE, cluster_rows = FALSE, 
+               heatmap_legend_param = list(at = c(-1, -0.7, 0, 0.7, 1), 
+                                           title = "CC", 
+                                           legend_height = unit(nrow(htCm)/2, "cm")),
+               heatmap_width = unit(ncol(htCm)/2, "cm"), heatmap_height = unit(nrow(htCm)/2, "cm")
+               ),
+       newpage = FALSE,
+       heatmap_legend_side = "left")
+  upViewport()
+  
+  pushViewport(viewport(layout.pos.row = 1, layout.pos.col = 2))
+  draw(Heatmap(htDm, 
+               col = circlize::colorRamp2(seq(-1, 1, length = length(my.heatmap.col)), colors = my.heatmap.col), # col, 
+               column_title = paste0('Drought', ' ', '8', '-', '14', ' ', 'days'), 
+               show_heatmap_legend = FALSE,
+               column_names_gp = grid::gpar(fontsize = 8, col = column_colors), # col = tcc$HEX), 
+               row_names_gp = grid::gpar(fontsize = 8, col = row_colors), #hcc$HEX), 
+               cluster_columns = FALSE, cluster_rows = FALSE, 
+               heatmap_legend_param = list(at = c(-1, -0.7, 0, 0.7, 1), title = "PCC", 
+                                           legend_height = unit(nrow(htDm)/2, "cm"), legend_width = unit(0, "cm")),
+               heatmap_width = unit(ncol(htDm)/2, "cm"), heatmap_height = unit(nrow(htDm)/2, "cm")
+               ),
+       newpage = FALSE)
+  upViewport()
+  
+  pushViewport(viewport(layout.pos.row = 1, layout.pos.col = 3))
+  draw(Heatmap(htHDm, 
+               col = circlize::colorRamp2(seq(-1, 1, length = length(my.heatmap.col)), colors = my.heatmap.col), # col, 
+               column_title = paste0('Heat + Drought', ' ', '8', '-', '14', ' ', 'days'), 
+               show_heatmap_legend = FALSE,
+               column_names_gp = grid::gpar(fontsize = 8, col = column_colors), # col = tcc$HEX), 
+               row_names_gp = grid::gpar(fontsize = 8, col = row_colors), #hcc$HEX), 
+               cluster_columns = FALSE, cluster_rows = FALSE, 
+               heatmap_legend_param = list(at = c(-1, -0.7, 0, 0.7, 1), title = "PCC", 
+                                           legend_height = unit(nrow(htHDm)/2, "cm"), legend_width = unit(0, "cm")),
+               heatmap_width = unit(ncol(htHDm)/2, "cm"), heatmap_height = unit(nrow(htHDm)/2, "cm")
+               ),
+       newpage = FALSE)
+  upViewport()
+  
+  
+  pushViewport(viewport(layout.pos.row = 1, layout.pos.col = 4))
+  draw(Heatmap(htHm, 
+               col = circlize::colorRamp2(seq(-1, 1, length = length(my.heatmap.col)), colors = my.heatmap.col), # col, 
+               column_title = paste0('Heat', ' ', '1', '-', '14', ' ', 'days'), 
+               show_heatmap_legend = FALSE,
+               column_names_gp = grid::gpar(fontsize = 8, col = column_colors), # col = tcc$HEX), 
+               row_names_gp = grid::gpar(fontsize = 8, col = row_colors), #hcc$HEX), 
+               cluster_columns = FALSE, cluster_rows = FALSE, 
+               heatmap_legend_param = list(at = c(-1, -0.7, 0, 0.7, 1), title = "PCC", 
+                                           legend_height = unit(nrow(htHm)/2, "cm"), legend_width = unit(0, "cm")),
+               heatmap_width = unit(ncol(htHm)/2, "cm"), heatmap_height = unit(nrow(htHm)/2, "cm")
+               ),
+       newpage = FALSE)
+  upViewport()
+  
+
+  pushViewport(viewport(layout.pos.row = 1, layout.pos.col = 5))
+  draw(Heatmap(htWm, 
+               col = circlize::colorRamp2(seq(-1, 1, length = length(my.heatmap.col)), colors = my.heatmap.col), # col, 
+               column_title = paste0('Waterlogging', ' ', '1', '-', '7', ' ', 'days'), 
+               show_heatmap_legend = FALSE,
+               column_names_gp = grid::gpar(fontsize = 8, col = column_colors), # col = tcc$HEX), 
+               row_names_gp = grid::gpar(fontsize = 8, col = row_colors), #hcc$HEX), 
+               cluster_columns = FALSE, cluster_rows = FALSE, 
+               heatmap_legend_param = list(at = c(-1, -0.7, 0, 0.7, 1), title = "PCC", 
+                                           legend_height = unit(nrow(htWm)/2, "cm"), legend_width = unit(0, "cm")),
+               heatmap_width = unit(ncol(htWm)/2, "cm"), heatmap_height = unit(nrow(htWm)/2, "cm")
+               ),
+       newpage = FALSE)
+  upViewport()
+  
+}
+
+
+for (i in 1:length(g)) {
+  
+  print(g[i])
+
+  htCm = mymerge[mymerge$pairs %in% g[i], grep('name_to|name_from|^C$', colnames(mymerge))]
+  htCm = tidyr::spread(htCm, name_to, C)
+  rownames(htCm) = htCm[, 1]
+  htCm = as.matrix(htCm[, -1])
+  
+  htDm = mymerge[mymerge$pairs %in% g[i], grep('name_to|name_from|^D$', colnames(mymerge))]
+  htDm = tidyr::spread(htDm, name_to, D)
+  rownames(htDm) = htDm[, 1]
+  htDm = as.matrix(htDm[, -1])
+  
+  htHDm = mymerge[mymerge$pairs %in% g[i], grep('name_to|name_from|^HD$', colnames(mymerge))]
+  htHDm = tidyr::spread(htHDm, name_to, HD)
+  rownames(htHDm) = htHDm[, 1]
+  htHDm = as.matrix(htHDm[, -1])
+  
+  htHm = mymerge[mymerge$pairs %in% g[i], grep('name_to|name_from|^H$', colnames(mymerge))]
+  htHm = tidyr::spread(htHm, name_to, H)
+  rownames(htHm) = htHm[, 1]
+  htHm = as.matrix(htHm[, -1])
+  
+  
+  htWm = mymerge[mymerge$pairs %in% g[i], grep('name_to|name_from|^W$', colnames(mymerge))]
+  htWm = tidyr::spread(htWm, name_to, W)
+  rownames(htWm) = htWm[, 1]
+  htWm = as.matrix(htWm[, -1])
+  
+
+
+# https://jokergoo.github.io/ComplexHeatmap-reference/book/heatmap-annotations.html
+# https://rdrr.io/bioc/ComplexHeatmap/man/HeatmapAnnotation.html  
+  
+  # fnp = paste0('compositeHeatmap_', gsub('\\|', '-', g[i]), ".svg")
+  # svg(file.path(fpp, fnp), width = 24, height = 12)
+  
+  
+
+  # 
+  # dev.off()
+  # 
+  # knitr::include_graphics(file.path(fpp, fnp))
+  
+  # Render plot in the R Markdown document
+  plot_heatmaps()
+  
+  width_auto = ncol(htCm)*5/4
+
+  
+  # Save the heatmap to a PDF
+  fnp = paste0('compositeHeatmap_', gsub('\\|', '-', g[i]), ".pdf")
+  pdf(file.path(fpp, fnp), width = width_auto, height = 9)
+  plot_heatmaps() # Save to PDF
+  dev.off()
+  
+  # Save the heatmaps to an SVG
+  fnp = paste0('compositeHeatmap_', gsub('\\|', '-', g[i]), ".svg")
+  svg(file.path(fpp, fnp), width = width_auto, height = 9)
+  plot_heatmaps()  # Save to SVG
+  dev.off()
+  
+}
+
+
+```
+
+
+```{r,  warning=FALSE, message=FALSE}
+
+sessionInfo()
+
+
+```
+
