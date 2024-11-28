@@ -5,7 +5,7 @@ Project _p_ADAPTOmics
 
 <img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/presentations/logo.png" width="300" class="center">
 
-This [pISA-tree](https://github.com/NIB-SI/pISA-tree) structured repository cointains develeped pipeline for the integration of multi-omics data and deep phenotyping of potato under single- and combined abiotic stress responses within the WP5 of [ADAPT](https://adapt.univie.ac.at/) [H2020](https://cordis.europa.eu/project/id/862858/results) project 
+This [pISA-tree](https://github.com/NIB-SI/pISA-tree) structured repository cointains developed pipeline for the integration of multi-omics data and deep phenotyping of potato under single- and combined abiotic stress responses within the WP5 of [ADAPT](https://adapt.univie.ac.at/) [H2020](https://cordis.europa.eu/project/id/862858/results) project 
 
 
 
