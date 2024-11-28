@@ -21,6 +21,8 @@ blocks of data: X and Y, latent components: t and u, loading vectors: p and q
 
 * [So you think you can PLS-DA? https://doi.org/10.1186/s12859-019-3310-7](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-019-3310-7)
 
+* [Comparative analysis of integrative classification methods for multi-omics data. https://doi.org/10.1093/bib/bbae331](https://academic.oup.com/bib/article/25/4/bbae331/7710310)
+
 ___
 
 <https://htmlpreview.github.io/>
