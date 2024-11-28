@@ -56,3 +56,11 @@ use protein short names
 ___
 
 The background network is merged with thresholded ([_A_multiOmics-differential-networks-Py](https://github.com/NIB-SI/multiOmics-integration/tree/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_multiOmics-differential-networks-Py)) correlation networks and visualised using Cytoscape ([_A_multiOmics-visualisation-Py](https://github.com/NIB-SI/multiOmics-integration/tree/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_multiOmics-visualisation-Py))
+
+___
+
+# See also
+
+## [DIABLO playground](https://github.com/NIB-SI/multiOmics-integration/tree/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_DiABLO-R/archive)
+
+
