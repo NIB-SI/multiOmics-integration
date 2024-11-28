@@ -18,6 +18,6 @@ Assay _A_multiOmicsStat-R
 - logFC (4.1)
 - t-test: Welch's (4.1) and [Permutation](https://github.com/stamats/MKinfer) t-Test (4.2)
 
-These results are visualised in Assay [_A_multiOmics-visualisation-Python](https://github.com/NIB-SI/multiOmics-integration/tree/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_multiOmics-visualisation-Python)
+These results are visualised in Assay [_A_multiOmics-visualisation-Python](https://github.com/NIB-SI/multiOmics-integration/tree/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_multiOmics-visualisation-Py)
 
 
