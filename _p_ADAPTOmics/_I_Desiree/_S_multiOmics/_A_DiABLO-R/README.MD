@@ -59,8 +59,7 @@ The background network is merged with thresholded ([_A_multiOmics-differential-n
 
 ___
 
-# See also
-
-## [DIABLO playground](https://github.com/NIB-SI/multiOmics-integration/tree/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_DiABLO-R/archive)
+See also
+* [DIABLO playground](https://github.com/NIB-SI/multiOmics-integration/tree/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_DiABLO-R/archive)
 
 
