@@ -1,4 +1,4 @@
-Assay _A_015_thresholding-py
+# Assay multiOmics-differential-networks-Py
 ==============
 
 ***Integration across different omics datasets***
