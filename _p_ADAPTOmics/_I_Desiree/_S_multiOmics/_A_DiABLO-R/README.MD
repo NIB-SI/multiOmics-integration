@@ -33,13 +33,13 @@ use protein short names
 - H: 1, 7, 8, 14
 - D: 8, 14
 - HD: 8, 14
-- W: 1, 7 (sever damage in later days)
+- W: 1, 7 (sever damage in the second weeks of waterlogging)
 
 
 
 **technical notes**: 
-1. water.consumption has missing values for day 1, therefore: i) for C, H, D, HD day 2 was taken; ii) for W day 3 was taken (only early day with non-negative values)
-2. deltaT had negative values - al values shifted by abs(min())
+1. for engineered variables that have missing values, due to missing reference at for e.g. initial stage, take consecutive day containing non-negative values
+2. for engineered variables that have negative values, and they should not - shift all values by abs(min())
 
 
 
