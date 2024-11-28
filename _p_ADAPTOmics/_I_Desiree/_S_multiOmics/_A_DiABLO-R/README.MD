@@ -53,6 +53,6 @@ use protein short names
 2. for engineered variables that have negative values, and they should not - shift all values by abs(min())
 
 
-===
+___
 
 The background network is merged with thresholded ([_A_multiOmics-differential-networks-Py](https://github.com/NIB-SI/multiOmics-integration/tree/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_multiOmics-differential-networks-Py)) correlation networks and visualised using Cytoscape ([_A_multiOmics-visualisation-Py](https://github.com/NIB-SI/multiOmics-integration/tree/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_multiOmics-visualisation-Py))
