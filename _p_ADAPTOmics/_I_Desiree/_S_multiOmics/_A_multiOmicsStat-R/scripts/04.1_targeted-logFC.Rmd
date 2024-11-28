@@ -1100,13 +1100,19 @@ rownames(df) = omics$SampleID[omics$Genotype == mytitle]
 
 mycond = levels(omics$Condition)
 
-# X11();
-# plot.new();
+
+# Open the PDF device
+pdf(file.path('..', 'reports', 'metabolomics', paste0('SPLOM_', 'PCC_', mytitle, '_', paste(mycond, collapse = '-'), ".pdf")), 
+    width = 13, height = 13)
+
+# Create the plot
 my.pairs.panels(df, mytitle, mycond, cccex = 1)
-dev.copy(pdf,
-         file.path('..', 'reports', 'metabolomics', paste0('SPLOM_', 'PCC_', mytitle, '_', paste(mycond, collapse = '-'), ".pdf")),
-         width = 13, height = 13)
-# # try(dev.off(dev.list()["RStudioGD"]),silent=TRUE); try(dev.off(),silent=TRUE);graphics.off()
+
+# Close the device to save the plot
+dev.off()
+
+# Now plot it to display in the document
+my.pairs.panels(df, mytitle, mycond, cccex = 1)
 
 
 my.heatmaply(df, mytitle, mycond, subdir = 'metabolomics') 
@@ -1121,12 +1127,13 @@ mycond = 'C'
 df = omics[omics$Genotype == mytitle & omics$Condition == mycond, ]
 df = as.matrix(df[, nx:ncol(df)])
 
-# X11(); plot.new(); 
-my.pairs.panels(df, mytitle, mycond, cccex = 1)
-dev.copy(pdf,
+
+pdf(
          file.path('..', 'reports', 'metabolomics', paste0('SPLOM_', 'PCC_', mytitle, '_', paste(mycond, collapse = '-'), ".pdf")),
          width = 13, height = 13)
-# # try(dev.off(dev.list()["RStudioGD"]),silent=TRUE); try(dev.off(),silent=TRUE);graphics.off()
+my.pairs.panels(df, mytitle, mycond, cccex = 1)
+dev.off()
+my.pairs.panels(df, mytitle, mycond, cccex = 1)
 
 my.heatmaply(df, mytitle, mycond, subdir = 'metabolomics') 
 
@@ -1137,12 +1144,14 @@ mycond = 'H'
 df = omics[omics$Genotype == mytitle & omics$Condition == mycond, ]
 df = as.matrix(df[, nx:ncol(df)])
 
-# X11(); plot.new(); 
-my.pairs.panels(df, mytitle, mycond, cccex = 1)
-dev.copy(pdf,
+
+
+pdf(
          file.path('..', 'reports', 'metabolomics', paste0('SPLOM_', 'PCC_', mytitle, '_', paste(mycond, collapse = '-'), ".pdf")),
          width = 13, height = 13)
-# try(dev.off(dev.list()["RStudioGD"]),silent=TRUE); try(dev.off(),silent=TRUE);graphics.off()
+my.pairs.panels(df, mytitle, mycond, cccex = 1)
+dev.off()
+my.pairs.panels(df, mytitle, mycond, cccex = 1)
 
 my.heatmaply(df, mytitle, mycond, subdir = 'metabolomics') 
 
@@ -1153,12 +1162,13 @@ mycond = 'D'
 df = omics[omics$Genotype == mytitle & omics$Condition == mycond, ]
 df = as.matrix(df[, nx:ncol(df)])
 
-# X11(); plot.new(); 
-my.pairs.panels(df, mytitle, mycond, cccex = 1)
-dev.copy(pdf,
+
+pdf(
          file.path('..', 'reports', 'metabolomics', paste0('SPLOM_', 'PCC_', mytitle, '_', paste(mycond, collapse = '-'), ".pdf")),
          width = 13, height = 13)
-# try(dev.off(dev.list()["RStudioGD"]),silent=TRUE); try(dev.off(),silent=TRUE);graphics.off()
+my.pairs.panels(df, mytitle, mycond, cccex = 1)
+dev.off()
+my.pairs.panels(df, mytitle, mycond, cccex = 1)
 
 my.heatmaply(df, mytitle, mycond, subdir = 'metabolomics') 
 
@@ -1169,12 +1179,13 @@ mycond = 'W'
 df = omics[omics$Genotype == mytitle & omics$Condition == mycond, ]
 df = as.matrix(df[, nx:ncol(df)])
 
-# X11(); plot.new(); 
-my.pairs.panels(df, mytitle, mycond, cccex = 1)
-dev.copy(pdf,
+
+pdf(
          file.path('..', 'reports', 'metabolomics', paste0('SPLOM_', 'PCC_', mytitle, '_', paste(mycond, collapse = '-'), ".pdf")),
          width = 13, height = 13)
-# try(dev.off(dev.list()["RStudioGD"]),silent=TRUE); try(dev.off(),silent=TRUE);graphics.off()
+my.pairs.panels(df, mytitle, mycond, cccex = 1)
+dev.off()
+my.pairs.panels(df, mytitle, mycond, cccex = 1)
 
 my.heatmaply(df, mytitle, mycond, subdir = 'metabolomics') 
 
@@ -1185,12 +1196,13 @@ mycond = 'HD'
 df = omics[omics$Genotype == mytitle & omics$Condition == mycond, ]
 df = as.matrix(df[, nx:ncol(df)])
 
-# X11(); plot.new(); 
-my.pairs.panels(df, mytitle, mycond, cccex = 1)
-dev.copy(pdf,
+
+pdf(
          file.path('..', 'reports', 'metabolomics', paste0('SPLOM_', 'PCC_', mytitle, '_', paste(mycond, collapse = '-'), ".pdf")),
          width = 13, height = 13)
-# try(dev.off(dev.list()["RStudioGD"]),silent=TRUE); try(dev.off(),silent=TRUE);graphics.off()
+my.pairs.panels(df, mytitle, mycond, cccex = 1)
+dev.off()
+my.pairs.panels(df, mytitle, mycond, cccex = 1)
 
 my.heatmaply(df, mytitle, mycond, subdir = 'metabolomics') 
 
@@ -1487,13 +1499,13 @@ rownames(df) = omics$SampleID[omics$Genotype == mytitle]
 
 mycond = levels(omics$Condition)
 
-# X11();
-# plot.new();
-my.pairs.panels(df, mytitle, mycond, cccex = 1)
-dev.copy(pdf,
+
+pdf(
          file.path('..', 'reports', 'hormonomics', paste0('SPLOM_', 'PCC_', mytitle, '_', paste(mycond, collapse = '-'), ".pdf")),
          width = 13, height = 13)
-# try(dev.off(dev.list()["RStudioGD"]),silent=TRUE); try(dev.off(),silent=TRUE);graphics.off()
+my.pairs.panels(df, mytitle, mycond, cccex = 1)
+dev.off()
+my.pairs.panels(df, mytitle, mycond, cccex = 1)
 
 
 my.heatmaply(df, mytitle, mycond, subdir = 'hormonomics') 
@@ -1508,12 +1520,13 @@ mycond = 'C'
 df = omics[omics$Genotype == mytitle & omics$Condition == mycond, ]
 df = as.matrix(df[, nx:ncol(df)])
 
-# X11(); plot.new(); 
-my.pairs.panels(df, mytitle, mycond, cccex = 1)
-dev.copy(pdf,
+
+pdf(
          file.path('..', 'reports', 'hormonomics', paste0('SPLOM_', 'PCC_', mytitle, '_', paste(mycond, collapse = '-'), ".pdf")),
          width = 13, height = 13)
-# try(dev.off(dev.list()["RStudioGD"]),silent=TRUE); try(dev.off(),silent=TRUE);graphics.off()
+my.pairs.panels(df, mytitle, mycond, cccex = 1)
+dev.off()
+my.pairs.panels(df, mytitle, mycond, cccex = 1)
 
 my.heatmaply(df, mytitle, mycond, subdir = 'hormonomics') 
 
@@ -1524,12 +1537,13 @@ mycond = 'H'
 df = omics[omics$Genotype == mytitle & omics$Condition == mycond, ]
 df = as.matrix(df[, nx:ncol(df)])
 
-# X11(); plot.new(); 
-my.pairs.panels(df, mytitle, mycond, cccex = 1)
-dev.copy(pdf,
+
+pdf(
          file.path('..', 'reports', 'hormonomics', paste0('SPLOM_', 'PCC_', mytitle, '_', paste(mycond, collapse = '-'), ".pdf")),
          width = 13, height = 13)
-# try(dev.off(dev.list()["RStudioGD"]),silent=TRUE); try(dev.off(),silent=TRUE);graphics.off()
+my.pairs.panels(df, mytitle, mycond, cccex = 1)
+dev.off()
+my.pairs.panels(df, mytitle, mycond, cccex = 1)
 
 my.heatmaply(df, mytitle, mycond, subdir = 'hormonomics') 
 
@@ -1540,12 +1554,13 @@ mycond = 'D'
 df = omics[omics$Genotype == mytitle & omics$Condition == mycond, ]
 df = as.matrix(df[, nx:ncol(df)])
 
-# X11(); plot.new(); 
-my.pairs.panels(df, mytitle, mycond, cccex = 1)
-dev.copy(pdf,
+
+pdf(
          file.path('..', 'reports', 'hormonomics', paste0('SPLOM_', 'PCC_', mytitle, '_', paste(mycond, collapse = '-'), ".pdf")),
          width = 13, height = 13)
-# try(dev.off(dev.list()["RStudioGD"]),silent=TRUE); try(dev.off(),silent=TRUE);graphics.off()
+my.pairs.panels(df, mytitle, mycond, cccex = 1)
+dev.off()
+my.pairs.panels(df, mytitle, mycond, cccex = 1)
 
 my.heatmaply(df, mytitle, mycond, subdir = 'hormonomics') 
 
@@ -1556,12 +1571,13 @@ mycond = 'W'
 df = omics[omics$Genotype == mytitle & omics$Condition == mycond, ]
 df = as.matrix(df[, nx:ncol(df)])
 
-# X11(); plot.new(); 
-my.pairs.panels(df, mytitle, mycond, cccex = 1)
-dev.copy(pdf,
+
+pdf(
          file.path('..', 'reports', 'hormonomics', paste0('SPLOM_', 'PCC_', mytitle, '_', paste(mycond, collapse = '-'), ".pdf")),
          width = 13, height = 13)
-# try(dev.off(dev.list()["RStudioGD"]),silent=TRUE); try(dev.off(),silent=TRUE);graphics.off()
+my.pairs.panels(df, mytitle, mycond, cccex = 1)
+dev.off()
+my.pairs.panels(df, mytitle, mycond, cccex = 1)
 
 my.heatmaply(df, mytitle, mycond, subdir = 'hormonomics') 
 
@@ -1572,12 +1588,13 @@ mycond = 'HD'
 df = omics[omics$Genotype == mytitle & omics$Condition == mycond, ]
 df = as.matrix(df[, nx:ncol(df)])
 
-# X11(); plot.new(); 
-my.pairs.panels(df, mytitle, mycond, cccex = 1)
-dev.copy(pdf,
+
+pdf(
          file.path('..', 'reports', 'hormonomics', paste0('SPLOM_', 'PCC_', mytitle, '_', paste(mycond, collapse = '-'), ".pdf")),
          width = 13, height = 13)
-# try(dev.off(dev.list()["RStudioGD"]),silent=TRUE); try(dev.off(),silent=TRUE);graphics.off()
+my.pairs.panels(df, mytitle, mycond, cccex = 1)
+dev.off()
+my.pairs.panels(df, mytitle, mycond, cccex = 1)
 
 my.heatmaply(df, mytitle, mycond, subdir = 'hormonomics') 
 
@@ -1862,13 +1879,13 @@ rownames(df) = omics$SampleID[omics$Genotype == mytitle]
 
 mycond = levels(omics$Condition)
 
-# X11();
-# plot.new();
-my.pairs.panels(df, mytitle, mycond, cccex = 1)
-dev.copy(pdf,
+
+pdf(
          file.path('..', 'reports', 'transcriptomics', paste0('SPLOM_', 'PCC_', mytitle, '_', paste(mycond, collapse = '-'), ".pdf")),
          width = 13, height = 13)
-# try(dev.off(dev.list()["RStudioGD"]),silent=TRUE); try(dev.off(),silent=TRUE);graphics.off()
+my.pairs.panels(df, mytitle, mycond, cccex = 1)
+dev.off()
+my.pairs.panels(df, mytitle, mycond, cccex = 1)
 
 
 my.heatmaply(df, mytitle, mycond, subdir = 'transcriptomics') 
@@ -1883,12 +1900,13 @@ mycond = 'C'
 df = omics[omics$Genotype == mytitle & omics$Condition == mycond, ]
 df = as.matrix(df[, nx:ncol(df)])
 
-# X11(); plot.new(); 
-my.pairs.panels(df, mytitle, mycond, cccex = 1)
-dev.copy(pdf,
+
+pdf(
          file.path('..', 'reports', 'transcriptomics', paste0('SPLOM_', 'PCC_', mytitle, '_', paste(mycond, collapse = '-'), ".pdf")),
          width = 13, height = 13)
-# try(dev.off(dev.list()["RStudioGD"]),silent=TRUE); try(dev.off(),silent=TRUE);graphics.off()
+my.pairs.panels(df, mytitle, mycond, cccex = 1)
+dev.off()
+my.pairs.panels(df, mytitle, mycond, cccex = 1)
 
 my.heatmaply(df, mytitle, mycond, subdir = 'transcriptomics') 
 
@@ -1899,12 +1917,13 @@ mycond = 'H'
 df = omics[omics$Genotype == mytitle & omics$Condition == mycond, ]
 df = as.matrix(df[, nx:ncol(df)])
 
-# X11(); plot.new(); 
-my.pairs.panels(df, mytitle, mycond, cccex = 1)
-dev.copy(pdf,
+
+pdf(
          file.path('..', 'reports', 'transcriptomics', paste0('SPLOM_', 'PCC_', mytitle, '_', paste(mycond, collapse = '-'), ".pdf")),
          width = 13, height = 13)
-# try(dev.off(dev.list()["RStudioGD"]),silent=TRUE); try(dev.off(),silent=TRUE);graphics.off()
+my.pairs.panels(df, mytitle, mycond, cccex = 1)
+dev.off()
+my.pairs.panels(df, mytitle, mycond, cccex = 1)
 
 my.heatmaply(df, mytitle, mycond, subdir = 'transcriptomics') 
 
@@ -1915,12 +1934,13 @@ mycond = 'D'
 df = omics[omics$Genotype == mytitle & omics$Condition == mycond, ]
 df = as.matrix(df[, nx:ncol(df)])
 
-# X11(); plot.new();
-my.pairs.panels(df, mytitle, mycond, cccex = 1)
-dev.copy(pdf,
+
+pdf(
          file.path('..', 'reports', 'transcriptomics', paste0('SPLOM_', 'PCC_', mytitle, '_', paste(mycond, collapse = '-'), ".pdf")),
          width = 13, height = 13)
-# try(dev.off(dev.list()["RStudioGD"]),silent=TRUE); try(dev.off(),silent=TRUE);graphics.off()
+my.pairs.panels(df, mytitle, mycond, cccex = 1)
+dev.off()
+my.pairs.panels(df, mytitle, mycond, cccex = 1)
 
 my.heatmaply(df, mytitle, mycond, subdir = 'transcriptomics') 
 
@@ -1931,12 +1951,13 @@ mycond = 'W'
 df = omics[omics$Genotype == mytitle & omics$Condition == mycond, ]
 df = as.matrix(df[, nx:ncol(df)])
 
-# X11(); plot.new(); 
-my.pairs.panels(df, mytitle, mycond, cccex = 1)
-dev.copy(pdf,
+
+pdf(
          file.path('..', 'reports', 'transcriptomics', paste0('SPLOM_', 'PCC_', mytitle, '_', paste(mycond, collapse = '-'), ".pdf")),
          width = 13, height = 13)
-# try(dev.off(dev.list()["RStudioGD"]),silent=TRUE); try(dev.off(),silent=TRUE);graphics.off()
+my.pairs.panels(df, mytitle, mycond, cccex = 1)
+dev.off()
+my.pairs.panels(df, mytitle, mycond, cccex = 1)
 
 my.heatmaply(df, mytitle, mycond, subdir = 'transcriptomics') 
 
@@ -1947,12 +1968,13 @@ mycond = 'HD'
 df = omics[omics$Genotype == mytitle & omics$Condition == mycond, ]
 df = as.matrix(df[, nx:ncol(df)])
 
-# X11(); plot.new(); 
-my.pairs.panels(df, mytitle, mycond, cccex = 1)
-dev.copy(pdf,
+
+pdf(
          file.path('..', 'reports', 'transcriptomics', paste0('SPLOM_', 'PCC_', mytitle, '_', paste(mycond, collapse = '-'), ".pdf")),
          width = 13, height = 13)
-# try(dev.off(dev.list()["RStudioGD"]),silent=TRUE); try(dev.off(),silent=TRUE);graphics.off()
+my.pairs.panels(df, mytitle, mycond, cccex = 1)
+dev.off()
+my.pairs.panels(df, mytitle, mycond, cccex = 1)
 
 my.heatmaply(df, mytitle, mycond, subdir = 'transcriptomics') 
 
@@ -2300,13 +2322,13 @@ rownames(df) = omics$SampleID[omics$Genotype == mytitle]
 
 mycond = levels(omics$Condition)
 
-# X11();
-# plot.new();
-my.pairs.panels(df, mytitle, mycond, cccex = 1)
-dev.copy(pdf,
+
+pdf(
          file.path('..', 'reports', 'tubers-metabolomics', paste0('SPLOM_', 'PCC_', mytitle, '_', paste(mycond, collapse = '-'), ".pdf")),
          width = 13, height = 13)
-# try(dev.off(dev.list()["RStudioGD"]),silent=TRUE); try(dev.off(),silent=TRUE);graphics.off()
+my.pairs.panels(df, mytitle, mycond, cccex = 1)
+dev.off()
+my.pairs.panels(df, mytitle, mycond, cccex = 1)
 
 
 my.heatmaply(df, mytitle, mycond, subdir = 'tubers-metabolomics') 
@@ -2321,12 +2343,13 @@ mycond = 'C'
 df = omics[omics$Genotype == mytitle & omics$Condition == mycond, ]
 df = as.matrix(df[, nx:ncol(df)])
 
-# X11(); plot.new(); 
-my.pairs.panels(df, mytitle, mycond, cccex = 1)
-dev.copy(pdf,
+
+pdf(
          file.path('..', 'reports', 'tubers-metabolomics', paste0('SPLOM_', 'PCC_', mytitle, '_', paste(mycond, collapse = '-'), ".pdf")),
          width = 13, height = 13)
-# try(dev.off(dev.list()["RStudioGD"]),silent=TRUE); try(dev.off(),silent=TRUE);graphics.off()
+my.pairs.panels(df, mytitle, mycond, cccex = 1)
+dev.off()
+my.pairs.panels(df, mytitle, mycond, cccex = 1)
 
 my.heatmaply(df, mytitle, mycond, subdir = 'tubers-metabolomics') 
 
@@ -2337,12 +2360,13 @@ mycond = 'H'
 df = omics[omics$Genotype == mytitle & omics$Condition == mycond, ]
 df = as.matrix(df[, nx:ncol(df)])
 
-# X11(); plot.new(); 
-my.pairs.panels(df, mytitle, mycond, cccex = 1)
-dev.copy(pdf,
+
+pdf(
          file.path('..', 'reports', 'tubers-metabolomics', paste0('SPLOM_', 'PCC_', mytitle, '_', paste(mycond, collapse = '-'), ".pdf")),
          width = 13, height = 13)
-# try(dev.off(dev.list()["RStudioGD"]),silent=TRUE); try(dev.off(),silent=TRUE);graphics.off()
+my.pairs.panels(df, mytitle, mycond, cccex = 1)
+dev.off()
+my.pairs.panels(df, mytitle, mycond, cccex = 1)
 
 my.heatmaply(df, mytitle, mycond, subdir = 'tubers-metabolomics') 
 
@@ -2353,12 +2377,13 @@ mycond = 'D'
 df = omics[omics$Genotype == mytitle & omics$Condition == mycond, ]
 df = as.matrix(df[, nx:ncol(df)])
 
-# X11(); plot.new(); 
-my.pairs.panels(df, mytitle, mycond, cccex = 1)
-dev.copy(pdf,
+
+pdf(
          file.path('..', 'reports', 'tubers-metabolomics', paste0('SPLOM_', 'PCC_', mytitle, '_', paste(mycond, collapse = '-'), ".pdf")),
          width = 13, height = 13)
-# try(dev.off(dev.list()["RStudioGD"]),silent=TRUE); try(dev.off(),silent=TRUE);graphics.off()
+my.pairs.panels(df, mytitle, mycond, cccex = 1)
+dev.off()
+my.pairs.panels(df, mytitle, mycond, cccex = 1)
 
 my.heatmaply(df, mytitle, mycond, subdir = 'tubers-metabolomics') 
 
@@ -2369,12 +2394,13 @@ mycond = 'W'
 df = omics[omics$Genotype == mytitle & omics$Condition == mycond, ]
 df = as.matrix(df[, nx:ncol(df)])
 
-# X11(); plot.new(); 
-my.pairs.panels(df, mytitle, mycond, cccex = 1)
-dev.copy(pdf,
+
+pdf(
          file.path('..', 'reports', 'tubers-metabolomics', paste0('SPLOM_', 'PCC_', mytitle, '_', paste(mycond, collapse = '-'), ".pdf")),
          width = 13, height = 13)
-# try(dev.off(dev.list()["RStudioGD"]),silent=TRUE); try(dev.off(),silent=TRUE);graphics.off()
+my.pairs.panels(df, mytitle, mycond, cccex = 1)
+dev.off()
+my.pairs.panels(df, mytitle, mycond, cccex = 1)
 
 my.heatmaply(df, mytitle, mycond, subdir = 'tubers-metabolomics') 
 
@@ -2385,12 +2411,13 @@ mycond = 'HD'
 df = omics[omics$Genotype == mytitle & omics$Condition == mycond, ]
 df = as.matrix(df[, nx:ncol(df)])
 
-# X11(); plot.new(); 
-my.pairs.panels(df, mytitle, mycond, cccex = 1)
-dev.copy(pdf,
+
+pdf(
          file.path('..', 'reports', 'tubers-metabolomics', paste0('SPLOM_', 'PCC_', mytitle, '_', paste(mycond, collapse = '-'), ".pdf")),
          width = 13, height = 13)
-# try(dev.off(dev.list()["RStudioGD"]),silent=TRUE); try(dev.off(),silent=TRUE);graphics.off()
+my.pairs.panels(df, mytitle, mycond, cccex = 1)
+dev.off()
+my.pairs.panels(df, mytitle, mycond, cccex = 1)
 
 my.heatmaply(df, mytitle, mycond, subdir = 'tubers-metabolomics') 
 
