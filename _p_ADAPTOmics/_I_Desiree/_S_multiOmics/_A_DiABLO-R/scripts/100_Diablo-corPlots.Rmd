@@ -189,6 +189,13 @@ ind = grep('^group', colnames(mymerge))
 mymerge = mymerge[, -ind]
 
 table(sort(mymerge$pairs))
+
+
+fn = 'path.txt'
+path = as.data.frame(data.table::fread(file.path(fp, fn), header = TRUE, fill = TRUE))
+path = path[order(path$pathway, path$name), ]
+
+
  
 ```
 
@@ -304,27 +311,52 @@ for (i in 1:length(g)) {
   htCm = tidyr::spread(htCm, name_to, C)
   rownames(htCm) = htCm[, 1]
   htCm = as.matrix(htCm[, -1])
+  ind = match(sort(match(rownames(htCm), path$name)), match(rownames(htCm), path$name))
+  htCm = htCm[ind, ]
+  ind = match(sort(match(colnames(htCm), path$name)), match(colnames(htCm), path$name))
+  htCm = htCm[, ind]
+  
+
+  
   
   htDm = mymerge[mymerge$pairs %in% g[i], grep('name_to|name_from|^D$', colnames(mymerge))]
   htDm = tidyr::spread(htDm, name_to, D)
   rownames(htDm) = htDm[, 1]
   htDm = as.matrix(htDm[, -1])
+  ind = match(sort(match(rownames(htDm), path$name)), match(rownames(htDm), path$name))
+  htDm = htDm[ind, ]
+  ind = match(sort(match(colnames(htDm), path$name)), match(colnames(htDm), path$name))
+  htDm = htDm[, ind]
+  
   
   htHDm = mymerge[mymerge$pairs %in% g[i], grep('name_to|name_from|^HD$', colnames(mymerge))]
   htHDm = tidyr::spread(htHDm, name_to, HD)
   rownames(htHDm) = htHDm[, 1]
   htHDm = as.matrix(htHDm[, -1])
+  ind = match(sort(match(rownames(htHDm), path$name)), match(rownames(htHDm), path$name))
+  htHDm = htHDm[ind, ]
+  ind = match(sort(match(colnames(htHDm), path$name)), match(colnames(htHDm), path$name))
+  htHDm = htHDm[, ind]
+  
   
   htHm = mymerge[mymerge$pairs %in% g[i], grep('name_to|name_from|^H$', colnames(mymerge))]
   htHm = tidyr::spread(htHm, name_to, H)
   rownames(htHm) = htHm[, 1]
   htHm = as.matrix(htHm[, -1])
+  ind = match(sort(match(rownames(htHm), path$name)), match(rownames(htHm), path$name))
+  htHm = htHm[ind, ]
+  ind = match(sort(match(colnames(htHm), path$name)), match(colnames(htHm), path$name))
+  htHm = htHm[, ind]
   
   
   htWm = mymerge[mymerge$pairs %in% g[i], grep('name_to|name_from|^W$', colnames(mymerge))]
   htWm = tidyr::spread(htWm, name_to, W)
   rownames(htWm) = htWm[, 1]
   htWm = as.matrix(htWm[, -1])
+  ind = match(sort(match(rownames(htWm), path$name)), match(rownames(htWm), path$name))
+  htWm = htWm[ind, ]
+  ind = match(sort(match(colnames(htWm), path$name)), match(colnames(htWm), path$name))
+  htWm = htWm[, ind]
   
 
 

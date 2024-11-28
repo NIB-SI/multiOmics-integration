@@ -774,11 +774,11 @@ my.pheatmap = function(df, mytitle, mycond, subdir){
 my.pheatmap.logFC = function(df, forHeatmap, cluster_rows = cluster_rows, cluster_cols = cluster_cols,
                              main, subdir, width = width, height = height, cnt = cnt){
   
-  logFC = df[, c(2,3,4,7)]
+  logFC = df[, grep('molecule$|stressGroup$|controlGroup$|log2FC', colnames(df))]
   logFC$comparison = paste(logFC$stressGroup, logFC$controlGroup, sep = '-')
   logFC = logFC[, -c(2,3)]
   
-  p = df[, c(2,3,4,13)]
+  p = df[, grep('molecule$|stressGroup$|controlGroup$|^p$', colnames(df))]
   p$comparison = paste(p$stressGroup, p$controlGroup, sep = '-')
   p = p[, -c(2,3)]
   
@@ -802,6 +802,18 @@ my.pheatmap.logFC = function(df, forHeatmap, cluster_rows = cluster_rows, cluste
   # all(rownames(p.w) == rownames(logFC.w))
   # all(colnames(p.w) == colnames(logFC.w))
   
+  ind = match(sort(match(rownames(logFC.w), path$name)), match(rownames(logFC.w), path$name))
+  logFC.w = logFC.w[ind, ]
+  ind = match(sort(match(colnames(logFC.w), forHeatmap$comparison)), match(colnames(logFC.w), forHeatmap$comparison))
+  logFC.w = logFC.w[, ind]
+  
+  ind = match(sort(match(rownames(p.w), path$name)), match(rownames(p.w), path$name))
+  p.w = p.w[ind, ]
+  ind = match(sort(match(colnames(p.w), forHeatmap$comparison)), match(colnames(p.w), forHeatmap$comparison))
+  p.w = p.w[, ind]
+  
+  
+  
   
 
   paletteLength = 100
@@ -824,12 +836,17 @@ my.pheatmap.logFC = function(df, forHeatmap, cluster_rows = cluster_rows, cluste
          width = width, height = height, units = "in",
          plot=ph)
   
-  # X11()
-  plot(ph)
-  # dev.off()
+  dev.off()
+  grid::grid.draw(ph)
+  
+  
+  
 
   phfn = file.path('..', 'reports', subdir, paste0(stringr::str_pad(cnt, 3, pad = "0"),
                                                    '_pheatmap_logFC_num_', main, ".pdf"))
+  
+  # row_colors = cc[match(rownames(logFC.w), cc$display_name), ]$color_code
+
   ph = pheatmap::pheatmap(logFC.w, cluster_rows = FALSE, cluster_cols = FALSE,
                      color=myColor, breaks=myBreaks,
                      main = main,
@@ -837,13 +854,16 @@ my.pheatmap.logFC = function(df, forHeatmap, cluster_rows = cluster_rows, cluste
                      fontsize_number = matrix(ifelse(p.w >= 0.05, 4, 8), nrow(p.w)), 
                      number_color = matrix(ifelse(p.w >= 0.05, "grey60", 'black'), nrow(p.w)),
                      filename = phfn)$gtable
+  
   ggsave(filename = phfn,
          width = width, height = height, units = "in",
          plot=ph)
   
-  # X11()
-  plot(ph)
-  # dev.off()
+
+  dev.off()
+      
+  grid::grid.draw(ph)
+  
     
 
 
@@ -884,6 +904,14 @@ cnt = 1
 
 ```{r, metabolomics}
 
+fpi = file.path('..', 'other')
+fn = 'path.txt'
+path = as.data.frame(data.table::fread(file.path(fpi, fn)))
+path = path[order(path$pathway), ]
+
+fpi = file.path('..', 'other')
+fn = 'colourCodes_v2.txt'
+cc = as.data.frame(data.table::fread(file.path(fpi, fn)))
 
 
 fpi = file.path('..', 'input')
@@ -892,6 +920,8 @@ fpi = file.path('..', 'input')
 fn = "data_targeted.xlsx"
 omics = openxlsx::read.xlsx(file.path(fpi, fn), sheet = 'metabolomics-leaves')
 data.table::setDF(omics)
+
+which(colnames(omics)[-1] %nin% cc$display_name)
 
 Genotype = 'Desiree'
 omics = cbind(Genotype, omics)
@@ -1274,9 +1304,17 @@ openxlsx::write.xlsx(stat, '../reports/Desiree.logFC-metabolomics_leaves.xlsx', 
 
 comp = as.data.frame(comp)
 forHeatmap = comp[intersect(grep('C', comp[, 1], invert = TRUE), grep('C', comp[, 3])), ]
+forHeatmap[, 1] = sapply(forHeatmap[, 1], function(x) paste0(gsub("_(\\d+)", '', x), sprintf("_%02d", as.numeric(gsub(".*_", "", x)))))
+forHeatmap[, 3] = sapply(forHeatmap[, 3], function(x) paste0(gsub("_(\\d+)", '', x), sprintf("_%02d", as.numeric(gsub(".*_", "", x)))))
 forHeatmap$comparison = paste(forHeatmap[, 1], forHeatmap[, 3], sep = '-')
+forHeatmap = forHeatmap[match(forHeatmap[, 1], c("H_01", "H_07","H_08","H_14",
+                                                 "HD_08", "HD_14",
+                                                 "D_08","D_14",
+                                                 "W_01", "W_07")), ]
 
+Desiree.stat$controlGroup = sapply(Desiree.stat$controlGroup, function(x) paste0(gsub("_(\\d+)", '', x), sprintf("_%02d", as.numeric(gsub(".*_", "", x)))))
 df = Desiree.stat[Desiree.stat$stressGroup %in% forHeatmap[, 1] & Desiree.stat$controlGroup %in% forHeatmap[, 3], ]
+
 
 my.pheatmap.logFC(df, forHeatmap,
                   main = 'Desiree-metabolomics',
@@ -1321,6 +1359,14 @@ cnt = 2
 
 ```{r, hormonomics}
 
+fpi = file.path('..', 'other')
+fn = 'path.txt'
+path = as.data.frame(data.table::fread(file.path(fpi, fn)))
+path = path[order(path$pathway), ]
+
+fpi = file.path('..', 'other')
+fn = 'colourCodes_v2.txt'
+cc = as.data.frame(data.table::fread(file.path(fpi, fn)))
 
 
 fpi = file.path('..', 'input')
@@ -1329,6 +1375,8 @@ fpi = file.path('..', 'input')
 fn = "data_targeted.xlsx"
 omics = openxlsx::read.xlsx(file.path(fpi, fn), sheet = 'hormonomics-leaves')
 data.table::setDF(omics)
+
+which(colnames(omics)[-1] %nin% cc$display_name)
 
 Genotype = 'Desiree'
 omics = cbind(Genotype, omics)
@@ -1665,9 +1713,17 @@ openxlsx::write.xlsx(stat, '../reports/Desiree.logFC-hormonomics_leaves.xlsx', a
 
 comp = as.data.frame(comp)
 forHeatmap = comp[intersect(grep('C', comp[, 1], invert = TRUE), grep('C', comp[, 3])), ]
+forHeatmap[, 1] = sapply(forHeatmap[, 1], function(x) paste0(gsub("_(\\d+)", '', x), sprintf("_%02d", as.numeric(gsub(".*_", "", x)))))
+forHeatmap[, 3] = sapply(forHeatmap[, 3], function(x) paste0(gsub("_(\\d+)", '', x), sprintf("_%02d", as.numeric(gsub(".*_", "", x)))))
 forHeatmap$comparison = paste(forHeatmap[, 1], forHeatmap[, 3], sep = '-')
+forHeatmap = forHeatmap[match(forHeatmap[, 1], c("H_01", "H_07","H_08","H_14",
+                                                 "HD_08", "HD_14",
+                                                 "D_08","D_14",
+                                                 "W_01", "W_07")), ]
 
+Desiree.stat$controlGroup = sapply(Desiree.stat$controlGroup, function(x) paste0(gsub("_(\\d+)", '', x), sprintf("_%02d", as.numeric(gsub(".*_", "", x)))))
 df = Desiree.stat[Desiree.stat$stressGroup %in% forHeatmap[, 1] & Desiree.stat$controlGroup %in% forHeatmap[, 3], ]
+
 
 my.pheatmap.logFC(df, forHeatmap,
                   main = 'Desiree-hormonomics',
@@ -1710,6 +1766,15 @@ cnt = 3
 
 ```{r, transcriptomics}
 
+fpi = file.path('..', 'other')
+fn = 'path.txt'
+path = as.data.frame(data.table::fread(file.path(fpi, fn)))
+path = path[order(path$pathway), ]
+
+fpi = file.path('..', 'other')
+fn = 'colourCodes_v2.txt'
+cc = as.data.frame(data.table::fread(file.path(fpi, fn)))
+
 
 
 fpi = file.path('..', 'input')
@@ -1718,6 +1783,11 @@ fpi = file.path('..', 'input')
 fn = "data_targeted.xlsx"
 omics = openxlsx::read.xlsx(file.path(fpi, fn), sheet = 'transcriptomics-leaves')
 data.table::setDF(omics)
+
+
+which(colnames(omics)[-1] %nin% cc$display_name)
+colnames(omics)[grep('RD29B', colnames(omics))] = 'RD29'
+colnames(omics)[grep('M0ZJG3', colnames(omics))] = 'MES'
 
 Genotype = 'Desiree'
 omics = cbind(Genotype, omics)
@@ -2045,15 +2115,28 @@ openxlsx::write.xlsx(stat, '../reports/Desiree.logFC-transcriptomics_leaves.xlsx
 
 comp = as.data.frame(comp)
 forHeatmap = comp[intersect(grep('C', comp[, 1], invert = TRUE), grep('C', comp[, 3])), ]
+forHeatmap[, 1] = sapply(forHeatmap[, 1], function(x) paste0(gsub("_(\\d+)", '', x), sprintf("_%02d", as.numeric(gsub(".*_", "", x)))))
+forHeatmap[, 3] = sapply(forHeatmap[, 3], function(x) paste0(gsub("_(\\d+)", '', x), sprintf("_%02d", as.numeric(gsub(".*_", "", x)))))
 forHeatmap$comparison = paste(forHeatmap[, 1], forHeatmap[, 3], sep = '-')
+forHeatmap = forHeatmap[match(forHeatmap[, 1], c("H_01", "H_07","H_08","H_14",
+                                                 "HD_08", "HD_14",
+                                                 "D_08","D_14",
+                                                 "W_01", "W_07")), ]
 
+Desiree.stat$controlGroup = sapply(Desiree.stat$controlGroup, function(x) paste0(gsub("_(\\d+)", '', x), sprintf("_%02d", as.numeric(gsub(".*_", "", x)))))
 df = Desiree.stat[Desiree.stat$stressGroup %in% forHeatmap[, 1] & Desiree.stat$controlGroup %in% forHeatmap[, 3], ]
 
-my.pheatmap.logFC(df, forHeatmap,
-                  main = 'Desiree-transcriptomics',
-                  cluster_rows = FALSE, cluster_cols = FALSE,
-                  subdir = 'transcriptomics',
-                  width = 6, height = 6, cnt = cnt)
+
+my.pheatmap.logFC(df
+                  , forHeatmap
+                  , main = 'Desiree-transcriptomics'
+                  , cluster_rows = FALSE
+                  , cluster_cols = FALSE
+                  , subdir = 'transcriptomics'
+                  , width = 6
+                  , height = 6
+                  , cnt = cnt
+                  )
 
 
 
@@ -2092,7 +2175,14 @@ cnt = 4
 
 ```{r, tubers-metabolomics}
 
+fpi = file.path('..', 'other')
+fn = 'path.txt'
+path = as.data.frame(data.table::fread(file.path(fpi, fn)))
+path = path[order(path$pathway), ]
 
+fpi = file.path('..', 'other')
+fn = 'colourCodes_v2.txt'
+cc = as.data.frame(data.table::fread(file.path(fpi, fn)))
 
 fpi = file.path('..', 'input')
 
@@ -2100,6 +2190,8 @@ fpi = file.path('..', 'input')
 fn = "data_targeted.xlsx"
 omics = openxlsx::read.xlsx(file.path(fpi, fn), sheet = 'metabolomics-tubers')
 data.table::setDF(omics)
+
+which(colnames(omics)[-c(1:4)] %nin% cc$display_name)
 
 Genotype = 'Desiree'
 omics = cbind(Genotype, omics)
