@@ -3,9 +3,9 @@ Project _p_ADAPTOmics
 
 ***ADAPT – Accelerated Development of multiple-stress tolerant Potato***
 
-![](https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/presentations/logo.gif)
+![](https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/presentations/logo.png)
 
-This ![pISA-tree](https://github.com/NIB-SI/pISA-tree) structured repository cointains develeped pipeline for the integration of multi-omics data and deep phenotyping of potato under single- and combined abiotic stress responses within the WP5 of ![ADAPT](https://adapt.univie.ac.at/) project
+This [pISA-tree](https://github.com/NIB-SI/pISA-tree) structured repository cointains develeped pipeline for the integration of multi-omics data and deep phenotyping of potato under single- and combined abiotic stress responses within the WP5 of [ADAPT](https://adapt.univie.ac.at/) [H2020](https://cordis.europa.eu/project/id/862858/results) project 
 
 
 
