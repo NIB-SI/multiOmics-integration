@@ -3,7 +3,7 @@
 
 ***Integration across different omics datasets***
 
-- Correlations between components measured in various Omics’ levels is calculated and visualised using DIABLO (![_A_DiABLO-R](https://github.com/NIB-SI/multiOmics-integration/tree/main/_p_Omics/_I_Omics/_S_multiOmics/_A_DiABLO-R)) as implemented in the mixOmics package
+- Correlations between components measured in various Omics’ levels is calculated and visualised using DIABLO ([_A_DiABLO-R](https://github.com/NIB-SI/multiOmics-integration/tree/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_DiABLO-R)) as implemented in the mixOmics package
 
 - The correlation matrix is calculated separately for each stress as well as for control
 
