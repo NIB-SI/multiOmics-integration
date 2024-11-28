@@ -37,19 +37,22 @@ use protein short names
 
 
 
-**technical notes**: 
-1. for engineered variables that have missing values, due to missing reference at for e.g. initial stage, take consecutive day containing non-negative values
-2. for engineered variables that have negative values, and they should not - shift all values by abs(min())
+
 
 
 
 # Notes
+## sample description
 - recovery after H: 15, 21, 28
 - recovery after D: 15, 21, 28
 - recovery after HD: 15, 21, 28
 - recovery after W: 15, 21, 28 (wobbly)
 
+## technical notes
+1. for engineered variables that have missing values, due to missing reference at for e.g. initial stage, take consecutive day containing non-negative values
+2. for engineered variables that have negative values, and they should not - shift all values by abs(min())
 
 
 
 
+The background network is merged with thresholded ([_A_multiOmics-differential-networks-Py](https://github.com/NIB-SI/multiOmics-integration/tree/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_multiOmics-differential-networks-Py)) correlation networks and visualised using Cytoscape ([_A_multiOmics-visualisation-Py](https://github.com/NIB-SI/multiOmics-integration/tree/main/_p_Omics/_I_Omics/_S_multiOmics/_A_multiOmics-visualisation-Py))
