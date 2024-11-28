@@ -36,7 +36,7 @@ Prior to data analysis and integration, some prerequisites should be met
 - Preferential measurements are time-series measurements
 
 ### Analysis steps 
-#### Step 1: Exprimental design master table
+#### Step 1: Experimental design master table
 - Design <ins>*_Phenodata_*</ins>, a master experimental design table describing samples for analysis, prior to sample collection according to good data management practice
 - Store <ins>*_Phenodata_*</ins> at **_Investigation_** level
 - Define relative path of <ins>*_Phenodata_*</ins> in [_INVESTIGATION_METADATA.TXT](https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_INVESTIGATION_METADATA.TXT), as well as in <ins>*__ASSAY_METADATA.TXT_*</ins>
@@ -86,8 +86,8 @@ ___
 
 (2) Baebler, Š., Svalina, M., Petek, M. et al. quantGenius: implementation of a decision support system for qPCR-based gene quantification. BMC Bioinformatics 18, 276 (2017). https://doi.org/10.1186/s12859-017-1688-7
 
-(3) Kuijjer ML, Hsieh PH, Quackenbush J, Glass K. lionessR: single sample network inference in R. BMC Cancer. 2019 Oct 25;19(1):1003. doi: 10.1186/s12885-019-6235-7
+(3) Kuijjer, M.L., Hsieh, PH., Quackenbush, J. et al. lionessR: single sample network inference in R. BMC Cancer 19, 1003 (2019). https://doi.org/10.1186/s12885-019-6235-7
 
 (4) Amrit Singh, Casey P Shannon, Benoît Gautier, Florian Rohart, Michaël Vacher, Scott J Tebbutt, Kim-Anh Lê Cao, DIABLO: an integrative approach for identifying key molecular drivers from multi-omics assays, Bioinformatics, Volume 35, Issue 17, September 2019, Pages 3055–3062, https://doi.org/10.1093/bioinformatics/bty1054
 
-(5) Rohart F, Gautier B, Singh A, Lê Cao KA. mixOmics: An R package for 'omics feature selection and multiple data integration. PLoS Comput Biol. 2017 Nov 3;13(11):e1005752. doi: 10.1371/journal.pcbi.1005752. PMID: 29099853; PMCID: PMC5687754.
+(5) Rohart F, Gautier B, Singh A, Lê Cao KA (2017) mixOmics: An R package for ‘omics feature selection and multiple data integration. PLOS Computational Biology 13(11): e1005752. https://doi.org/10.1371/journal.pcbi.1005752
