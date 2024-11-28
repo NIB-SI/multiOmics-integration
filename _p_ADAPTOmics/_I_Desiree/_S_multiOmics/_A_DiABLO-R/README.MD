@@ -33,7 +33,7 @@ use protein short names
 - H: 1, 7, 8, 14
 - D: 8, 14
 - HD: 8, 14
-- W: 1, 7 (sever damage in the second weeks of waterlogging)
+- W: 1, 7 (severe damage in the second weeks of waterlogging)
 
 
 
