@@ -72,6 +72,7 @@ library(ComplexHeatmap)
 ```
 
 
+# palette
 
 ```{r, echo=TRUE, warning=FALSE, message=FALSE}
 
@@ -81,7 +82,7 @@ col = circlize::colorRamp2(c(-3.0, 0, 3.0), c("darkblue","white", "darkred"))
 
 ```
 
-
+# data
 
 ```{r, echo=TRUE, warning=FALSE, message=FALSE}
 
@@ -115,7 +116,7 @@ mygroup = unique(plotMe$group)
 
 ```
 
-
+# H, HD, D
 
 ```{r, echo=TRUE, warning=FALSE, message=FALSE}
 
@@ -155,7 +156,7 @@ for (i in mygroup) {
 
 ```
 
-
+# W, D
 
 ```{r, echo=TRUE, warning=FALSE, message=FALSE}
 

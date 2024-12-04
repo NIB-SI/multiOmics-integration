@@ -1591,9 +1591,15 @@ border-radius: 0px;
 <span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="fu">library</span>(RColorBrewer)</span>
 <span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a></span>
 <span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="fu">library</span>(ComplexHeatmap)</span></code></pre></div>
+</div>
+<div id="palette" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> palette</h1>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># col = circlize::colorRamp2(c(-3.5,-1,0,1,3.5), c(&quot;darkblue&quot;,&quot;skyblue&quot;,&quot;white&quot;, &quot;brown1&quot;, &quot;darkred&quot;))</span></span>
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="co"># col = circlize::colorRamp2(c(-3.5,-1,0,1,3.5), c(brewer.pal(9, &#39;Blues&#39;)[8],&quot;skyblue&quot;,&quot;white&quot;, &quot;brown1&quot;, rev(brewer.pal(9, &#39;Reds&#39;))[2]))</span></span>
 <span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>col <span class="ot">=</span> circlize<span class="sc">::</span><span class="fu">colorRamp2</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="fl">3.0</span>, <span class="dv">0</span>, <span class="fl">3.0</span>), <span class="fu">c</span>(<span class="st">&quot;darkblue&quot;</span>,<span class="st">&quot;white&quot;</span>, <span class="st">&quot;darkred&quot;</span>))</span></code></pre></div>
+</div>
+<div id="data" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> data</h1>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>fp <span class="ot">=</span> <span class="fu">file.path</span>(<span class="st">&#39;..&#39;</span>, <span class="st">&#39;reports&#39;</span>)</span>
 <span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>fn <span class="ot">=</span> <span class="st">&#39;Desiree.targeted_logFC-sig.xlsx&#39;</span></span>
 <span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a></span>
@@ -1618,6 +1624,9 @@ border-radius: 0px;
 <span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a></span>
 <span id="cb4-23"><a href="#cb4-23" tabindex="-1"></a></span>
 <span id="cb4-24"><a href="#cb4-24" tabindex="-1"></a>mygroup <span class="ot">=</span> <span class="fu">unique</span>(plotMe<span class="sc">$</span>group)</span></code></pre></div>
+</div>
+<div id="h-hd-d" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> H, HD, D</h1>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>plotMe.H <span class="ot">=</span> plotMe[, <span class="fu">setdiff</span>(<span class="fu">grep</span>(<span class="st">&#39;^H|^D&#39;</span>, <span class="fu">colnames</span>(plotMe)), <span class="fu">grep</span>(<span class="st">&#39;28&#39;</span>, <span class="fu">colnames</span>(plotMe)))]</span>
 <span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>rs <span class="ot">=</span> <span class="fu">rowSums</span>(<span class="fu">is.na</span>(plotMe.H))<span class="sc">/</span><span class="fu">ncol</span>(plotMe.H)</span>
 <span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>plotMe.H <span class="ot">=</span> plotMe.H[<span class="sc">-</span><span class="fu">which</span>(rs <span class="sc">==</span> <span class="dv">1</span>), ]</span>
@@ -1649,6 +1658,9 @@ border-radius: 0px;
 <span id="cb5-29"><a href="#cb5-29" tabindex="-1"></a>  <span class="fu">dev.off</span>()</span>
 <span id="cb5-30"><a href="#cb5-30" tabindex="-1"></a></span>
 <span id="cb5-31"><a href="#cb5-31" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<div id="w-d" class="section level1" number="5">
+<h1><span class="header-section-number">5</span> W, D</h1>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>plotMe.W <span class="ot">=</span> plotMe[, <span class="fu">setdiff</span>(<span class="fu">grep</span>(<span class="st">&#39;^W|^D&#39;</span>, <span class="fu">colnames</span>(plotMe)), <span class="fu">grep</span>(<span class="st">&#39;28&#39;</span>, <span class="fu">colnames</span>(plotMe)))]</span>
 <span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>rs <span class="ot">=</span> <span class="fu">rowSums</span>(<span class="fu">is.na</span>(plotMe.W))<span class="sc">/</span><span class="fu">ncol</span>(plotMe.W)</span>
 <span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>plotMe.W <span class="ot">=</span> plotMe.W[<span class="sc">-</span><span class="fu">which</span>(rs <span class="sc">==</span> <span class="dv">1</span>), ]</span>
@@ -1680,8 +1692,8 @@ border-radius: 0px;
 <span id="cb6-29"><a href="#cb6-29" tabindex="-1"></a></span>
 <span id="cb6-30"><a href="#cb6-30" tabindex="-1"></a>}</span></code></pre></div>
 </div>
-<div id="session-info" class="section level1" number="2">
-<h1><span class="header-section-number">2</span> session Info</h1>
+<div id="session-info" class="section level1" number="6">
+<h1><span class="header-section-number">6</span> session Info</h1>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div>
 <pre><code>## R version 4.4.1 (2024-06-14 ucrt)
 ## Platform: x86_64-w64-mingw32/x64
