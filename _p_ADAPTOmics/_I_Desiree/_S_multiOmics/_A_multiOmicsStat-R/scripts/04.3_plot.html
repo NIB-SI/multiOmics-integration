@@ -1662,9 +1662,9 @@ border-radius: 0px;
 <div id="w-d" class="section level1" number="5">
 <h1><span class="header-section-number">5</span> W, D</h1>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>plotMe.W <span class="ot">=</span> plotMe[, <span class="fu">setdiff</span>(<span class="fu">grep</span>(<span class="st">&#39;^W|^D&#39;</span>, <span class="fu">colnames</span>(plotMe)), <span class="fu">grep</span>(<span class="st">&#39;28&#39;</span>, <span class="fu">colnames</span>(plotMe)))]</span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>rs <span class="ot">=</span> <span class="fu">rowSums</span>(<span class="fu">is.na</span>(plotMe.W))<span class="sc">/</span><span class="fu">ncol</span>(plotMe.W)</span>
-<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>plotMe.W <span class="ot">=</span> plotMe.W[<span class="sc">-</span><span class="fu">which</span>(rs <span class="sc">==</span> <span class="dv">1</span>), ]</span>
-<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>plotMe.W <span class="ot">=</span> plotMe.W[, <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">2</span>)]</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>plotMe.W <span class="ot">=</span> plotMe.W[, <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">2</span>)]</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>rs <span class="ot">=</span> <span class="fu">rowSums</span>(<span class="fu">is.na</span>(plotMe.W))<span class="sc">/</span><span class="fu">ncol</span>(plotMe.W)</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>plotMe.W <span class="ot">=</span> plotMe.W[<span class="sc">-</span><span class="fu">which</span>(rs <span class="sc">==</span> <span class="dv">1</span>), ]</span>
 <span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a></span>
 <span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> mygroup) {</span>
 <span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>  </span>

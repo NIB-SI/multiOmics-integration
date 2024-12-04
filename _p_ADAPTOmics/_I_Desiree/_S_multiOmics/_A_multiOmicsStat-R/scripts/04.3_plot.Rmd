@@ -162,9 +162,9 @@ for (i in mygroup) {
 
 
 plotMe.W = plotMe[, setdiff(grep('^W|^D', colnames(plotMe)), grep('28', colnames(plotMe)))]
+plotMe.W = plotMe.W[, c(3,4,2)]
 rs = rowSums(is.na(plotMe.W))/ncol(plotMe.W)
 plotMe.W = plotMe.W[-which(rs == 1), ]
-plotMe.W = plotMe.W[, c(3,4,2)]
 
 for (i in mygroup) {
   
