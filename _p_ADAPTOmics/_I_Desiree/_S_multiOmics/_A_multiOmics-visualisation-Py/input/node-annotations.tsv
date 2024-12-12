@@ -1,100 +1,100 @@
-biochem_net_name	color_code	display_name	pathway	protein_name	short_name	name	cor_name	group	mapman_bin	description
-12-OH-JA	#f3d686	12-OH-JA	JA			ho.X12.OH.JA	12-OH-JA	hormonomics		12-Hydroxyjasmonic acid
-13-LOX	#f3d686	13-LOX	JA		13-LOX	qP.X13.LOX	13-LOX	transcriptomics		13-lipoxygenase
-9,10-dhJA	#f3d686	9,10-dhJA	JA			ho.X9.10.dhJA	9,10-dhJA	hormonomics		9,10-Dihydrojasmonic acid
-ABA	#8bbafc	ABA	ABA			ho.ABA	ABA	hormonomics		Abscisic acid
-ACO2	#ffaec2	ACO2	ET		ACO2	qP.ACO2	ACO2	transcriptomics		1-aminocyclopropane-1-carboxylate oxidase
-Ala	#000000	Ala	Amino			me.Ala	Ala	metabolomics		Alanine
-Arg	#000000	Arg	Amino			me.Arg	Arg	metabolomics		Arginine
-Asn	#000000	Asn	Amino			me.Asn	Asn	metabolomics		Asparagine
-Asp	#000000	Asp	Amino			me.Asp	Asp	metabolomics		Aspartic Acid
-betaine	#8bbafc	Betaine	ABA			bio.betaine	betaine	small_molecule		Betaine
-Ca2+	#f6896d	Ca²⁺	Ca			bio.Ca2+	Ca2+	small_molecule		Calcium
-CAT1	#b8da78	CAT1	ROS		CAT1	qP.CAT1	CAT1	transcriptomics		Catalase isozyme 1
-cisOPDA	#f3d686	cisOPDA	JA			ho.cisOPDA	cisOPDA	hormonomics		cis-(+)-12-oxo-phytodienoic acid
-CLCdnDe10_24187	#8bbafc	ALDH	ABA	CLCdnDe10_24187	ALDH10A8	pr.ALDH10A8	CLCdnDe10_24187	proteomics	16.4.2 secondary metabolism.N misc.betaine | 16.4.2.1 secondary metabolism.N misc.betaine.betaine-aldehyde dehydrogenase | 16.4 secondary metabolism.N misc | 16 secondary metabolism	Betaine aldehyde dehydrogenase
-CLCdnDe11_2286	#ee6b6f	HSP90-1	HSP	CLCdnDe11_2286	HSP90-1	pr.HSP90-1	CLCdnDe11_2286	proteomics	20.2.1 stress.abiotic.heat | 20.2 stress.abiotic | 20 stress	Heat shock protein 90 (Fragment)
-CLCdnDe13_5738	#000000	ACAD		CLCdnDe13_5738	ACAD	pr.ACAD	CLCdnDe13_5738	proteomics	11.9.4.2 lipid metabolism.lipid degradation.beta-oxidation.acyl CoA DH | 11.9.4 lipid metabolism.lipid degradation.beta-oxidation | 11.9 lipid metabolism.lipid degradation | 11 lipid metabolism	Acyl-CoA dehydrogenase
-CLCdnDe13_63179	#8bbafc	HQT	ABA	CLCdnDe13_63179	HQT	pr.HQT	CLCdnDe13_63179	proteomics	16.2 secondary metabolism.phenylpropanoids | 16 secondary metabolism	Hydroxycinnamoyl CoA quinate transferase 2
-CLCdnDe2_311	#8bbafc	ISPH	ABA	CLCdnDe2_311	ISPH	pr.ISPH	CLCdnDe2_311	proteomics	16.1.1.7 secondary metabolism.isoprenoids.non-mevalonate pathway.HDR | 16.1.1 secondary metabolism.isoprenoids.non-mevalonate pathway | 16.1 secondary metabolism.isoprenoids | 16 secondary metabolism	4-hydroxy-3-methylbut-2-enyl diphosphate reductase
-CLCdnDe2_96512	#4c8b61	RPE	PS	CLCdnDe2_96512	RPE	pr.RPE	CLCdnDe2_96512	proteomics	1.3.11 PS.calvin cycle.RPE | 1.3 PS.calvin cycle | 1 PS	Ribulose-5-phosphate-3-epimerase
-CLCdnDe6_4953	#000000	ATS1		CLCdnDe6_4953	ATS1	pr.ATS1	CLCdnDe6_4953	proteomics	11.3.1 lipid metabolism.phospholipid synthesis.1-acylglycerol-3-phosphate O-acyltransferase | 11.3 lipid metabolism.phospholipid synthesis | 11 lipid metabolism	Glycerol-3-phosphate acyltransferase
-CLCdnDe7_34340	#ee6b6f	HSP25.3	HSP	CLCdnDe7_34340	HSP25.3	pr.CLCdnDe7_34340	CLCdnDe7_34340	proteomics	20.2.1 stress.abiotic.heat | 20.2 stress.abiotic | 20 stress	Heat shock protein
-CLCdnDe7_6144	#b8da78	MSD1	ROS	CLCdnDe7_6144	MSD1	pr.MSD1	CLCdnDe7_6144	proteomics	21.6 redox.dismutases and catalases | 21 redox	Superoxide dismutase
-CLCdnPW10_11437	#4c8b61	NDH1	PS	CLCdnPW10_11437	ndhI	pr.ndhI	CLCdnPW10_11437	proteomics	1.1.40 PS.lightreaction.cyclic electron flow-chlororespiration | 1 PS | 1.1 PS.lightreaction	NAD(P)H-quinone oxidoreductase subunit I chloroplastic
-CLCdnPW12_1472	#556d9a	GLU1	N	CLCdnPW12_1472	GLU1	pr.GLU1	CLCdnPW12_1472	proteomics	12.2.1.1 N-metabolism.ammonia metabolism.glutamate synthase.ferredoxin dependent | 12.2.1 N-metabolism.ammonia metabolism.glutamate synthase | 12.2 N-metabolism.ammonia metabolism | 12 N-metabolism	Glutamate synthase (Ferredoxin)
-CLCdnPW22_15452	#f3d686	CHA	JA	CLCdnPW22_15452	CHA	pr.CHA	CLCdnPW22_15452	proteomics	20.1.7.3 stress.biotic.PR-proteins.PR3/4/8/11 (chitinases and chitin binding proteins) | 20.1.7 stress.biotic.PR-proteins | 20.1 stress.biotic | 20 stress	Chitinase A
-CLCdnPW31_956	#f3d686	LOX2	JA	CLCdnPW31_956	LOX2	pr.LOX2	CLCdnPW31_956	proteomics	17.7.1.2 hormone metabolism.jasmonate.synthesis-degradation.lipoxygenase | 17.7.1 hormone metabolism.jasmonate.synthesis-degradation | 17.7 hormone metabolism.jasmonate | 17 hormone metabolism	Lipoxygenase
-CLCdnPW48_15164	#000000	EMB2004		CLCdnPW48_15164	EMB2004	pr.EMB2004	CLCdnPW48_15164	proteomics	17.6.3 hormone metabolism.gibberelin.induced-regulated-responsive-activated | 17.6 hormone metabolism.gibberelin | 17 hormone metabolism	NACHT, LRR and PYD domains-containing protein 5
-CLCdnPW49_8560	#000000	POP2	Amino	CLCdnPW49_8560	POP2	pr.POP2	CLCdnPW49_8560	proteomics	13.1.1.1.2 amino acid metabolism.synthesis.central amino acid metabolism.GABA.GABA transaminase | 13.1.1.1 amino acid metabolism.synthesis.central amino acid metabolism.GABA | 13.1.1 amino acid metabolism.synthesis.central amino acid metabolism | 13.1 amino acid metabolism.synthesis | 13 amino acid metabolism	Aminotransferase
-CLCdnPW50_2470	#ee6b6f	DNAJ2	HSP	CLCdnPW50_2470	DNAJ2	pr.DNAJ2	CLCdnPW50_2470	proteomics	20.2 stress.abiotic | 20.2.1 stress.abiotic.heat | 20 stress	Chaperone protein dnaJ 2
-CLCdnRY10_6741	#8bbafc	PP2C	ABA	CLCdnRY10_6741	PP2C	pr.PP2C	CLCdnRY10_6741	proteomics	29.4 protein.postranslational modification | 29 protein	Serine/threonine phosphatase family protein
-CO	#77d3d8	CO	Tuberisation		CO	qP.CO	CO	transcriptomics		CONSTANS (Fragment)
-COMPACTNESS	#000000	Compactness				ph.COMPACTNESS	COMPACTNESS	phenomics		Compactness of the plant, calculated as the ratio between area and surface of convex hull enveloping particular plant.
-deltaT	#000000	Δ Temperature				ph.deltaT	deltaT	phenomics		Steady-state absolute plant temperature normalized to ambient temperature trait based on side view thermal imaging and environmental sensors. 
-DPA	#8bbafc	DPA	ABA			ho.DPA	DPA	hormonomics		Dehydrophaseic acid
-DW_SH_Total	#a68c5b	Dry weight	Starch			ph.DW_SH_Total	DW_SH_Total	phenomics		Dry weight of the shoot biomass cut at the collar, measured after 48h in the dryer at 60°C.
-ERF1	#ffaec2	ERF1	ET		ERF1	qP.ERF1	ERF1	transcriptomics		Ethylene responsive transcription factor
-Fructose	#a68c5b	Fructose	Starch			me.Fructose	Fructose	metabolomics		Fructose
-Fv.Fm	#4c8b61	Fv/Fm	PS			ph.Fv.Fm	Fv.Fm	phenomics		Steady-state fluorescence of maximum efficiency of PSII photochemistry in the light trait based on chlorophyll fluorescence top view. 
-FW_SH_Total	#000000	Fresh weight				ph.FW_SH_Total	FW_SH_Total	phenomics		Fresh weight of the shoot biomass cut at the collar.
-GABA	#000000	GABA	Amino			ho.GABA	GABA	hormonomics		Gamma-aminobutyric acid
-Gln	#556d9a	Gln	N			me.Gln	Gln	metabolomics		Glutamine
-Glu	#556d9a	Glu	N			me.Glu	Glu	metabolomics		Glutamic Acid
-Glucose	#a68c5b	Glucose	Starch			me.Glukose	Glucose	metabolomics		Glucose
-Gly	#000000	Gly	Amino			me.Gly	Gly	metabolomics		Glycine
-His	#000000	His	Amino			me.His	His	metabolomics		Histidine
-HSP70	#ee6b6f	HSP70	HSP		HSP70	qP.HSP70	HSP70	transcriptomics		heat shock protein
-IAA	#969696	IAA	IAA			ho.IAA	IAA	hormonomics		Indole-3-acetic acid (Auxin)
-IAA-Asp	#969696	IAA-Asp	IAA			ho.IAA.Asp	IAA-Asp	hormonomics		Indole-3-acetyl-aspartate
-Ile	#000000	Ile	Amino			me.Ile	Ile	metabolomics		Isoleucine
-JA	#f3d686	JA	JA			ho.JA	JA	hormonomics		Jasmonic acid
-JA-Ile	#f3d686	JA-Ile	JA			ho.JA.Ile	JA-Ile	hormonomics		Jasmonoyl-isoleucine
-Leu	#000000	Leu	Amino			me.Leu	Leu	metabolomics		Leucine
-Lys	#000000	Lys	Amino			me.Lys	Lys	metabolomics		Lysine
-M0ZJG3	#f6896d	MES	Ca		MES	qP.M0ZJG3	M0ZJG3	transcriptomics		Methyl Esterase
-Met	#000000	Met	Amino			me.Met	Met	metabolomics		Methionine
-neoPA	#000000	neoPA				ho.neoPA	neoPA	hormonomics		Neophaseic acid
-Num_Tubers	#000000	Number tubers				ph.Num_Tubers	Num_Tubers	phenomics		Total number of the tubers produced by each plant.
-oxIAA	#969696	oxIAA	IAA			ho.oxIAA	oxIAA	hormonomics		2-oxindole-3-acetic acid
-P5CS	#5a3e72	P5CS	Pro		P5CS	qP.P5CS	P5CS	transcriptomics		Pyrroline-5-carboxylate synthase
-PA	#8bbafc	PA	ABA			ho.PA	PA	hormonomics		Phaseic acid
-PBdnRY1_11085	#000000	BSL1		PBdnRY1_11085	BSL1	pr.BSL1	PBdnRY1_11085	proteomics	17.3.2.1 hormone metabolism.brassinosteroid.signal transduction.BRI | 17.3.2 hormone metabolism.brassinosteroid.signal transduction | 17.3 hormone metabolism.brassinosteroid | 17 hormone metabolism	Serine/threonine-protein phosphatase
-PBdnRY1_2239	#a68c5b	DPE2	Starch	PBdnRY1_2239	DPE2	pr.DPE2	PBdnRY1_2239	proteomics	2.2.2.4 major CHO metabolism.degradation.starch.D enzyme | 2 major CHO metabolism | 2.2.2 major CHO metabolism.degradation.starch | 2.2 major CHO metabolism.degradation	4-alpha-glucanotransferase
-PBdnRY1_5389	#ee6b6f	HSP	HSP	PBdnRY1_5389	HSP	pr.HSP	PBdnRY1_5389	proteomics	29.6 protein.folding | 20.2.1 stress.abiotic.heat | 20.2 stress.abiotic | 20 stress | 29 protein	heat shock protein
-PBdnRY1_7025	#4c8b61	PsbQ-like	PS	PBdnRY1_7025	PNSL2	pr.PNSL2	PBdnRY1_7025	proteomics	1.1.1.2 PS.lightreaction.photosystem II.PSII polypeptide subunits | 1.1.1 PS.lightreaction.photosystem II | 1.1 PS.lightreaction | 1 PS	Oxygen evolving enhancer protein 3
-Phe	#9264b6	Phe	SA			me.Phe	Phe	metabolomics		Phenylalanine
-PR1b	#9264b6	PR1b	SA		PR1b	qP.PR1b	PR1b	transcriptomics		Pathogenesis-related protein 1b
-Pro	#5a3e72	Pro	Pro			me.Pro	Pro	metabolomics		Proline
-qL	#4c8b61	qL	PS			ph.qL	qL	phenomics		Steady-state estimation of the fraction of open reaction centers in PSII trait based on chlorophyll fluorescence top view. 
-RbohA	#b8da78	RbohA	ROS		RbohA	qP.RbohA	RbohA	transcriptomics		Respiratory burst oxidase
-RD29B	#8bbafc	RD29	ABA		RD29B	qP.RD29B	RD29B	transcriptomics	20.2.2_stress.abiotic.cold	CAP160 protein
-SA	#9264b6	SA	SA			ho.SA	SA	hormonomics		Salicylic acid
-SdnPW1_46	#ee6b6f	HSP101	HSP	SdnPW1_46	HSP101	pr.HSP101	SdnPW1_46	proteomics	20.2.1 stress.abiotic.heat | 20.2 stress.abiotic | 20 stress	ClpB chaperone
-SdnRY1_10712	#000000	DHQS	Amino	SdnRY1_10712	DHQS	pr.DHQS	SdnRY1_10712	proteomics	13.1.6.1.2 amino acid metabolism.synthesis.aromatic aa.chorismate.3-dehydroquinate synthase | 13.1.6.1 amino acid metabolism.synthesis.aromatic aa.chorismate | 13.1.6 amino acid metabolism.synthesis.aromatic aa | 13.1 amino acid metabolism.synthesis | 13 amino acid metabolism	Dehydroquinate synthase
-Ser	#000000	Ser	Amino			me.Ser	Ser	metabolomics		Serine
-SnRK2	#8bbafc	SnRK2	ABA		SnRK2	qP.SnRK2	SnRK2	transcriptomics	28.99_DNA.unspecified	Protein kinase superfamily protein
-Sotub11g025210.1.1	#ee6b6f	CCT2	HSP	Sotub11g025210.1.1	CCT2	pr.CCT2	Sotub11g025210.1.1	proteomics	29.6 protein.folding | 29 protein	T-complex protein 1 subunit beta
-SP6A	#77d3d8	SP6A	Tuberisation		SP6A	qP.SP6A	SP6A	transcriptomics		Flowering locus T protein
-Starch	#a68c5b	Starch	Starch			me.Starch	Starch	metabolomics		Starch
-Sucrose	#a68c5b	Sucrose	Starch			me.Sucrose	Sucrose	metabolomics		Sucrose
-SWEET	#77d3d8	SWEET	Tuberisation		SWEET	qP.SWEET	SWEET	transcriptomics		Bidirectional sugar transporter
-TDe_comp110944_c2_seq4	#ffba08	F3H	Flavonol	TDe_comp110944_c2_seq4	F3H	pr.F3H	TDe_comp110944_c2_seq4	proteomics	16.8.3.2 secondary metabolism.flavonoids.dihydroflavonols.flavanone 3-hydroxylase | 16.8.3 secondary metabolism.flavonoids.dihydroflavonols | 16.8 secondary metabolism.flavonoids | 16 secondary metabolism	Flavanone 3-hydroxylase
-Thr	#000000	Thr	Amino			me.Thr	Thr	metabolomics		Threonine
-TOP.AREA	#000000	Top area				ph.TOP.AREA	TOP.AREA	phenomics		Geometry trait based on visible-light top view (projected plant area in pixels). 
-Total_Tubers_Weight	#000000	Total tubers weight				ph.Total_Tubers_Weight	Total_Tubers_Weight	phenomics		Total weight of the tubers produced by each plant.
-Trp	#000000	Trp	Amino			me.Trp	Trp	metabolomics		Tryptophan
-Tyr	#000000	Tyr	Amino			me.Tyr	Tyr	metabolomics		Tyrosine
-Val	#000000	Val	Amino			me.Val	Val	metabolomics		Valine
-VdnDe1_162036	#a68c5b	DSP4	Starch	VdnDe1_162036	DSP4	pr.DSP4	VdnDe1_162036	proteomics	2.2.2.10 major CHO metabolism.degradation.starch.laforin like phosphoglucan phosphatase (SEX4) | 2.2.2 major CHO metabolism.degradation.starch | 2.2 major CHO metabolism.degradation | 2 major CHO metabolism	Dual-specificity protein-like phosphatase 3
-VdnDe1_39992	#000000	VDAC1		VdnDe1_39992	VDAC1	pr.VDAC1	VdnDe1_39992	proteomics	34.20 transport.porins | 34 transport	34 kDa outer mitochondrial membrane protein porin
-VdnDe2_29290	#ee6b6f	HSP70-7	HSP	VdnDe2_29290	HSP70-7	pr.HSP70-7	VdnDe2_29290	proteomics	29.6 protein.folding | 20.2.1 stress.abiotic.heat | 20.2 stress.abiotic | 20 stress | 29 protein	Chaperone DnaK
-VdnDe2_53978	#b8da78	CSD2	ROS	VdnDe2_53978	CSD2	pr.CSD2	VdnDe2_53978	proteomics	21.6 redox.dismutases and catalases | 21 redox	Superoxide dismutase
-VdnDe2_86784	#4c8b61	PsbP	PS	VdnDe2_86784	PPD1	pr.PPD1	VdnDe2_86784	proteomics	1.1.1.2 PS.lightreaction.photosystem II.PSII polypeptide subunits | 1.1 PS.lightreaction | 1.1.1 PS.lightreaction.photosystem II | 1 PS	Photosystem II oxygen evolving complex protein PsbP
-VdnDe4_115100	#ee6b6f	MED37E	HSP	VdnDe4_115100	MED37E	pr.MED37E	VdnDe4_115100	proteomics	29.6 protein.folding | 20.2.1 stress.abiotic.heat | 20.2 stress.abiotic | 20 stress | 29 protein	Heat shock cognate 70 kDa protein 1
-VdnPW1_81435	#000000	ACSL		VdnPW1_81435	ACSL	ph.VdnPW1_81435	VdnPW1_81435	proteomics	11.1.9 lipid metabolism.FA synthesis and FA elongation.long chain fatty acid CoA ligase | 11.1 lipid metabolism.FA synthesis and FA elongation | 11 lipid metabolism	Long-chain-fatty-acid-CoA ligase
-VdnPW3_37011	#ee6b6f	CLPB4	HSP	VdnPW3_37011	CLPB4	pr.CLPB4	VdnPW3_37011	proteomics	20.2.1 stress.abiotic.heat | 20.2 stress.abiotic | 20 stress	Chaperone protein clpB 2
-VdnPW4_15664	#f6896d	ACA11	Ca	VdnPW4_15664	ACA11	pr.ACA11	VdnPW4_15664	proteomics	34.21 transport.calcium | 30.3 signalling.calcium | 34 transport | 30 signalling	Calcium-transporting ATPase 1
-VdnPW4_18801	#000000	KARI	Amino	VdnPW4_18801	F14P22.200	pr.F14P22.200	VdnPW4_18801	proteomics	13.1.4.1.2 amino acid metabolism.synthesis.branched chain group.common.ketol-acid reductoisomerase | 13.1.4.1 amino acid metabolism.synthesis.branched chain group.common | 13.1.4 amino acid metabolism.synthesis.branched chain group | 13.1 amino acid metabolism.synthesis | 13 amino acid metabolism	Ketol-acid reductoisomerase
-VdnPW5_1541	#4c8b61	LHCA3	PS	VdnPW5_1541	LHCA3	pr.LHCA3	VdnPW5_1541	proteomics	1.1.2.1 PS.lightreaction.photosystem I.LHC-I | 1.1.2 PS.lightreaction.photosystem I | 1.1 PS.lightreaction | 1 PS	Chlorophyll a-b binding protein 8, chloroplastic
-WATER.CONSUMPTION	#000000	Water consumption				ph.WATER.CONSUMPTION	WATER.CONSUMPTION	phenomics		Absolute weight trait based on weighing of the entire pot in time.
+"biochem_net_name"	"display_name"	"pathway"	"protein_name"	"short_name"	"name"	"group"	"mapman_bin"	"description"
+"12-OH-JA"	"12-OH-JA"	"JA"			"ho.X12.OH.JA"	"hormonomics"		"12-Hydroxyjasmonic acid"
+"13-LOX"	"13-LOX"	"JA"		"13-LOX"	"qP.X13.LOX"	"transcriptomics"		"13-lipoxygenase"
+"9,10-dhJA"	"9,10-dhJA"	"JA"			"ho.X9.10.dhJA"	"hormonomics"		"9,10-Dihydrojasmonic acid"
+"ABA"	"ABA"	"ABA"			"ho.ABA"	"hormonomics"		"Abscisic acid"
+"ACO2"	"ACO2"	"ET"		"ACO2"	"qP.ACO2"	"transcriptomics"		"1-aminocyclopropane-1-carboxylate oxidase"
+"Ala"	"Ala"	"Amino"			"me.Ala"	"metabolomics"		"Alanine"
+"Arg"	"Arg"	"Amino"			"me.Arg"	"metabolomics"		"Arginine"
+"Asn"	"Asn"	"Amino"			"me.Asn"	"metabolomics"		"Asparagine"
+"Asp"	"Asp"	"Amino"			"me.Asp"	"metabolomics"		"Aspartic Acid"
+"betaine"	"Betaine"	"ABA"			"bio.betaine"	"small_molecule"		"Betaine"
+"Ca2+"	"Ca²⁺"	"Ca"			"bio.Ca2+"	"small_molecule"		"Calcium"
+"CAT1"	"CAT1"	"ROS"		"CAT1"	"qP.CAT1"	"transcriptomics"		"Catalase isozyme 1"
+"cisOPDA"	"cisOPDA"	"JA"			"ho.cisOPDA"	"hormonomics"		"cis-(+)-12-oxo-phytodienoic acid"
+"CLCdnDe10_24187"	"ALDH"	"ABA"	"CLCdnDe10_24187"	"ALDH10A8"	"pr.ALDH10A8"	"proteomics"	"16.4.2 secondary metabolism.N misc.betaine | 16.4.2.1 secondary metabolism.N misc.betaine.betaine-aldehyde dehydrogenase | 16.4 secondary metabolism.N misc | 16 secondary metabolism"	"Betaine aldehyde dehydrogenase"
+"CLCdnDe11_2286"	"HSP90-1"	"HSP"	"CLCdnDe11_2286"	"HSP90-1"	"pr.HSP90-1"	"proteomics"	"20.2.1 stress.abiotic.heat | 20.2 stress.abiotic | 20 stress"	"Heat shock protein 90 (Fragment)"
+"CLCdnDe13_5738"	"ACAD"		"CLCdnDe13_5738"	"ACAD"	"pr.ACAD"	"proteomics"	"11.9.4.2 lipid metabolism.lipid degradation.beta-oxidation.acyl CoA DH | 11.9.4 lipid metabolism.lipid degradation.beta-oxidation | 11.9 lipid metabolism.lipid degradation | 11 lipid metabolism"	"Acyl-CoA dehydrogenase"
+"CLCdnDe13_63179"	"HQT"	"ABA"	"CLCdnDe13_63179"	"HQT"	"pr.HQT"	"proteomics"	"16.2 secondary metabolism.phenylpropanoids | 16 secondary metabolism"	"Hydroxycinnamoyl CoA quinate transferase 2"
+"CLCdnDe2_311"	"ISPH"	"ABA"	"CLCdnDe2_311"	"ISPH"	"pr.ISPH"	"proteomics"	"16.1.1.7 secondary metabolism.isoprenoids.non-mevalonate pathway.HDR | 16.1.1 secondary metabolism.isoprenoids.non-mevalonate pathway | 16.1 secondary metabolism.isoprenoids | 16 secondary metabolism"	"4-hydroxy-3-methylbut-2-enyl diphosphate reductase"
+"CLCdnDe2_96512"	"RPE"	"PS"	"CLCdnDe2_96512"	"RPE"	"pr.RPE"	"proteomics"	"1.3.11 PS.calvin cycle.RPE | 1.3 PS.calvin cycle | 1 PS"	"Ribulose-5-phosphate-3-epimerase"
+"CLCdnDe6_4953"	"ATS1"		"CLCdnDe6_4953"	"ATS1"	"pr.ATS1"	"proteomics"	"11.3.1 lipid metabolism.phospholipid synthesis.1-acylglycerol-3-phosphate O-acyltransferase | 11.3 lipid metabolism.phospholipid synthesis | 11 lipid metabolism"	"Glycerol-3-phosphate acyltransferase"
+"CLCdnDe7_34340"	"HSP25.3"	"HSP"	"CLCdnDe7_34340"	"HSP25.3"	"pr.CLCdnDe7_34340"	"proteomics"	"20.2.1 stress.abiotic.heat | 20.2 stress.abiotic | 20 stress"	"Heat shock protein"
+"CLCdnDe7_6144"	"MSD1"	"ROS"	"CLCdnDe7_6144"	"MSD1"	"pr.MSD1"	"proteomics"	"21.6 redox.dismutases and catalases | 21 redox"	"Superoxide dismutase"
+"CLCdnPW10_11437"	"NDH1"	"PS"	"CLCdnPW10_11437"	"ndhI"	"pr.ndhI"	"proteomics"	"1.1.40 PS.lightreaction.cyclic electron flow-chlororespiration | 1 PS | 1.1 PS.lightreaction"	"NAD(P)H-quinone oxidoreductase subunit I chloroplastic"
+"CLCdnPW12_1472"	"GLU1"	"N"	"CLCdnPW12_1472"	"GLU1"	"pr.GLU1"	"proteomics"	"12.2.1.1 N-metabolism.ammonia metabolism.glutamate synthase.ferredoxin dependent | 12.2.1 N-metabolism.ammonia metabolism.glutamate synthase | 12.2 N-metabolism.ammonia metabolism | 12 N-metabolism"	"Glutamate synthase (Ferredoxin)"
+"CLCdnPW22_15452"	"CHA"	"JA"	"CLCdnPW22_15452"	"CHA"	"pr.CHA"	"proteomics"	"20.1.7.3 stress.biotic.PR-proteins.PR3/4/8/11 (chitinases and chitin binding proteins) | 20.1.7 stress.biotic.PR-proteins | 20.1 stress.biotic | 20 stress"	"Chitinase A"
+"CLCdnPW31_956"	"LOX2"	"JA"	"CLCdnPW31_956"	"LOX2"	"pr.LOX2"	"proteomics"	"17.7.1.2 hormone metabolism.jasmonate.synthesis-degradation.lipoxygenase | 17.7.1 hormone metabolism.jasmonate.synthesis-degradation | 17.7 hormone metabolism.jasmonate | 17 hormone metabolism"	"Lipoxygenase"
+"CLCdnPW48_15164"	"EMB2004"		"CLCdnPW48_15164"	"EMB2004"	"pr.EMB2004"	"proteomics"	"17.6.3 hormone metabolism.gibberelin.induced-regulated-responsive-activated | 17.6 hormone metabolism.gibberelin | 17 hormone metabolism"	"NACHT, LRR and PYD domains-containing protein 5"
+"CLCdnPW49_8560"	"POP2"	"Amino"	"CLCdnPW49_8560"	"POP2"	"pr.POP2"	"proteomics"	"13.1.1.1.2 amino acid metabolism.synthesis.central amino acid metabolism.GABA.GABA transaminase | 13.1.1.1 amino acid metabolism.synthesis.central amino acid metabolism.GABA | 13.1.1 amino acid metabolism.synthesis.central amino acid metabolism | 13.1 amino acid metabolism.synthesis | 13 amino acid metabolism"	"Aminotransferase"
+"CLCdnPW50_2470"	"DNAJ2"	"HSP"	"CLCdnPW50_2470"	"DNAJ2"	"pr.DNAJ2"	"proteomics"	"20.2 stress.abiotic | 20.2.1 stress.abiotic.heat | 20 stress"	"Chaperone protein dnaJ 2"
+"CLCdnRY10_6741"	"PP2C"	"ABA"	"CLCdnRY10_6741"	"PP2C"	"pr.PP2C"	"proteomics"	"29.4 protein.postranslational modification | 29 protein"	"Serine/threonine phosphatase family protein"
+"CO"	"CO"	"Tuberisation"		"CO"	"qP.CO"	"transcriptomics"		"CONSTANS (Fragment)"
+"COMPACTNESS"	"Compactness"				"ph.COMPACTNESS"	"phenomics"		"Compactness of the plant, calculated as the ratio between area and surface of convex hull enveloping particular plant."
+"deltaT"	"Δ Temperature"				"ph.deltaT"	"phenomics"		"Steady-state absolute plant temperature normalized to ambient temperature trait based on side view thermal imaging and environmental sensors. "
+"DPA"	"DPA"	"ABA"			"ho.DPA"	"hormonomics"		"Dehydrophaseic acid"
+"DW_SH_Total"	"Dry weight"	"Starch"			"ph.DW_SH_Total"	"phenomics"		"Dry weight of the shoot biomass cut at the collar, measured after 48h in the dryer at 60°C."
+"ERF1"	"ERF1"	"ET"		"ERF1"	"qP.ERF1"	"transcriptomics"		"Ethylene responsive transcription factor"
+"Fructose"	"Fructose"	"Starch"			"me.Fructose"	"metabolomics"		"Fructose"
+"Fv.Fm"	"Fv/Fm"	"PS"			"ph.Fv.Fm"	"phenomics"		"Steady-state fluorescence of maximum efficiency of PSII photochemistry in the light trait based on chlorophyll fluorescence top view. "
+"FW_SH_Total"	"Fresh weight"				"ph.FW_SH_Total"	"phenomics"		"Fresh weight of the shoot biomass cut at the collar."
+"GABA"	"GABA"	"Amino"			"ho.GABA"	"hormonomics"		"Gamma-aminobutyric acid"
+"Gln"	"Gln"	"N"			"me.Gln"	"metabolomics"		"Glutamine"
+"Glu"	"Glu"	"N"			"me.Glu"	"metabolomics"		"Glutamic Acid"
+"Glucose"	"Glucose"	"Starch"			"me.Glukose"	"metabolomics"		"Glucose"
+"Gly"	"Gly"	"Amino"			"me.Gly"	"metabolomics"		"Glycine"
+"His"	"His"	"Amino"			"me.His"	"metabolomics"		"Histidine"
+"HSP70"	"HSP70"	"HSP"		"HSP70"	"qP.HSP70"	"transcriptomics"		"heat shock protein"
+"IAA"	"IAA"	"IAA"			"ho.IAA"	"hormonomics"		"Indole-3-acetic acid (Auxin)"
+"IAA-Asp"	"IAA-Asp"	"IAA"			"ho.IAA.Asp"	"hormonomics"		"Indole-3-acetyl-aspartate"
+"Ile"	"Ile"	"Amino"			"me.Ile"	"metabolomics"		"Isoleucine"
+"JA"	"JA"	"JA"			"ho.JA"	"hormonomics"		"Jasmonic acid"
+"JA-Ile"	"JA-Ile"	"JA"			"ho.JA.Ile"	"hormonomics"		"Jasmonoyl-isoleucine"
+"Leu"	"Leu"	"Amino"			"me.Leu"	"metabolomics"		"Leucine"
+"Lys"	"Lys"	"Amino"			"me.Lys"	"metabolomics"		"Lysine"
+"M0ZJG3"	"MES"	"Ca"		"MES"	"qP.M0ZJG3"	"transcriptomics"		"Methyl Esterase"
+"Met"	"Met"	"Amino"			"me.Met"	"metabolomics"		"Methionine"
+"neoPA"	"neoPA"				"ho.neoPA"	"hormonomics"		"Neophaseic acid"
+"Num_Tubers"	"Number tubers"				"ph.Num_Tubers"	"phenomics"		"Total number of the tubers produced by each plant."
+"oxIAA"	"oxIAA"	"IAA"			"ho.oxIAA"	"hormonomics"		"2-oxindole-3-acetic acid"
+"P5CS"	"P5CS"	"Pro"		"P5CS"	"qP.P5CS"	"transcriptomics"		"Pyrroline-5-carboxylate synthase"
+"PA"	"PA"	"ABA"			"ho.PA"	"hormonomics"		"Phaseic acid"
+"PBdnRY1_11085"	"BSL1"		"PBdnRY1_11085"	"BSL1"	"pr.BSL1"	"proteomics"	"17.3.2.1 hormone metabolism.brassinosteroid.signal transduction.BRI | 17.3.2 hormone metabolism.brassinosteroid.signal transduction | 17.3 hormone metabolism.brassinosteroid | 17 hormone metabolism"	"Serine/threonine-protein phosphatase"
+"PBdnRY1_2239"	"DPE2"	"Starch"	"PBdnRY1_2239"	"DPE2"	"pr.DPE2"	"proteomics"	"2.2.2.4 major CHO metabolism.degradation.starch.D enzyme | 2 major CHO metabolism | 2.2.2 major CHO metabolism.degradation.starch | 2.2 major CHO metabolism.degradation"	"4-alpha-glucanotransferase"
+"PBdnRY1_5389"	"HSP"	"HSP"	"PBdnRY1_5389"	"HSP"	"pr.HSP"	"proteomics"	"29.6 protein.folding | 20.2.1 stress.abiotic.heat | 20.2 stress.abiotic | 20 stress | 29 protein"	"heat shock protein"
+"PBdnRY1_7025"	"PsbQ-like"	"PS"	"PBdnRY1_7025"	"PNSL2"	"pr.PNSL2"	"proteomics"	"1.1.1.2 PS.lightreaction.photosystem II.PSII polypeptide subunits | 1.1.1 PS.lightreaction.photosystem II | 1.1 PS.lightreaction | 1 PS"	"Oxygen evolving enhancer protein 3"
+"Phe"	"Phe"	"SA"			"me.Phe"	"metabolomics"		"Phenylalanine"
+"PR1b"	"PR1b"	"SA"		"PR1b"	"qP.PR1b"	"transcriptomics"		"Pathogenesis-related protein 1b"
+"Pro"	"Pro"	"Pro"			"me.Pro"	"metabolomics"		"Proline"
+"qL"	"qL"	"PS"			"ph.qL"	"phenomics"		"Steady-state estimation of the fraction of open reaction centers in PSII trait based on chlorophyll fluorescence top view. "
+"RbohA"	"RbohA"	"ROS"		"RbohA"	"qP.RbohA"	"transcriptomics"		"Respiratory burst oxidase"
+"RD29B"	"RD29"	"ABA"		"RD29B"	"qP.RD29B"	"transcriptomics"	"20.2.2_stress.abiotic.cold"	"CAP160 protein"
+"SA"	"SA"	"SA"			"ho.SA"	"hormonomics"		"Salicylic acid"
+"SdnPW1_46"	"HSP101"	"HSP"	"SdnPW1_46"	"HSP101"	"pr.HSP101"	"proteomics"	"20.2.1 stress.abiotic.heat | 20.2 stress.abiotic | 20 stress"	"ClpB chaperone"
+"SdnRY1_10712"	"DHQS"	"Amino"	"SdnRY1_10712"	"DHQS"	"pr.DHQS"	"proteomics"	"13.1.6.1.2 amino acid metabolism.synthesis.aromatic aa.chorismate.3-dehydroquinate synthase | 13.1.6.1 amino acid metabolism.synthesis.aromatic aa.chorismate | 13.1.6 amino acid metabolism.synthesis.aromatic aa | 13.1 amino acid metabolism.synthesis | 13 amino acid metabolism"	"Dehydroquinate synthase"
+"Ser"	"Ser"	"Amino"			"me.Ser"	"metabolomics"		"Serine"
+"SnRK2"	"SnRK2"	"ABA"		"SnRK2"	"qP.SnRK2"	"transcriptomics"	"28.99_DNA.unspecified"	"Protein kinase superfamily protein"
+"Sotub11g025210.1.1"	"CCT2"	"HSP"	"Sotub11g025210.1.1"	"CCT2"	"pr.CCT2"	"proteomics"	"29.6 protein.folding | 29 protein"	"T-complex protein 1 subunit beta"
+"SP6A"	"SP6A"	"Tuberisation"		"SP6A"	"qP.SP6A"	"transcriptomics"		"Flowering locus T protein"
+"Starch"	"Starch"	"Starch"			"me.Starch"	"metabolomics"		"Starch"
+"Sucrose"	"Sucrose"	"Starch"			"me.Sucrose"	"metabolomics"		"Sucrose"
+"SWEET"	"SWEET"	"Tuberisation"		"SWEET"	"qP.SWEET"	"transcriptomics"		"Bidirectional sugar transporter"
+"TDe_comp110944_c2_seq4"	"F3H"	"Flavonol"	"TDe_comp110944_c2_seq4"	"F3H"	"pr.F3H"	"proteomics"	"16.8.3.2 secondary metabolism.flavonoids.dihydroflavonols.flavanone 3-hydroxylase | 16.8.3 secondary metabolism.flavonoids.dihydroflavonols | 16.8 secondary metabolism.flavonoids | 16 secondary metabolism"	"Flavanone 3-hydroxylase"
+"Thr"	"Thr"	"Amino"			"me.Thr"	"metabolomics"		"Threonine"
+"TOP.AREA"	"Top area"				"ph.TOP.AREA"	"phenomics"		"Geometry trait based on visible-light top view (projected plant area in pixels). "
+"Total_Tubers_Weight"	"Total tubers weight"				"ph.Total_Tubers_Weight"	"phenomics"		"Total weight of the tubers produced by each plant."
+"Trp"	"Trp"	"Amino"			"me.Trp"	"metabolomics"		"Tryptophan"
+"Tyr"	"Tyr"	"Amino"			"me.Tyr"	"metabolomics"		"Tyrosine"
+"Val"	"Val"	"Amino"			"me.Val"	"metabolomics"		"Valine"
+"VdnDe1_162036"	"DSP4"	"Starch"	"VdnDe1_162036"	"DSP4"	"pr.DSP4"	"proteomics"	"2.2.2.10 major CHO metabolism.degradation.starch.laforin like phosphoglucan phosphatase (SEX4) | 2.2.2 major CHO metabolism.degradation.starch | 2.2 major CHO metabolism.degradation | 2 major CHO metabolism"	"Dual-specificity protein-like phosphatase 3"
+"VdnDe1_39992"	"VDAC1"		"VdnDe1_39992"	"VDAC1"	"pr.VDAC1"	"proteomics"	"34.20 transport.porins | 34 transport"	"34 kDa outer mitochondrial membrane protein porin"
+"VdnDe2_29290"	"HSP70-7"	"HSP"	"VdnDe2_29290"	"HSP70-7"	"pr.HSP70-7"	"proteomics"	"29.6 protein.folding | 20.2.1 stress.abiotic.heat | 20.2 stress.abiotic | 20 stress | 29 protein"	"Chaperone DnaK"
+"VdnDe2_53978"	"CSD2"	"ROS"	"VdnDe2_53978"	"CSD2"	"pr.CSD2"	"proteomics"	"21.6 redox.dismutases and catalases | 21 redox"	"Superoxide dismutase"
+"VdnDe2_86784"	"PsbP"	"PS"	"VdnDe2_86784"	"PPD1"	"pr.PPD1"	"proteomics"	"1.1.1.2 PS.lightreaction.photosystem II.PSII polypeptide subunits | 1.1 PS.lightreaction | 1.1.1 PS.lightreaction.photosystem II | 1 PS"	"Photosystem II oxygen evolving complex protein PsbP"
+"VdnDe4_115100"	"MED37E"	"HSP"	"VdnDe4_115100"	"MED37E"	"pr.MED37E"	"proteomics"	"29.6 protein.folding | 20.2.1 stress.abiotic.heat | 20.2 stress.abiotic | 20 stress | 29 protein"	"Heat shock cognate 70 kDa protein 1"
+"VdnPW1_81435"	"ACSL"		"VdnPW1_81435"	"ACSL"	"ph.VdnPW1_81435"	"proteomics"	"11.1.9 lipid metabolism.FA synthesis and FA elongation.long chain fatty acid CoA ligase | 11.1 lipid metabolism.FA synthesis and FA elongation | 11 lipid metabolism"	"Long-chain-fatty-acid-CoA ligase"
+"VdnPW3_37011"	"CLPB4"	"HSP"	"VdnPW3_37011"	"CLPB4"	"pr.CLPB4"	"proteomics"	"20.2.1 stress.abiotic.heat | 20.2 stress.abiotic | 20 stress"	"Chaperone protein clpB 2"
+"VdnPW4_15664"	"ACA11"	"Ca"	"VdnPW4_15664"	"ACA11"	"pr.ACA11"	"proteomics"	"34.21 transport.calcium | 30.3 signalling.calcium | 34 transport | 30 signalling"	"Calcium-transporting ATPase 1"
+"VdnPW4_18801"	"KARI"	"Amino"	"VdnPW4_18801"	"F14P22.200"	"pr.F14P22.200"	"proteomics"	"13.1.4.1.2 amino acid metabolism.synthesis.branched chain group.common.ketol-acid reductoisomerase | 13.1.4.1 amino acid metabolism.synthesis.branched chain group.common | 13.1.4 amino acid metabolism.synthesis.branched chain group | 13.1 amino acid metabolism.synthesis | 13 amino acid metabolism"	"Ketol-acid reductoisomerase"
+"VdnPW5_1541"	"LHCA3"	"PS"	"VdnPW5_1541"	"LHCA3"	"pr.LHCA3"	"proteomics"	"1.1.2.1 PS.lightreaction.photosystem I.LHC-I | 1.1.2 PS.lightreaction.photosystem I | 1.1 PS.lightreaction | 1 PS"	"Chlorophyll a-b binding protein 8, chloroplastic"
+"WATER.CONSUMPTION"	"Water consumption"				"ph.WATER.CONSUMPTION"	"phenomics"		"Absolute weight trait based on weighing of the entire pot in time."

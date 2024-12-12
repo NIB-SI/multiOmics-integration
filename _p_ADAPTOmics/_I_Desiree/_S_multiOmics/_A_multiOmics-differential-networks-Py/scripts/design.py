@@ -8,11 +8,11 @@ contrasts = {
 }
 
 file_prefix_per_contrast = {
-        'D-v-C':    "network-C_D",
-        'H-v-C':    "network-C_H",
-        'HD-v-C':   "network-C_HD",
-        'HD-v-H':   "network-H_HD",
-        'W-v-C':    "network-C_W"
+        'D-v-C':    "C-D/network-C_D",
+        'H-v-C':    "C-H/network-C_H",
+        'HD-v-C':   "C-HD/network-C_HD",
+        'HD-v-H':   "H-HD/network-H_HD",
+        'W-v-C':    "C-W/network-C_W"
 }
 
 file_suffix = "proteomics_metabolomics_hormonomics_qPCR_phenomics.txt"
