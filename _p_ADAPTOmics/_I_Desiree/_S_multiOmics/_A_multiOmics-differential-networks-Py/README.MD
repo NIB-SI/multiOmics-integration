@@ -18,6 +18,8 @@
 
 - Finally, per graph thresholds are defined as the largest threshold resulting in a local minima of the density, and applied to obtain thresholded networks
 
+<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_multiOmics-differential-networks-Py/other/threshold_e.g.png" width="300">
+
 ***Integration of data with prior knowledge***
 
 - The background network is merged with thresholded correlation networks and visualised using Cytoscape (![_A_multiOmics-visualisation-Py](https://github.com/NIB-SI/multiOmics-integration/tree/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_multiOmics-visualisation-Py))
