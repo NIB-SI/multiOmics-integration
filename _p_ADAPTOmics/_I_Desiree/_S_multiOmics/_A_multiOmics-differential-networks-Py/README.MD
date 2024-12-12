@@ -18,7 +18,7 @@
 
 - Finally, per graph thresholds are defined as the largest threshold resulting in a local minima of the density, and applied to obtain thresholded networks
 
-<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_multiOmics-differential-networks-Py/other/threshold_e.g.png" width="300">
+<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_multiOmics-differential-networks-Py/other/threshold_e.g.png" width="600">
 
 ***Integration of data with prior knowledge***
 
