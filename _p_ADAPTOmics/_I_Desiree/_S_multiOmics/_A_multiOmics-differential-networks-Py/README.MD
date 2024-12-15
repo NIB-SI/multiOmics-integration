@@ -23,4 +23,10 @@
 ***Integration of data with prior knowledge***
 
 - The background network is merged with thresholded correlation networks and visualised using Cytoscape (![_A_multiOmics-visualisation-Py](https://github.com/NIB-SI/multiOmics-integration/tree/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_multiOmics-visualisation-Py))
+
+<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_multiOmics-differential-networks-Py/other/e.g.svg" width="600">
+
+line type: control: dots, treatment: equal dash, treatment-control: solid, blue: negative CC diff, red: postitive CC diff
+
 - LogFC values are taken from [_A_multiOmicsStat-R](https://github.com/NIB-SI/multiOmics-integration/tree/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_multiOmicsStat-R). For phenomics data relative change % (compared to control) was calculated.
+
