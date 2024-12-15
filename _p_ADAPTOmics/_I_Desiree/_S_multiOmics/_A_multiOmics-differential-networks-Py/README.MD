@@ -26,6 +26,7 @@
 
 <p>
 <img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_multiOmics-differential-networks-Py/other/e.g.svg" width="600">
+
 <em> e.g. HD-C; line type: control: dots, treatment: equal dash, treatment-control: solid, blue: negative CC diff, red: postitive CC diff </em>
 </p>
 
