@@ -81,6 +81,19 @@ Prior to data analysis and integration, some prerequisites should be met
 - Visualised network are available from **_Assay_** [_A_multiOmics-visualisation-Py](https://github.com/NIB-SI/multiOmics-integration/tree/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_multiOmics-visualisation-Py)
 - For more prior knowledge network for plant species see <https://skm.nib.si/> and <https://knetminer.com/>
 
+
+<p>
+<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/pipeline-in-image_v2.png" width="600" class="center">
+  
+  <em>
+    
+    pipeline in an image
+    
+  </em>
+  
+</p>
+
+
 ___
 (1) Petek, M., Zagorščak, M., Blejec, A. et al. pISA-tree - a data management framework for life science research projects using a standardised directory tree. Sci Data 9, 685 (2022). https://doi.org/10.1038/s41597-022-01805-5
 
