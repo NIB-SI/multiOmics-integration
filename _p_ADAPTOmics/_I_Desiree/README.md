@@ -12,9 +12,11 @@ In this directory you can find:
 Analysis steps are grouped in Assays within a joint Study
 
 ___  
-<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/presentations/potato.jpg" height="400" class="center">
-<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/pipeline-in-image_v2.png" height="400" class="center">
- 
+
+<p align="middle">
+<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/presentations/potato.jpg" height="400">
+<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/pipeline-in-image_v2.png" height="400">
+</p> 
 
 This protocol describes multi-omics data integration and modelling and systems biology analysis and visualization pipeline in R and Python
 
