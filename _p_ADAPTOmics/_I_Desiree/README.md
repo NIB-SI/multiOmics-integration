@@ -12,9 +12,9 @@ In this directory you can find:
 Analysis steps are grouped in Assays within a joint Study
 
 ___  
-<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/presentations/potato.jpg" width="300" class="center">
-
-
+<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/presentations/potato.jpg" height="600" class="center">
+<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/pipeline-in-image_v2.png" height="600" class="center">
+ 
 
 This protocol describes multi-omics data integration and modelling and systems biology analysis and visualization pipeline in R and Python
 
@@ -80,18 +80,6 @@ Prior to data analysis and integration, some prerequisites should be met
 - Example of manually created network for this specific data set can be found within the ***input*** directory of the **_Assay_** [_A_multiOmics-differential-networks-Py](https://github.com/NIB-SI/multiOmics-integration/tree/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_multiOmics-differential-networks-Py)
 - Visualised network are available from **_Assay_** [_A_multiOmics-visualisation-Py](https://github.com/NIB-SI/multiOmics-integration/tree/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/_A_multiOmics-visualisation-Py)
 - For more prior knowledge network for plant species see <https://skm.nib.si/> and <https://knetminer.com/>
-
-
-<p>
-<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/pipeline-in-image_v2.png" width="600" class="center">
-  
-  <em>
-    
-    pipeline in an image
-    
-  </em>
-  
-</p>
 
 
 ___
