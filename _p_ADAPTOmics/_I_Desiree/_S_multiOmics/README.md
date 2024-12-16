@@ -25,14 +25,6 @@ Run Assays in consecutive steps:
 - Visualisation of data with prior knowledge
 
 
-<p>
-<img src="https://github.com/NIB-SI/multiOmics-integration/blob/main/_p_ADAPTOmics/_I_Desiree/_S_multiOmics/reports/pipeline-in-image_v2.png" width="600" class="center">
-  
-  <em>
-    pipeline in an image
-  </em>
-</p>
-
 ___
 # Notes
 ## R and package versions
