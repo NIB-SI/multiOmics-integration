@@ -2,8 +2,8 @@ Assay _A_multiOmicsStat-R
 =========================
 
 ***Proteomics***
-- ![DEP](https://bioconductor.org/packages/release/bioc/html/DEP.html)
-- ![GSEA](https://www.gsea-msigdb.org/gsea/index.jsp)
+- [DEP](https://bioconductor.org/packages/release/bioc/html/DEP.html)
+- [GSEA](https://www.gsea-msigdb.org/gsea/index.jsp)
 
 *Denote:* GSEA (2.1) produces multiple files per comparison. Combine information (2.2) and visualise (2.3) in R
 
