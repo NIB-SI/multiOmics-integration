@@ -32,3 +32,6 @@ Factorial experiment:
 
 ## Analysis
 Protocol for the integration of multi-omics data and deep phenotyping of potato cv. Désirée under single- and combined abiotic stress responses is available at [_p_ADAPTOmics](https://github.com/NIB-SI/multiOmics-integration/tree/main/_p_ADAPTOmics)
+
+# Publications
+- Integration of multi-omics data and deep phenotyping provides insights into responses to single and combined abiotic stress in potato, Plant Physiology, Volume 197, Issue 4, April 2025, kiaf126, https://doi.org/10.1093/plphys/kiaf126
