@@ -5,6 +5,7 @@ In this directory you can find:
 
 - <ins>*_Phenodata_*</ins> - Master sample description file: 01_Experimental-design-and-days-of-tissue-sampling.xlsx
 - <ins>*_Featuredata_*</ins> - Phenomics variable description file: 02_Phenomics-featuredata.xlsx
+- <ins>-_Plant growth and data collection protocols_*</ins> - as a part of 'Supplementary Methods' at [supplements](https://github.com/NIB-SI/multiOmics-integration/tree/main/_p_ADAPTOmics/_I_Desiree/presentations/supplemets)
 - RGB phenotipisation e.g.: 03_Phenomics-RBG_Hyponasty.pdf
 - Protocol for multi-omics data integration
 
