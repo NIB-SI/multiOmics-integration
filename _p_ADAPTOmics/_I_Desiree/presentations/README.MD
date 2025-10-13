@@ -17,6 +17,4 @@
 - Supplementary Table S8. CRediT (Contributor Roles Taxonomy) authorship statement.
 - Supplementary Methods.
 
-from
-
-Zagorščak M, Abdelhakim L, Rodriguez-Granados NY, Široká J, Ghatak A, Bleker C, Blejec A, Zrimec J, Novák O, Pěnčík A, Baebler Š, Perez Borroto L, Schuy C, Županič A, Afjehi-Sadat L, Wurzinger B, Weckwerth W, Pompe Novak M, Knight MR, Strnad M, Bachem C, Chaturvedi P, Sonnewald S, Sasidharan R, Panzarová K, Gruden K, Teige M. Integration of multi-omics data and deep phenotyping provides insights into responses to single and combined abiotic stress in potato. Plant Physiol. 2025 Mar 28;197(4):kiaf126. [doi: 10.1093/plphys/kiaf126](https://pmc.ncbi.nlm.nih.gov/articles/PMC12012603/#kiaf126-s6). PMID: 40173380; PMCID: PMC12012603.
+from Integration of multi-omics data and deep phenotyping provides insights into responses to single and combined abiotic stress in potato. Plant Physiol. 2025 Mar 28;197(4):kiaf126. [doi: 10.1093/plphys/kiaf126](https://pmc.ncbi.nlm.nih.gov/articles/PMC12012603/#kiaf126-s6). PMID: 40173380; PMCID: PMC12012603.
